@@ -3,11 +3,11 @@ namespace App\Controller;
 use Core\Controller;
 use Core\View;
 /**
- * Post controller
+ * Home controller
  *
  * PHP version 7.0
  */
-class Posts extends Controller
+class Products extends Controller
 {
     /**
      * Show the index page
@@ -16,13 +16,6 @@ class Posts extends Controller
      */
     public function indexAction()
     {
-        View::renderTemplate('Posts/index.html', [
-
-        ]);
-    }
-
-    public function addAction()
-    {
-        echo 'post add';
+        echo 'product index';
     }
 }
