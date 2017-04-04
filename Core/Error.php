@@ -27,7 +27,7 @@ class Error
     /**
      * Exception handler.
      *
-     * @param Exception $exception  The exception
+     * @param \Exception $exception  The exception
      *
      * @return void
      */
