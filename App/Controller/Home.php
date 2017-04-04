@@ -9,6 +9,14 @@ use Core\View;
  */
 class Home extends Controller
 {
+    protected $postModel;
+
+    public function __construct(array $routeParams)
+    {
+        $this->postModel = new \App\Model\Posts;
+        parent::__construct($routeParams);
+    }
+
     /**
      * Show the index page
      *
@@ -16,9 +24,11 @@ class Home extends Controller
      */
     public function indexAction()
     {
+        $posts = $this->postModel->getAll();
         View::renderTemplate('Home/index.html', [
             'name' => 'Nam',
-            'colors' => ['red', 'blue', 'yellow']
+            'colors' => ['red', 'blue', 'yellow'],
+            'posts' => $posts
         ]);
     }
 }

@@ -9,4 +9,9 @@
     <li>{{ color }}</li>
     {% endfor %}
 </ul>
+<ul>
+    {% for post in posts %}
+    <li>{{ post.title }} - {{ post.content }}</li>
+    {% endfor %}
+</ul>
 {% endblock %}
