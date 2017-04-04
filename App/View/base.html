@@ -6,9 +6,9 @@
 </head>
 <body>
     <nav>
-        <a href="/">Home</a>
-        <a href="/posts">Posts</a>
-        <a href="/products">Products</a>
+        <a href="{{ path() }}">Home</a>
+        <a href="{{ path('posts') }}">Posts</a>
+        <a href="{{ path('products') }}">Products</a>
     </nav>
 
     {% block body %}

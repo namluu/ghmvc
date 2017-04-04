@@ -4,28 +4,22 @@ namespace App;
 class Config
 {
     /**
-     * Database host
-     * @var string
+     * Database
      */
     const DB_HOST = 'localhost';
-    /**
-     * Database name
-     * @var string
-     */
     const DB_NAME = 'ghmvc';
-    /**
-     * Database user
-     * @var string
-     */
     const DB_USER = 'root';
-    /**
-     * Database password
-     * @var string
-     */
     const DB_PASSWORD = '';
+
     /**
-     * Show or hide error messages on screen
-     * @var boolean
+     * Debug
      */
     const SHOW_ERRORS = true;
+
+    /**
+     * Setting
+     */
+    const BASE_URL = 'http://ghmvc.loc/';
+    const ADMIN_URI = 'admin_37wh1';
+    const ADMIN_URL = self::BASE_URL.self::ADMIN_URI.'/';
 }

@@ -1,5 +1,7 @@
 <?php
 namespace Core;
+
+use App\Helper;
 /**
  * View
  *
@@ -7,6 +9,27 @@ namespace Core;
  */
 class View
 {
+    static $twig;
+
+    public static function init()
+    {
+        if (self::$twig === null) {
+            $loader = new \Twig_Loader_Filesystem(dirname(__DIR__) . '/App/View');
+            self::$twig = new \Twig_Environment($loader);
+
+            // create functions
+            $function = new \Twig_SimpleFunction('path', function($string = '') {
+                return Helper::getUrl($string);
+            });
+            self::$twig->addFunction($function);
+
+            $function = new \Twig_SimpleFunction('admin_path', function($string = '') {
+                return Helper::getAdminUrl($string);
+            });
+            self::$twig->addFunction($function);
+        }
+    }
+
     /**
      * Render a view file
      *
@@ -36,11 +59,7 @@ class View
      */
     public static function renderTemplate($view, $args = [])
     {
-        static $twig = null;
-        if ($twig === null) {
-            $loader = new \Twig_Loader_Filesystem(dirname(__DIR__) . '/App/View');
-            $twig = new \Twig_Environment($loader);
-        }
-        echo $twig->render($view, $args);
+        self::init();
+        echo self::$twig->render($view, $args);
     }
 }
