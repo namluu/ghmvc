@@ -2,6 +2,7 @@
 namespace App\Controller;
 use Core\Controller;
 use Core\View;
+use App\Model\Posts;
 /**
  * Home controller
  *
@@ -11,9 +12,9 @@ class Home extends Controller
 {
     protected $postModel;
 
-    public function __construct(array $routeParams)
+    public function __construct(array $routeParams, Posts $posts)
     {
-        $this->postModel = new \App\Model\Posts;
+        $this->postModel = $posts;
         parent::__construct($routeParams);
     }
 

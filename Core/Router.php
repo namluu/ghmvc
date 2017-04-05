@@ -101,11 +101,12 @@ class Router
             $controller = $this->convertToStudlyCaps($controller);
             $controller = $this->getNamespace() . $controller;
             if (class_exists($controller)) {
-                $controller_object = new $controller($this->params);
+                //$controller_object = new $controller($this->params);
+                $controllerObject = $this->automaticDependencyInjection($controller);
                 $action = $this->params['action'];
                 $action = $this->convertToCamelCase($action);
-                if (is_callable([$controller_object, $action])) {
-                    $controller_object->$action();
+                if (is_callable([$controllerObject, $action])) {
+                    $controllerObject->$action();
                 } else {
                     throw new \Exception("Method $action (in controller $controller) not found", 404);
                 }
@@ -116,6 +117,34 @@ class Router
             throw new \Exception('No route matched.', 404);
         }
     }
+
+    /**
+     * Automatic DependencyInjection
+     * PHP 5.6 is required.
+     *
+     * @param $controller
+     *
+     * @return object $controllerObject
+     */
+    public function automaticDependencyInjection($controller)
+    {
+        $ref = new \ReflectionClass($controller);
+        $con = $ref->getConstructor();
+        $params = $con->getParameters();
+        $classes = [];
+        foreach ($params as $p) {
+            $class = $p->getClass();
+            if ($class) {
+                $obj = $class->newInstance();
+                $classes[] = $obj;
+            }
+        }
+        // splat operator - equal to: new $controller($obj1, $obj2) with $classes = [$obj1, $obj2]
+        $controllerObject = new $controller($this->params, ...$classes);
+        return $controllerObject;
+    }
+
+
     /**
      * Convert the string with hyphens to StudlyCaps,
      * e.g. post-authors => PostAuthors
