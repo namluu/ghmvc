@@ -35,7 +35,7 @@ set_exception_handler('Core\Error::exceptionHandler');
 $router = new Core\Router();
 $adminUri = App\Config::ADMIN_URI;
 // Add the routes
-$router->add($adminUri, ['namespace' => 'Admin', 'controller' => 'Home', 'action' => 'index']);
+$router->add($adminUri.'/*', ['namespace' => 'Admin', 'controller' => 'Home', 'action' => 'index']);
 $router->add($adminUri.'/{controller}', ['namespace' => 'Admin', 'action' => 'index']);
 $router->add($adminUri.'/{controller}/{action}', ['namespace' => 'Admin']);
 $router->add($adminUri.'/{controller}/{id:\d+}/{action}', ['namespace' => 'Admin']);

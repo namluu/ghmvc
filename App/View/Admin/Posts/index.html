@@ -1,0 +1,29 @@
+{% extends 'Admin/base.html' %}
+
+{% block title %}Posts{% endblock %}
+
+{% block body %}
+<table border="1" cellspacing="0">
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Created</th>
+        <th>Action</th>
+    </tr>
+    {% for post in posts %}
+    {% set editUrl = admin_path("posts/#{post.id}/edit") %}
+    {% set deleteUrl = admin_path("posts/#{post.id}/delete") %}
+    <tr>
+        <td>{{ post.id }}</td>
+        <td><a href="{{ editUrl }}">{{ post.title }}</a></td>
+        <td>{{ post.created_at }}</td>
+        <td>
+            <a href="{{ editUrl }}">Edit</a> |
+            <a href="{{ deleteUrl }}" onclick="return confirmDelete();">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<a href="{{ admin_path("posts/add") }}">Add New</a>
+{% endblock %}

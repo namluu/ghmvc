@@ -61,4 +61,19 @@ abstract class Controller
     protected function after()
     {
     }
+
+    public function cleanInput($input)
+    {
+        $input = trim($input);
+        $input = strip_tags($input);
+        //$input = htmlspecialchars($input);
+
+        return $input;
+    }
+
+    public function redirect($location)
+    {
+        header('Location: '.$location);
+        die;
+    }
 }

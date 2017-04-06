@@ -1,0 +1,14 @@
+{% extends 'Admin/base.html' %}
+
+{% block title %}Posts{% endblock %}
+
+{% block body %}
+<form action="{{ admin_path('posts/save') }}" method="post">
+    <div><input type="text" name="title" value="{{ post.title }}"></div>
+    <br>
+    <div><textarea name="content" cols="30" rows="10">{{ post.content }}</textarea></div>
+    <br>
+    <input type="hidden" name="id" value="{{ post.id }}">
+    <div><input type="submit" value="Submit"></div>
+</form>
+{% endblock %}

@@ -10,8 +10,9 @@
     <a href="{{ admin_path() }}">Home</a>
     <a href="{{ admin_path('posts') }}">Posts</a>
 </nav>
-
-{% block body %}
-{% endblock %}
+<br><br>
+    {% block body %}
+    {% endblock %}
+    <script src="{{ path('js/admin.js') }}"></script>
 </body>
 </html>

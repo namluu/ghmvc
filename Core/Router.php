@@ -1,5 +1,7 @@
 <?php
 namespace Core;
+use App\Config;
+
 /**
 * Router
 *
@@ -29,6 +31,8 @@ class Router
      */
     public function add($route, $params = [])
     {
+        // special case for admin router
+        //$route .= $route === Config::ADMIN_URI ? '/' : '';
         // Convert the route to a regular expression: escape forward slashes
         $route = preg_replace('/\//', '\\/', $route);
         // Convert variables e.g. {controller}
@@ -129,14 +133,12 @@ class Router
     public function automaticDependencyInjection($controller)
     {
         $ref = new \ReflectionClass($controller);
-        $con = $ref->getConstructor();
-        $params = $con->getParameters();
+        $params = $ref->getConstructor()->getParameters();
         $classes = [];
         foreach ($params as $p) {
             $class = $p->getClass();
-            if ($class) {
-                $obj = $class->newInstance();
-                $classes[] = $obj;
+            if ($p->getClass()) {
+                $classes[] = $class->newInstance();
             }
         }
         // splat operator - equal to: new $controller($obj1, $obj2) with $classes = [$obj1, $obj2]
