@@ -1,20 +1,20 @@
 <?php
-namespace App\Controller;
+namespace App\Module\Cms\Controller;
 use Core\Controller;
 use Core\View;
-use App\Model\Posts;
+use App\Module\Cms\Model\Post;
 /**
  * Home controller
  *
  * PHP version 7.0
  */
-class Home extends Controller
+class Index extends Controller
 {
     protected $postModel;
 
-    public function __construct(array $routeParams, Posts $posts)
+    public function __construct(array $routeParams, Post $post)
     {
-        $this->postModel = $posts;
+        $this->postModel = $post;
         parent::__construct($routeParams);
     }
 
@@ -26,7 +26,7 @@ class Home extends Controller
     public function indexAction()
     {
         $posts = $this->postModel->getAll();
-        View::renderTemplate('Home/index.html', [
+        View::renderTemplate('Cms::frontend/index/index.html', [
             'name' => 'Nam',
             'colors' => ['red', 'blue', 'yellow'],
             'posts' => $posts

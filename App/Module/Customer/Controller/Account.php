@@ -1,20 +1,16 @@
 <?php
-namespace App\Controller;
+namespace App\Module\Customer\Controller;
 use Core\Controller;
 use Core\View;
-use App\Model\Users as UserModel;
 /**
- * User controller
+ * Product controller
  *
  * PHP version 7.0
  */
-class Users extends Controller
+class Account extends Controller
 {
-    protected $userModel;
-
-    public function __construct(array $routeParams, UserModel $users)
+    public function __construct(array $routeParams)
     {
-        $this->userModel = $users;
         parent::__construct($routeParams);
     }
 
@@ -25,7 +21,7 @@ class Users extends Controller
      */
     public function loginAction()
     {
-        View::renderTemplate('Users/login.html', [
+        View::renderTemplate('Customer::frontend/account/login.html', [
         ]);
     }
 
@@ -36,7 +32,7 @@ class Users extends Controller
      */
     public function registerAction()
     {
-        View::renderTemplate('Users/register.html', [
+        View::renderTemplate('Customer::frontend/account/register.html', [
         ]);
     }
 }

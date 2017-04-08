@@ -11,10 +11,15 @@ class View
 {
     static $twig;
 
-    public static function init()
+    public static function init($module = null)
     {
         if (self::$twig === null) {
-            $loader = new \Twig_Loader_Filesystem(dirname(__DIR__) . '/App/View');
+            $paths[] = dirname(__DIR__) . '/App/Layout';
+            if ($module) {
+                $paths[] = dirname(__DIR__) . '/App/Module/'.$module.'/View';
+            }
+            $loader = new \Twig_Loader_Filesystem($paths);
+
             self::$twig = new \Twig_Environment($loader);
 
             // create functions
@@ -59,7 +64,13 @@ class View
      */
     public static function renderTemplate($view, $args = [])
     {
-        self::init();
-        echo self::$twig->render($view, $args);
+        if (sizeof(explode('::', $view)) == 2) {
+            list($module, $template) = explode('::', $view);
+            self::init($module);
+            echo self::$twig->render($template, $args);
+        } else {
+            self::init();
+            echo self::$twig->render($view, $args);
+        }
     }
 }

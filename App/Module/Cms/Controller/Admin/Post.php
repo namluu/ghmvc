@@ -1,23 +1,24 @@
 <?php
-namespace App\Controller\Admin;
+namespace App\Module\Cms\Controller\Admin;
 use Core\Controller;
 use Core\View;
-use App\Model\Posts as PostModel;
+use App\Module\Cms\Model\Post as PostModel;
 use App\Helper;
 /**
  * Post controller
  *
  * PHP version 7.0
  */
-class Posts extends Controller
+class Post extends Controller
 {
     protected $postModel;
 
-    public function __construct(array $routeParams, PostModel $posts)
+    public function __construct(array $routeParams, PostModel $post)
     {
-        $this->postModel = $posts;
+        $this->postModel = $post;
         parent::__construct($routeParams);
     }
+
     /**
      * Show the index page
      *
@@ -26,7 +27,7 @@ class Posts extends Controller
     public function indexAction()
     {
         $posts = $this->postModel->getAll();
-        View::renderTemplate('Admin/Posts/index.html', [
+        View::renderTemplate('Cms::backend/post/index.html', [
             'posts' => $posts
         ]);
     }
@@ -40,7 +41,7 @@ class Posts extends Controller
     {
         $id = isset($this->routeParams['id']) ? $this->routeParams['id'] : null;
         $post = $this->postModel->load($id);
-        View::renderTemplate('Admin/Posts/edit.html', [
+        View::renderTemplate('Cms::backend/post/edit.html', [
             'post' => $post
         ]);
     }
@@ -51,7 +52,7 @@ class Posts extends Controller
             $id = isset($_POST['id']) ? (int)$_POST['id'] : null;
             $errorMsg = $this->validateData($_POST);
             if ($errorMsg) {
-                $this->redirect(Helper::getAdminUrl('posts'));
+                $this->redirect(Helper::getAdminUrl('cms/post'));
             } else {
                 $data = $this->sanitizeData($_POST);
                 $result = $this->postModel->save($data, $id);
@@ -62,7 +63,7 @@ class Posts extends Controller
                 }
             }
         }
-        $this->redirect(Helper::getAdminUrl('posts'));
+        $this->redirect(Helper::getAdminUrl('cms/post'));
     }
 
     public function deleteAction()
@@ -74,7 +75,7 @@ class Posts extends Controller
         } else {
 
         }
-        $this->redirect(Helper::getAdminUrl('posts'));
+        $this->redirect(Helper::getAdminUrl('cms/post'));
     }
 
     protected function validateData($data)

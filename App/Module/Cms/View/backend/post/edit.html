@@ -3,7 +3,7 @@
 {% block title %}Posts{% endblock %}
 
 {% block body %}
-<form action="{{ admin_path('posts/save') }}" method="post">
+<form action="{{ admin_path('cms/post/save') }}" method="post">
     <div><input type="text" name="title" value="{{ post.title }}"></div>
     <br>
     <div><textarea name="content" cols="30" rows="10">{{ post.content }}</textarea></div>

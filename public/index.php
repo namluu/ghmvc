@@ -35,13 +35,15 @@ set_exception_handler('Core\Error::exceptionHandler');
 $router = new Core\Router();
 $adminUri = App\Config::ADMIN_URI;
 // Add the routes
-$router->add($adminUri.'/*', ['namespace' => 'Admin', 'controller' => 'Home', 'action' => 'index']);
-$router->add($adminUri.'/{controller}', ['namespace' => 'Admin', 'action' => 'index']);
-$router->add($adminUri.'/{controller}/{action}', ['namespace' => 'Admin']);
-$router->add($adminUri.'/{controller}/{id:\d+}/{action}', ['namespace' => 'Admin']);
-$router->add('', ['controller' => 'Home', 'action' => 'index']);
-$router->add('{controller}', ['action' => 'index']);
-$router->add('{controller}/{action}');
-$router->add('{controller}/{id:\d+}/{action}');
+$router->add($adminUri.'/*', ['namespace' => 'Admin', 'module' => 'Dashboard', 'controller' => 'Index', 'action' => 'index']);
+$router->add($adminUri.'/{module}', ['namespace' => 'Admin', 'controller' => 'Index', 'action' => 'index']);
+$router->add($adminUri.'/{module}/{controller}', ['namespace' => 'Admin', 'action' => 'index']);
+$router->add($adminUri.'/{module}/{controller}/{action}', ['namespace' => 'Admin']);
+$router->add($adminUri.'/{module}/{controller}/{id:\d+}/{action}', ['namespace' => 'Admin']);
+$router->add('', ['module' => 'cms', 'controller' => 'Index', 'action' => 'index']);
+$router->add('{module}', ['controller' => 'Index', 'action' => 'index']);
+$router->add('{module}/{controller}', ['action' => 'index']);
+$router->add('{module}/{controller}/{action}');
+$router->add('{module}/{controller}/{id:\d+}/{action}');
 
 $router->dispatch($_SERVER['QUERY_STRING']);

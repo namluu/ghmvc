@@ -11,8 +11,8 @@
         <th>Action</th>
     </tr>
     {% for post in posts %}
-    {% set editUrl = admin_path("posts/#{post.id}/edit") %}
-    {% set deleteUrl = admin_path("posts/#{post.id}/delete") %}
+    {% set editUrl = admin_path("cms/post/#{post.id}/edit") %}
+    {% set deleteUrl = admin_path("cms/post/#{post.id}/delete") %}
     <tr>
         <td>{{ post.id }}</td>
         <td><a href="{{ editUrl }}">{{ post.title }}</a></td>
@@ -25,5 +25,5 @@
     {% endfor %}
 </table>
 <br>
-<a href="{{ admin_path("posts/add") }}">Add New</a>
+<a href="{{ admin_path('cms/post/add') }}">Add New</a>
 {% endblock %}

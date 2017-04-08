@@ -7,11 +7,11 @@
 <body>
     <nav>
         <a href="{{ path() }}">Home</a>
-        <a href="{{ path('posts') }}">Posts</a>
-        <a href="{{ path('products') }}">Products</a>
+        <a href="{{ path('cms/post') }}">Posts</a>
+        <a href="{{ path('catalog/product') }}">Products</a>
         <span>|</span>
-        <a href="{{ path('users/register') }}">Register</a>
-        <a href="{{ path('users/login') }}">Login</a>
+        <a href="{{ path('customer/account/register') }}">Register</a>
+        <a href="{{ path('customer/account/login') }}">Login</a>
     </nav>
     <br><br>
     {% block body %}
