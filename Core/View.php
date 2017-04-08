@@ -2,6 +2,7 @@
 namespace Core;
 
 use App\Helper;
+use Core\Session;
 /**
  * View
  *
@@ -64,6 +65,8 @@ class View
      */
     public static function renderTemplate($view, $args = [])
     {
+        $args['messages'] = Session::getMessage();
+
         if (sizeof(explode('::', $view)) == 2) {
             list($module, $template) = explode('::', $view);
             self::init($module);

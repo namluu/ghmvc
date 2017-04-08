@@ -10,10 +10,20 @@
         <a href="{{ path('cms/post') }}">Posts</a>
         <a href="{{ path('catalog/product') }}">Products</a>
         <span>|</span>
-        <a href="{{ path('customer/account/register') }}">Register</a>
-        <a href="{{ path('customer/account/login') }}">Login</a>
+        <a href="{{ path('user/account/register') }}">Register</a>
+        <a href="{{ path('user/account/login') }}">Login</a>
     </nav>
     <br><br>
+
+    {% if messages %}
+        {% if messages.success %}
+        <div role="success">{{ messages.success }}</div>
+        {% endif %}
+        {% if messages.error %}
+        <div role="alert">{{ messages.error }}</div>
+        {% endif %}
+    {% endif %}
+
     {% block body %}
     {% endblock %}
 </body>

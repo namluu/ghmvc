@@ -215,11 +215,8 @@ class Router
     protected function getNamespace()
     {
         $module = $this->convertToStudlyCaps($this->params['module']);
-        if ($module) {
-            $namespace = 'App\Module\\'.$module.'\\Controller\\';
-        } else {
-            $namespace = 'App\Controller\\';
-        }
+        $namespace = 'App\Module\\'.$module.'\\Controller\\';
+
         if (array_key_exists('namespace', $this->params)) {
             $namespace .= $this->params['namespace'] . '\\';
         }

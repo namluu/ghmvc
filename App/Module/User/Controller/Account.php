@@ -1,23 +1,25 @@
 <?php
-namespace App\Module\Customer\Controller;
+namespace App\Module\User\Controller;
+
 use Core\Controller;
 use Core\View;
 use App\Helper;
-use App\Module\Customer\Model\Customer;
+use App\Module\User\Model\User;
+use Core\Session;
 
 /**
- * Product controller
- *
  * PHP version 7.0
  */
 class Account extends Controller
 {
-    protected $customerModel;
+    protected $userModel;
+    protected $session;
 
-    public function __construct(array $routeParams, Customer $customer)
+    public function __construct(array $routeParams, User $user, Session $session)
     {
         parent::__construct($routeParams);
-        $this->customerModel = $customer;
+        $this->userModel = $user;
+        $this->session = $session;
     }
 
     /**
@@ -27,7 +29,7 @@ class Account extends Controller
      */
     public function loginAction()
     {
-        View::renderTemplate('Customer::frontend/account/login.html', [
+        View::renderTemplate('User::frontend/account/login.html', [
         ]);
     }
 
@@ -38,14 +40,14 @@ class Account extends Controller
      */
     public function registerAction()
     {
-        View::renderTemplate('Customer::frontend/account/register.html', [
+        View::renderTemplate('User::frontend/account/register.html', [
         ]);
     }
 
     public function registerSubmitAction()
     {
         if( !$_POST ) {
-            $this->redirect(Helper::getUrl('customer/account/register'));
+            $this->redirect(Helper::getUrl('user/account/register'));
         }
 
         $errorMsg = array();
@@ -63,16 +65,18 @@ class Account extends Controller
             $errorMsg[] = 'Name must contain alphabets and numbers.';
         } else {
             // check fullname exist or not
-            $count = $this->customerModel->countBy('username', $username);
+            $count = $this->userModel->countBy('username', $username);
             if ($count) {
-                $errorMsg[] = 'Provided FullName is already in use.';
+                $errorMsg[] = 'Provided Username is already in use.';
             }
             $dataCache['username'] = $username;
         }
 
         if (!$errorMsg) {
-
+            $this->session->setMessage('success', 'Register successfully');
+            $this->redirect(Helper::getUrl('user/account/login'));
         }
-        $this->redirect(Helper::getUrl('customer/account/register'));
+        $this->session->setMessage('error', join('<br>', $errorMsg));
+        $this->redirect(Helper::getUrl('user/account/register'));
     }
 }

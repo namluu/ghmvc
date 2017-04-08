@@ -56,13 +56,15 @@ abstract class Model
             $query->execute();
             return $query->fetch(PDO::FETCH_OBJ);
         } else {
-            $columns = [];
             $query = $db->query("SELECT * FROM {$this->_table} LIMIT 0");
-            for ($i = 0; $i < $query->columnCount(); $i++) {
+            $emptyObject = new \stdClass();
+            $num = $query->columnCount();
+            for ($i = 0; $i < $num; $i++) {
                 $col = $query->getColumnMeta($i);
-                $columns[] = $col['name'];
+                $columnName = $col['name'];
+                $emptyObject->$columnName = '';
             }
-            return $columns;
+            return $emptyObject;
         }
     }
 
@@ -101,5 +103,16 @@ abstract class Model
         $query = $db->prepare("DELETE FROM {$this->_table} WHERE id = :id");
         $query->bindParam(':id', $id, PDO::PARAM_INT);
         return $query->execute();
+    }
+
+    public function countBy($key, $value)
+    {
+        $db = $this->getDB();
+
+        $sql = "SELECT COUNT(*) FROM {$this->_table} WHERE {$key} = '{$value}'";
+        if ($result = $db->query($sql)) {
+            return $result->fetchColumn();
+        }
+        return 0;
     }
 }
