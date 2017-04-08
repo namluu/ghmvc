@@ -11,6 +11,9 @@
     <a href="{{ admin_path('cms/post') }}">Posts</a>
 </nav>
 <br><br>
+
+    {% include 'Section/messages.html' %}
+
     {% block body %}
     {% endblock %}
     <script src="{{ path('js/admin.js') }}"></script>

@@ -22,4 +22,6 @@ class Config
     const BASE_URL = 'http://ghmvc.loc/';
     const ADMIN_URI = 'admin_37wh1';
     const ADMIN_URL = self::BASE_URL.self::ADMIN_URI.'/';
+
+    const SALT = '23drf4yy6@aw177';
 }

@@ -2,7 +2,6 @@
 namespace Core;
 
 use App\Helper;
-use Core\Session;
 /**
  * View
  *
@@ -31,6 +30,11 @@ class View
 
             $function = new \Twig_SimpleFunction('admin_path', function($string = '') {
                 return Helper::getAdminUrl($string);
+            });
+            self::$twig->addFunction($function);
+
+            $function = new \Twig_SimpleFunction('isLogin', function() {
+                return Session::get('username');
             });
             self::$twig->addFunction($function);
         }

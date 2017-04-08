@@ -1,0 +1,8 @@
+{% if messages %}
+{% if messages.success %}
+<div role="success" style="color: green">{{ messages.success }}</div>
+{% endif %}
+{% if messages.error %}
+<div role="alert" style="color: #dd4444">{{ messages.error|raw }}</div>
+{% endif %}
+{% endif %}

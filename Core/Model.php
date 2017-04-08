@@ -41,13 +41,30 @@ abstract class Model
     }
 
     /**
+     * Get one record by column
+     *
+     * @param $key
+     * @param $value
+     *
+     * @return object
+     */
+    public function getBy($key, $value)
+    {
+        $db = $this->getDB();
+        $query = $db->prepare("SELECT * FROM {$this->_table} WHERE {$key} = :value LIMIT 1");
+        $query->bindParam(':value', $value);
+        $query->execute();
+        return $query->fetch(PDO::FETCH_OBJ);
+    }
+
+    /**
      * Load one data as an object
      *
      * @param int $id
      *
      * @return object
      */
-    public function load($id)
+    public function load($id = null)
     {
         $db = $this->getDB();
         if ($id) {

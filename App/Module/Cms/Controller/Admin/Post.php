@@ -4,6 +4,7 @@ use Core\Controller;
 use Core\View;
 use App\Module\Cms\Model\Post as PostModel;
 use App\Helper;
+use Core\Session;
 /**
  * Post controller
  *
@@ -12,10 +13,12 @@ use App\Helper;
 class Post extends Controller
 {
     protected $postModel;
+    protected $session;
 
-    public function __construct(array $routeParams, PostModel $post)
+    public function __construct(array $routeParams, PostModel $post, Session $session)
     {
         $this->postModel = $post;
+        $this->session = $session;
         parent::__construct($routeParams);
     }
 
@@ -57,9 +60,9 @@ class Post extends Controller
                 $data = $this->sanitizeData($_POST);
                 $result = $this->postModel->save($data, $id);
                 if ($result) {
-
+                    $this->session->setMessage('success', 'Save successfully');
                 } else {
-
+                    $this->session->setMessage('error', 'Save successfully');
                 }
             }
         }
@@ -71,9 +74,9 @@ class Post extends Controller
         $id = $this->routeParams['id'];
         $result = $this->postModel->delete($id);
         if ($result) {
-
+            $this->session->setMessage('success', 'Delete successfully');
         } else {
-
+            $this->session->setMessage('error', 'Delete successfully');
         }
         $this->redirect(Helper::getAdminUrl('cms/post'));
     }
