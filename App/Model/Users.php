@@ -5,7 +5,7 @@ use Core\Model;
 /**
  * Post model
  */
-class Posts extends Model
+class Users extends Model
 {
-    protected $_table = 'cms_posts';
+    protected $_table = 'users';
 }

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+<h1>Sign Up</h1>
+<form action="{{ path('user/registerSubmit') }}">
+    <div>
+        <label for="email">Email</label>
+        <input type="text" name="email" id="email">
+    </div>
+    <div>
+        <label for="username">Full name</label>
+        <input type="text" name="username" id="username">
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="text" name="password" id="password">
+    </div>
+    <div>
+        <input type="submit" value="Register">
+    </div>
+</form>
+{% endblock %}
