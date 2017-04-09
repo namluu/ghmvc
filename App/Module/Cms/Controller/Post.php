@@ -31,6 +31,26 @@ class Post extends Controller
         ]);
     }
 
+    public function viewAction()
+    {
+        if (isset($this->routeParams['url'])) {
+            $url = $this->routeParams['url'];
+            $post = $this->postModel->getBy('url', $url);
+        } elseif (isset($this->routeParams['id'])) {
+            $id = $this->routeParams['id'];
+            $post = $this->postModel->getBy('id', $id);
+        } else {
+            throw new \Exception('Post not found.', 404);
+        }
+
+        if (!$post) {
+            throw new \Exception('Post not found.', 404);
+        }
+        View::renderTemplate('Cms::frontend/post/view.html', [
+            'post' => $post
+        ]);
+    }
+
     public function addAction()
     {
         echo 'post add';
