@@ -8,9 +8,9 @@
 /**
  * Twig
  */
-require_once dirname(__DIR__) . '/vendor/Twig/lib/Twig/Autoloader.php';
-Twig_Autoloader::register();
-
+/*require_once dirname(__DIR__) . '/vendor/Twig/lib/Twig/Autoloader.php';
+Twig_Autoloader::register();*/
+require '../vendor/autoload.php';
 /**
  * Autoloader
  */

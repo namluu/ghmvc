@@ -1,0 +1,13 @@
+{
+    "name": "namlu/ghmvc",
+    "type": "project",
+    "require": {
+        "twig/twig": "^2.3"
+    },
+    "authors": [
+        {
+            "name": "Nam Luu",
+            "email": "nam.luuduc@gmail.com"
+        }
+    ]
+}
