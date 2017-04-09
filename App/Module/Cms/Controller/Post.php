@@ -33,9 +33,9 @@ class Post extends Controller
 
     public function viewAction()
     {
-        if (isset($this->routeParams['url'])) {
-            $url = $this->routeParams['url'];
-            $post = $this->postModel->getBy('url', $url);
+        if (isset($this->routeParams['alias'])) {
+            $alias = $this->routeParams['alias'];
+            $post = $this->postModel->getBy('alias', $alias);
         } elseif (isset($this->routeParams['id'])) {
             $id = $this->routeParams['id'];
             $post = $this->postModel->getBy('id', $id);

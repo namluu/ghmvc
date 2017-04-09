@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ path('css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ path('css/style.css') }}" />
 </head>
 <body>
     <nav>
+        <div class="container">
         <a href="{{ path() }}">Home</a>
-        <a href="{{ path('post') }}">Posts</a>
-        <a href="{{ path('catalog/product') }}">Products</a>
         <span>|</span>
         {% if isLogin() %}
         {% set username = isLogin() %}
@@ -18,12 +19,28 @@
         <a href="{{ path('user/account/register') }}">Register</a>
         <a href="{{ path('user/account/login') }}">Login</a>
         {% endif %}
+        </div>
     </nav>
+
     <br><br>
 
     {% include 'Section/messages.html' %}
 
-    {% block body %}
-    {% endblock %}
+    <div class="container">
+        <div class="row">
+            <section class="col-md-9">
+            {% block body %}
+            {% endblock %}
+            </section>
+            <sidebar class="col-md-3">
+            {% block sidebar %}
+                {% include 'Section/sidebar.html' %}
+            {% endblock %}
+            </sidebar>
+        </div>
+    </div>
+
+    <script src="{{ path('js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ path('js/bootstrap.min.js') }}"></script>
 </body>
 </html>

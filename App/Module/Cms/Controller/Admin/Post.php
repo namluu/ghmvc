@@ -5,6 +5,7 @@ use Core\View;
 use App\Module\Cms\Model\Post as PostModel;
 use App\Helper;
 use Core\Session;
+use Core\Url;
 /**
  * Post controller
  *
@@ -14,11 +15,17 @@ class Post extends Controller
 {
     protected $postModel;
     protected $session;
+    protected $url;
 
-    public function __construct(array $routeParams, PostModel $post, Session $session)
-    {
+    public function __construct(
+        array $routeParams,
+        PostModel $post,
+        Session $session,
+        Url $url
+    ) {
         $this->postModel = $post;
         $this->session = $session;
+        $this->url = $url;
         parent::__construct($routeParams);
     }
 
@@ -95,8 +102,15 @@ class Post extends Controller
 
     protected function sanitizeData($data)
     {
+        $title = $this->cleanInput($data['title']);
+        if (!$data['alias']) {
+            $data['alias'] = $title;
+        }
+        $alias = $this->cleanInput($data['alias']);
+        $alias = $this->url->slug($alias, array('toascii'=>true,'tolower'=>true));
         $escapeData = [
-            'title' => $this->cleanInput($data['title']),
+            'title' => $title,
+            'alias' => $alias,
             'content' => $this->cleanInput($data['content'])
         ];
         return $escapeData;
