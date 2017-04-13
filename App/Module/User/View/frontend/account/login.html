@@ -4,17 +4,23 @@
 
 {% block body %}
 <h1>Sign In</h1>
-<form action="{{ path('user/account/loginSubmit') }}" method="post">
-    <div>
-        <label for="email">Email</label>
-        <input type="text" name="email" id="email">
+<form action="{{ path('user/account/loginSubmit') }}" method="post" class="form-horizontal">
+    <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-5">
+            <input type="text" name="email" id="email" class="form-control">
+        </div>
     </div>
-    <div>
-        <label for="password">Password</label>
-        <input type="text" name="password" id="password">
+    <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">Password</label>
+        <div class="col-sm-5">
+            <input type="text" name="password" id="password" class="form-control">
+        </div>
     </div>
-    <div>
-        <input type="submit" value="Login">
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-5">
+            <input type="submit" value="Login" class="btn btn-default">
+        </div>
     </div>
 </form>
 {% endblock %}

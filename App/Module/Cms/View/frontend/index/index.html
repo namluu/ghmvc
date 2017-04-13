@@ -11,16 +11,16 @@
             <div class="item-header">
                 <a href="{{ path('post/'~post.alias) }}">{{ post.title }}</a>
                 <div class="tag">
-                    <a href="">Machine Learning</a>
-                    <a href="">Swagger</a>
-                    <a href="">Slate</a>
+                    <a href="" class="label label-default">Machine Learning</a>
+                    <a href="" class="label label-default">Swagger</a>
+                    <a href="" class="label label-default">Slate</a>
                 </div>
             </div>
             <div class="item-content">
                 {{ post.content|slice(0, 180) ~ '...' }}
             </div>
             <div class="item-meta small">
-                <a href="">Tulip4attoo</a> written 14 days ago
+                <a href="{{ path('user/'~post.username~'/profile') }}">{{ post.display_name }}</a> written 14 days ago
             </div>
         </div>
         <div class="col-md-2">

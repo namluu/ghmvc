@@ -62,7 +62,7 @@ class Post extends Controller
         $selectUsers = [];
         $selectUsers[] = ['id' => 0, 'name' => 'Please select ...'];
         foreach ($users as $user) {
-            $selectUsers[] = ['id' => $user->id, 'name' => $user->username];
+            $selectUsers[] = ['id' => $user->id, 'name' => $user->display_name];
         }
         View::renderTemplate('Cms::backend/post/edit.html', [
             'post' => $post,

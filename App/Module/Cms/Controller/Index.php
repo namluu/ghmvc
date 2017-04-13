@@ -27,8 +27,6 @@ class Index extends Controller
     {
         $posts = $this->postModel->getAll();
         View::renderTemplate('Cms::frontend/index/index.html', [
-            'name' => 'Nam',
-            'colors' => ['red', 'blue', 'yellow'],
             'posts' => $posts
         ]);
     }

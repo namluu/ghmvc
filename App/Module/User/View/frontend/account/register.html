@@ -4,25 +4,35 @@
 
 {% block body %}
 <h1>Sign Up</h1>
-<form action="{{ path('user/account/registerSubmit') }}" method="post">
-    <div>
-        <label for="email">Email</label>
-        <input type="text" name="email" id="email" value="{{ user.email }}">
+<form action="{{ path('user/account/registerSubmit') }}" method="post" class="form-horizontal">
+    <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-5">
+            <input type="text" name="email" id="email" value="{{ user.email }}" class="form-control">
+        </div>
     </div>
-    <div>
-        <label for="username">Full name</label>
-        <input type="text" name="username" id="username" value="{{ user.username }}">
+    <div class="form-group">
+        <label for="display_name" class="col-sm-2 control-label">Display name</label>
+        <div class="col-sm-5">
+            <input type="text" name="display_name" id="display_name" value="{{ user.display_name }}" class="form-control">
+        </div>
     </div>
-    <div>
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password">
+    <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">Password</label>
+        <div class="col-sm-5">
+            <input type="password" name="password" id="password" class="form-control">
+        </div>
     </div>
-    <div>
-        <label for="confirm-password">Confirm Password</label>
-        <input type="password" name="confirm-password" id="confirm-password">
+    <div class="form-group">
+        <label for="confirm-password" class="col-sm-2 control-label">Confirm Password</label>
+        <div class="col-sm-5">
+            <input type="password" name="confirm-password" id="confirm-password" class="form-control">
+        </div>
     </div>
-    <div>
-        <input type="submit" value="Register">
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-5">
+            <input type="submit" value="Register" class="btn btn-default">
+        </div>
     </div>
 </form>
 {% endblock %}
