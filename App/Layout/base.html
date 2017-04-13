@@ -11,8 +11,8 @@
         <div class="container">
         <a href="{{ path() }}">Home</a>
         <span>|</span>
-        {% if isLogin() %}
-        {% set username = isLogin() %}
+        {% if is_login() %}
+        {% set username = is_login() %}
         <span>Hello: {{ username }}</span>
         <a href="{{ path('user/account/logout') }}">Logout</a>
         {% else %}

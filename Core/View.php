@@ -19,24 +19,8 @@ class View
                 $paths[] = dirname(__DIR__) . '/App/Module/'.$module.'/View';
             }
             $loader = new \Twig_Loader_Filesystem($paths);
-
             self::$twig = new \Twig_Environment($loader);
-
-            // create functions
-            $function = new \Twig_SimpleFunction('path', function($string = '') {
-                return Helper::getUrl($string);
-            });
-            self::$twig->addFunction($function);
-
-            $function = new \Twig_SimpleFunction('admin_path', function($string = '') {
-                return Helper::getAdminUrl($string);
-            });
-            self::$twig->addFunction($function);
-
-            $function = new \Twig_SimpleFunction('isLogin', function() {
-                return Session::get('username');
-            });
-            self::$twig->addFunction($function);
+            self::$twig->addExtension(new TwigExtension());
         }
     }
 

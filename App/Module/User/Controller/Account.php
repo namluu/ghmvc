@@ -68,7 +68,8 @@ class Account extends Controller
      */
     public function registerAction()
     {
-        $user = $this->getUserFormData();
+        $user = $this->userModel->load();
+        $user = $this->session->getFormData('user_form_data', $user);
         View::renderTemplate('User::frontend/account/register.html', [
             'user' => $user
         ]);
@@ -135,24 +136,9 @@ class Account extends Controller
             $this->session->setMessage('success', 'Register successfully');
             $this->redirect(Helper::getUrl('user/account/login'));
         }
-        $this->setUserFormData($dataCache);
+        $this->session->setFormData('user_form_data', $dataCache);
         $this->session->setMessage('error', join('<br>', $errorMsg));
         $this->redirect(Helper::getUrl('user/account/register'));
-    }
-
-    public function setUserFormData($dataCache)
-    {
-        $this->session->set('user_form_data', $dataCache);
-    }
-
-    public function getUserFormData()
-    {
-        $user = $this->session->get('user_form_data');
-        if (!$user) {
-            $user = $this->userModel->load();
-        }
-        $this->session->delete('user_form_data');
-        return $user;
     }
 
     public function logout()

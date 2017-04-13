@@ -3,19 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ path('css/bootstrap.min.css') }}" />
 </head>
 <body>
-<h1>Admin</h1>
-<nav>
-    <a href="{{ admin_path() }}">Home</a>
-    <a href="{{ admin_path('cms/post') }}">Posts</a>
-</nav>
-<br><br>
+    <div class="container">
+        <h1>Admin</h1>
+        <nav>
+            <a href="{{ admin_path() }}">Home</a>
+            <a href="{{ admin_path('cms/post') }}">Posts</a>
+        </nav>
+        <br><br>
 
-    {% include 'Section/messages.html' %}
+        {% include 'Section/messages.html' %}
 
-    {% block body %}
-    {% endblock %}
+        {% block body %}
+        {% endblock %}
+    </div>
+    <script src="{{ path('js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ path('js/bootstrap.min.js') }}"></script>
     <script src="{{ path('js/admin.js') }}"></script>
 </body>
 </html>
