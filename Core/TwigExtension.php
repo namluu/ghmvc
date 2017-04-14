@@ -11,6 +11,7 @@ class TwigExtension extends \Twig_Extension
             new \Twig_Function('path', [$this, 'path']),
             new \Twig_Function('admin_path', [$this, 'adminPath']),
             new \Twig_Function('is_login', [$this, 'isLogin']),
+            new \Twig_Function('get_login_user', [$this, 'getLoginUser']),
             new \Twig_Function('select_option', [$this, 'selectOption'], ['is_safe' => ['html']]),
         );
     }
@@ -27,7 +28,12 @@ class TwigExtension extends \Twig_Extension
 
     public function isLogin()
     {
-        return Session::get('username');
+        return $this->getLoginUser() != null;
+    }
+
+    public function getLoginUser()
+    {
+        return Session::get('login_user');
     }
 
     public function selectOption($name='',$data=[],$selected=null,$exten='',$value='id',$text='name')

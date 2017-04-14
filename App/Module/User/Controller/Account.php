@@ -50,8 +50,13 @@ class Account extends Controller
                 $user = $this->userModel->getBy('email', $email);
                 $hash = md5(Config::SALT . $password);
                 if ($user && $user->is_active && $hash === $user->password) {
-                    $this->session->set('username', $user->username);
-                    $this->session->set('role', 'user');
+                    $userData = [
+                        'id' => $user->id,
+                        'username' => $user->username,
+                        'display_name' => $user->display_name,
+                        'role' => 'user'
+                    ];
+                    $this->session->set('login_user', $userData);
                     $this->session->setMessage('success', 'Login successfully');
                     $this->redirect(Helper::getUrl('user/account'));
                 } else {
