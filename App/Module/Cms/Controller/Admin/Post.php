@@ -7,6 +7,7 @@ use App\Helper;
 use Core\Session;
 use Core\Url;
 use App\Module\User\Model\User as UserModel;
+use App\Module\Cms\Model\Tag as TagModel;
 /**
  * Post controller
  *
@@ -18,6 +19,7 @@ class Post extends Controller
     protected $session;
     protected $url;
     protected $userModel;
+    protected $tagModel;
     protected $cacheData = [];
 
     public function __construct(
@@ -25,10 +27,12 @@ class Post extends Controller
         PostModel $post,
         UserModel $user,
         Session $session,
-        Url $url
+        Url $url,
+        TagModel $tag
     ) {
         $this->postModel = $post;
         $this->userModel = $user;
+        $this->tagModel = $tag;
         $this->session = $session;
         $this->url = $url;
         parent::__construct($routeParams);
@@ -64,10 +68,18 @@ class Post extends Controller
         foreach ($users as $user) {
             $selectUsers[] = ['id' => $user->id, 'name' => $user->display_name];
         }
+        $tags = $this->tagModel->getAll();
+        $selectTags = [];
+        foreach ($tags as $tag) {
+            $selectTags[] = ['id' => $tag->id, 'name' => $tag->name];
+        }
+        $postTagIds = $this->postModel->getPostTagIds($id);
         View::renderTemplate('Cms::backend/post/edit.html', [
             'post' => $post,
             'selectActive' => $selectActive,
-            'selectUsers' => $selectUsers
+            'selectUsers' => $selectUsers,
+            'selectTags' => $selectTags,
+            'postTagIds' => $postTagIds
         ]);
     }
 
@@ -143,5 +155,29 @@ class Post extends Controller
             'user_id' => $data['user_id']
         ];
         return $escapeData;
+    }
+
+    public function active()
+    {
+        $id = $this->routeParams['id'];
+        $result = $this->postModel->update($id, 'is_active', 1);
+        if ($result) {
+            $this->session->setMessage('success', 'Update successfully');
+        } else {
+            $this->session->setMessage('error', 'Update successfully');
+        }
+        $this->redirect(Helper::getAdminUrl('cms/post'));
+    }
+
+    public function inactive()
+    {
+        $id = $this->routeParams['id'];
+        $result = $this->postModel->update($id, 'is_active', 0);
+        if ($result) {
+            $this->session->setMessage('success', 'Update successfully');
+        } else {
+            $this->session->setMessage('error', 'Update successfully');
+        }
+        $this->redirect(Helper::getAdminUrl('cms/post'));
     }
 }

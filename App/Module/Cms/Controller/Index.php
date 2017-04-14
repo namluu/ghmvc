@@ -25,9 +25,7 @@ class Index extends Controller
      */
     public function indexAction()
     {
-        $posts = $this->postModel->getAll();
         View::renderTemplate('Cms::frontend/index/index.html', [
-            'posts' => $posts
         ]);
     }
 }

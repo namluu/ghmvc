@@ -25,7 +25,7 @@ class Post extends Controller
      */
     public function indexAction()
     {
-        $posts = $this->postModel->getAll();
+        $posts = $this->postModel->getAll(true);
         View::renderTemplate('Cms::frontend/post/index.html', [
             'posts' => $posts
         ]);

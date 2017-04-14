@@ -3,9 +3,32 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-<ul>
+<div class="feed">
     {% for post in posts %}
-    <li><a href="{{ path('post/'~post.id) }}">{{ post.title }}</a> - {{ post.content }}</li>
+    <div class="item row">
+        <div class="col-md-1"><img src="{{ path('images/avatar.jpg') }}" alt="" width="50"></div>
+        <div class="col-md-9">
+            <div class="item-header">
+                <a href="{{ path('post/'~post.alias) }}">{{ post.title }}</a>
+                <div class="tag">
+                    <a href="" class="label label-default">Machine Learning</a>
+                    <a href="" class="label label-default">Swagger</a>
+                    <a href="" class="label label-default">Slate</a>
+                </div>
+            </div>
+            <div class="item-content">
+                {{ post.content|slice(0, 180) ~ '...' }}
+            </div>
+            <div class="item-meta small">
+                <a href="{{ path('user/'~post.username~'/profile') }}">
+                    {{ post.display_name }}</a> written {{ post.created_at|time_ago }}
+            </div>
+        </div>
+        <div class="col-md-2">
+            13 <span class="glyphicon glyphicon-thumbs-up"></span>
+            15 <span class="glyphicon glyphicon-comment"></span>
+        </div>
+    </div>
     {% endfor %}
-</ul>
+</div>
 {% endblock %}

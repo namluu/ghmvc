@@ -32,11 +32,18 @@ abstract class Model
 
     /**
      * Get all data as an object
+     *
+     * @param bool $isActiveOnly
+     * @return object
      */
-    public function getAll()
+    public function getAll($isActiveOnly = false)
     {
         $db = $this->getDB();
-        $stmt = $db->query("SELECT * FROM {$this->_table}");
+        $sql = "SELECT * FROM {$this->_table}";
+        if ($isActiveOnly) {
+            $sql .= ' WHERE is_active = 1';
+        }
+        $stmt = $db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
@@ -131,5 +138,14 @@ abstract class Model
             return $result->fetchColumn();
         }
         return 0;
+    }
+
+    public function update($id, $key, $value)
+    {
+        $db = $this->getDB();
+        $query = $db->prepare("UPDATE {$this->_table} SET {$key} = :value WHERE id = :id");
+        $query->bindParam(':value', $value);
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        return $query->execute();
     }
 }

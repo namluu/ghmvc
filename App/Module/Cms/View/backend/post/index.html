@@ -8,16 +8,22 @@
     <tr>
         <th>ID</th>
         <th>Title</th>
+        <th>User</th>
         <th>Created</th>
+        <th>Active</th>
         <th>Action</th>
     </tr>
     {% for post in posts %}
     {% set editUrl = admin_path("cms/post/#{post.id}/edit") %}
     {% set deleteUrl = admin_path("cms/post/#{post.id}/delete") %}
-    <tr>
+    {% set activeUrl = admin_path("cms/post/#{post.id}/active") %}
+    {% set inactiveUrl = admin_path("cms/post/#{post.id}/inactive") %}
+    <tr class="{{ post.is_active ? : 'active' }}">
         <td>{{ post.id }}</td>
         <td><a href="{{ editUrl }}">{{ post.title }}</a></td>
         <td>{{ post.created_at }}</td>
+        <td>{{ post.display_name }}</td>
+        <td>{{ btn_active(post.is_active, activeUrl, inactiveUrl) }}</td>
         <td>
             <a href="{{ editUrl }}">Edit</a> |
             <a href="{{ deleteUrl }}" onclick="return confirmDelete();">Delete</a>

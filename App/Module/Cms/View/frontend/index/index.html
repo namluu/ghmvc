@@ -3,31 +3,24 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-<div class="feed">
-    {% for post in posts %}
-    <div class="item row">
-        <div class="col-md-1"><img src="{{ path('images/avatar.jpg') }}" alt="" width="50"></div>
-        <div class="col-md-9">
-            <div class="item-header">
-                <a href="{{ path('post/'~post.alias) }}">{{ post.title }}</a>
-                <div class="tag">
-                    <a href="" class="label label-default">Machine Learning</a>
-                    <a href="" class="label label-default">Swagger</a>
-                    <a href="" class="label label-default">Slate</a>
-                </div>
-            </div>
-            <div class="item-content">
-                {{ post.content|slice(0, 180) ~ '...' }}
-            </div>
-            <div class="item-meta small">
-                <a href="{{ path('user/'~post.username~'/profile') }}">{{ post.display_name }}</a> written 14 days ago
-            </div>
-        </div>
-        <div class="col-md-2">
-            13 <span class="glyphicon glyphicon-thumbs-up"></span>
-            15 <span class="glyphicon glyphicon-comment"></span>
-        </div>
-    </div>
-    {% endfor %}
-</div>
+<h3>CMS</h3>
+<ul>
+    <li><a href="{{ path('post') }}">Post (URL rewrite)</a></li>
+    <li><a href="{{ path('cms/post') }}">Post</a></li>
+</ul>
+
+<h3>Admin</h3>
+<ul>
+    <li><a href="{{ admin_path() }}">Dashboard</a></li>
+</ul>
+
+<h3>eCommerce</h3>
+<ul>
+    <li><a href="">Product</a></li>
+</ul>
+
+<h3>Booking</h3>
+<ul>
+    <li><a href="">Flight</a></li>
+</ul>
 {% endblock %}
