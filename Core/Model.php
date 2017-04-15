@@ -7,6 +7,8 @@ abstract class Model
 {
     protected $_table;
 
+    protected $_key = 'id';
+
     public function __construct()
     {
         if (!$this->_table) {
@@ -39,12 +41,12 @@ abstract class Model
     public function getAll($isActiveOnly = false)
     {
         $db = $this->getDB();
-        $sql = "SELECT * FROM {$this->_table}";
+        $sql = sprintf('SELECT * FROM %s', $this->_table);
         if ($isActiveOnly) {
-            $sql .= ' WHERE is_active = 1';
+            $sql .= sprintf(' WHERE %s', 'is_active = 1');
         }
-        $stmt = $db->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        return $db->query($sql, PDO::FETCH_OBJ);
     }
 
     /**
@@ -55,13 +57,25 @@ abstract class Model
      *
      * @return object
      */
-    public function getBy($key, $value)
+    public function getOneBy($key, $value)
     {
         $db = $this->getDB();
         $query = $db->prepare("SELECT * FROM {$this->_table} WHERE {$key} = :value LIMIT 1");
         $query->bindParam(':value', $value);
         $query->execute();
         return $query->fetch(PDO::FETCH_OBJ);
+    }
+
+    public function getAllBy($key, $values)
+    {
+        if (!$values) {
+            return null;
+        }
+        $db = $this->getDB();
+        $qMarks = str_repeat('?,', count($values) - 1) . '?';
+        $sth = $db->prepare("SELECT * FROM {$this->_table} WHERE {$key} IN ($qMarks)");
+        $sth->execute($values);
+        return $sth->fetchAll(PDO::FETCH_OBJ);
     }
 
     /**
@@ -95,28 +109,27 @@ abstract class Model
     public function save($data, $id = null)
     {
         $db = $this->getDB();
+        $values       = [];
+        $bind         = [];
         if (!$id) {
-            $fields = '';
-            $values = '';
-            foreach ($data as $field => $value) {
-                $fields .= "$field,";
-                $values .= (is_numeric($value) && (intval($value) == $value)) ? $value . ',' : "'$value',";
+            foreach ($data as $row) {
+                $values[] = '?';
+                $bind[] = $row;
             }
-            // remove our trailing
-            $fields = substr($fields, 0, -1);
-            // remove our trailing
-            $values = substr($values, 0, -1);
-            $insert = "INSERT INTO {$this->_table} ({$fields}) VALUES ({$values})";
-            return $db->query($insert);
+            $line = implode(', ', $values);
+            $line = sprintf('(%s)', $line);
+            $cols = array_keys($data);
+            $insertQuery = $this->_getInsertSqlQuery($cols, [$line]);
+            $stmt = $db->prepare($insertQuery);
+            return $stmt->execute($bind);
         } else {
-            $update = "UPDATE {$this->_table} SET ";
-            foreach ($data as $field => $value) {
-                $update .= $field . " = '{$value}',";
+            foreach ($data as $key => $row) {
+                $values[] = $key . '=?';
+                $bind[] = $row;
             }
-            // remove our trailing ,
-            $update = substr($update, 0, -1);
-            $update .= " WHERE id = " . $id;
-            return $db->query($update);
+            $updateQuery = $this->_getUpdateSqlQuery($values, $id);
+            $stmt = $db->prepare($updateQuery);
+            return $stmt->execute($bind);
         }
     }
 
@@ -124,7 +137,7 @@ abstract class Model
     {
         $id = (int)$id;
         $db = $this->getDB();
-        $query = $db->prepare("DELETE FROM {$this->_table} WHERE id = :id");
+        $query = $db->prepare("DELETE FROM {$this->_table} WHERE {$this->_key} = :id");
         $query->bindParam(':id', $id, PDO::PARAM_INT);
         return $query->execute();
     }
@@ -140,12 +153,94 @@ abstract class Model
         return 0;
     }
 
-    public function update($id, $key, $value)
+    public function insertMultiple(array $data)
+    {
+        $row = reset($data);
+        // support insert syntaxes
+        if (!is_array($row)) {
+            return $this->save($data);
+        }
+        // validate data array
+        $cols = array_keys($row);
+        $insertArray = [];
+        foreach ($data as $row) {
+            $line = [];
+            if (array_diff($cols, array_keys($row))) {
+                throw new \Exception('Invalid data for insert');
+            }
+            foreach ($cols as $field) {
+                $line[] = $row[$field];
+            }
+            $insertArray[] = $line;
+        }
+        unset($row);
+        return $this->insertArray($cols, $insertArray);
+    }
+
+    /**
+     * Insert array into a table based on columns definition
+     *
+     * $data can be represented as:
+     * - arrays of values ordered according to columns in $columns array
+     *      array(
+     *          array('value1', 'value2'),
+     *          array('value3', 'value4'),
+     *      )
+     * - array of values, if $columns contains only one column
+     *      array('value1', 'value2')
+     *
+     * @param   array $columns
+     * @param   array $data
+     * @return  int
+     * @throws  \Exception
+     */
+    public function insertArray(array $columns, array $data)
     {
         $db = $this->getDB();
-        $query = $db->prepare("UPDATE {$this->_table} SET {$key} = :value WHERE id = :id");
-        $query->bindParam(':value', $value);
-        $query->bindParam(':id', $id, PDO::PARAM_INT);
-        return $query->execute();
+        $values       = [];
+        $bind         = [];
+        $columnsCount = count($columns);
+        foreach ($data as $row) {
+            if ($columnsCount != count($row)) {
+                throw new \Exception('Invalid data for insert');
+            }
+            $values[] = $this->_prepareInsertData($row, $bind);
+        }
+
+        $insertQuery = $this->_getInsertSqlQuery($columns, $values);
+        $stmt = $db->prepare($insertQuery);
+        return $stmt->execute($bind);
+    }
+
+    protected function _prepareInsertData($row, &$bind)
+    {
+        $row = (array)$row;
+        $line = [];
+        foreach ($row as $value) {
+            $line[] = '?';
+            $bind[] = $value;
+        }
+        $line = implode(', ', $line);
+
+        return sprintf('(%s)', $line);
+    }
+
+    protected function _getInsertSqlQuery(array $columns, array $values)
+    {
+        $columns   = implode(',', $columns);
+        $values    = implode(', ', $values);
+
+        $insertSql = sprintf('INSERT INTO %s (%s) VALUES %s', $this->_table, $columns, $values);
+
+        return $insertSql;
+    }
+
+    protected function _getUpdateSqlQuery(array $values, $id)
+    {
+        $values    = implode(', ', $values);
+
+        $updateSql = sprintf('UPDATE %s SET %s WHERE %s = %d', $this->_table, $values, $this->_key, $id);
+
+        return $updateSql;
     }
 }

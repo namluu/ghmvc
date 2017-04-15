@@ -1,0 +1,32 @@
+{% extends 'Admin/base.html' %}
+
+{% block title %}Tags{% endblock %}
+
+{% block body %}
+<h2>List Tag <a class="btn btn-default" href="{{ admin_path('cms/tag/add') }}">Add New</a></h2>
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Color</th>
+        <th>Active</th>
+        <th>Action</th>
+    </tr>
+    {% for tag in tags %}
+    {% set editUrl = admin_path("cms/tag/#{tag.id}/edit") %}
+    {% set deleteUrl = admin_path("cms/tag/#{tag.id}/delete") %}
+    {% set activeUrl = admin_path("cms/tag/#{tag.id}/active") %}
+    {% set inactiveUrl = admin_path("cms/tag/#{tag.id}/inactive") %}
+    <tr class="{{ tag.is_active ? : 'active' }}">
+        <td>{{ tag.id }}</td>
+        <td><a href="{{ editUrl }}">{{ tag.name }}</a></td>
+        <td><span class="label label-default {{ tag.color }}">&nbsp;</span></td>
+        <td>{{ btn_active(tag.is_active, activeUrl, inactiveUrl) }}</td>
+        <td>
+            <a href="{{ editUrl }}">Edit</a> |
+            <a href="{{ deleteUrl }}" onclick="return confirmDelete();">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

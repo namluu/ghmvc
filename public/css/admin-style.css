@@ -1,8 +1,5 @@
-.item { padding: 10px; border-top: 1px solid rgba(0,0,0,0.1); }
-.item-header > a { font-size: 18px; font-weight: bold }
-.item-header, .item-content { margin-bottom: 5px; }
-
-.site-footer { padding-top: 50px; padding-bottom: 50px; margin-top: 100px; color: #99979c;background-color: #2a2730; }
+.btn-disable { color: #fff; background-color: #777; border-color: #777; }
+.btn-disable:hover { color: #fff; background-color: #666; border-color: #666; }
 
 .label-danger, .label-danger[href]:hover { background-color: #a94442; }
 .label-primary, .label-primary[href]:hover { background-color: #337ab7; }

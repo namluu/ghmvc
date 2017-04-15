@@ -3,6 +3,7 @@ namespace App\Module\Cms\Controller;
 use Core\Controller;
 use Core\View;
 use App\Module\Cms\Model\Post as PostModel;
+use App\Module\Cms\Model\Tag as TagModel;
 /**
  * Home controller
  *
@@ -11,10 +12,12 @@ use App\Module\Cms\Model\Post as PostModel;
 class Post extends Controller
 {
     protected $postModel;
+    protected $tagModel;
 
-    public function __construct(array $routeParams, PostModel $post)
+    public function __construct(array $routeParams, PostModel $post, TagModel $tag)
     {
         $this->postModel = $post;
+        $this->tagModel = $tag;
         parent::__construct($routeParams);
     }
 
@@ -25,7 +28,11 @@ class Post extends Controller
      */
     public function indexAction()
     {
-        $posts = $this->postModel->getAll(true);
+        $posts = $this->postModel->getAll();
+        foreach ($posts as $post) {
+            $tagIds = $this->postModel->getPostTagIds($post->id);
+            $post->tags = $this->tagModel->getAllBy('id', $tagIds);
+        }
         View::renderTemplate('Cms::frontend/post/index.html', [
             'posts' => $posts
         ]);
@@ -35,10 +42,10 @@ class Post extends Controller
     {
         if (isset($this->routeParams['alias'])) {
             $alias = $this->routeParams['alias'];
-            $post = $this->postModel->getBy('alias', $alias);
+            $post = $this->postModel->getOneBy('alias', $alias);
         } elseif (isset($this->routeParams['id'])) {
             $id = $this->routeParams['id'];
-            $post = $this->postModel->getBy('id', $id);
+            $post = $this->postModel->getOneBy('id', $id);
         } else {
             throw new \Exception('Post not found.', 404);
         }

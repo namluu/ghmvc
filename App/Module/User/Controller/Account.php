@@ -47,7 +47,7 @@ class Account extends Controller
             $email = $this->cleanInput($_POST['email']);
             $password = $this->cleanInput($_POST['password']);
             if ( filter_var($email,FILTER_VALIDATE_EMAIL) ) {
-                $user = $this->userModel->getBy('email', $email);
+                $user = $this->userModel->getOneBy('email', $email);
                 $hash = md5(Config::SALT . $password);
                 if ($user && $user->is_active && $hash === $user->password) {
                     $userData = [

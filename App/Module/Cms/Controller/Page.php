@@ -22,10 +22,10 @@ class Page extends Controller
     {
         if (isset($this->routeParams['url'])) {
             $url = $this->routeParams['url'];
-            $page = $this->pageModel->getBy('url', $url);
+            $page = $this->pageModel->getOneBy('url', $url);
         } elseif (isset($this->routeParams['id'])) {
             $id = $this->routeParams['id'];
-            $page = $this->pageModel->getBy('id', $id);
+            $page = $this->pageModel->getOneBy('id', $id);
         } else {
             throw new \Exception('Page not found.', 404);
         }

@@ -13,6 +13,7 @@ class TwigExtension extends \Twig_Extension
             new \Twig_Function('is_login', [$this, 'isLogin']),
             new \Twig_Function('get_login_user', [$this, 'getLoginUser']),
             new \Twig_Function('select_option', [$this, 'selectOption'], ['is_safe' => ['html']]),
+            new \Twig_Function('select_color', [$this, 'selectColor'], ['is_safe' => ['html']]),
             new \Twig_Function('btn_active', [$this, 'btnActive'], ['is_safe' => ['html']])
         ];
     }
@@ -87,15 +88,33 @@ class TwigExtension extends \Twig_Extension
         return implode(' ', $ouput);
     }
 
+    public function selectColor($name = '', $data = [], $selected = null, $exten = '', $value = 'id', $color = 'color')
+    {
+        $ouput = array();
+        $ouput[] = '<select name="' . $name . '" ' . $exten . '>';
+        if (!empty($data)) {
+            foreach ($data as $k => $v) {
+                $exten_option = (isset($v->exten) ? " " . $v->exten . " " : "");
+                if ((string)$v[$value] == (string)$selected) {
+                    $ouput[] = '<option value="' . $v[$value] . '" selected="selected" ' . $exten_option . ' data-color="'.$v[$color].'"></option>';
+                } else {
+                    $ouput[] = '<option value="' . $v[$value] . '" ' . $exten_option . ' data-color="'.$v[$color].'"></option>';
+                }
+            }
+        }
+        $ouput[] = '</select>';
+        return implode(' ', $ouput);
+    }
+
     public function btnActive($isActive, $activeUrl, $inActiveUrl)
     {
         $ouput = array();
         if ($isActive) {
-            $ouput[] = '<a class="btn btn-success btn-xs" disabled="disabled"><span class="glyphicon glyphicon-ok"></span></a>';
-            $ouput[] = '<a href="'.$inActiveUrl.'" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></a>';
+            $ouput[] = '<a class="btn btn-success btn-xs" disabled="disabled" title="Active"><span class="glyphicon glyphicon-ok"></span></a>';
+            $ouput[] = '<a href="'.$inActiveUrl.'" class="btn btn-disable btn-xs" title="Disable"><span class="glyphicon glyphicon-remove"></span></a>';
         } else {
-            $ouput[] = '<a href="'.$activeUrl.'" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok"></span></a>';
-            $ouput[] = '<a class="btn btn-danger btn-xs" disabled="disabled"><span class="glyphicon glyphicon-remove"></span></a>';
+            $ouput[] = '<a href="'.$activeUrl.'" class="btn btn-success btn-xs" title="Active"><span class="glyphicon glyphicon-ok"></span></a>';
+            $ouput[] = '<a class="btn btn-disable btn-xs" disabled="disabled" title="Disable"><span class="glyphicon glyphicon-remove"></span></a>';
         }
         return implode(' ', $ouput);
     }

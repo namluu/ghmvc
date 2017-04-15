@@ -3,7 +3,7 @@
 {% block title %}Posts{% endblock %}
 
 {% block body %}
-<h2>List Post</h2>
+<h2>List Post <a class="btn btn-default" href="{{ admin_path('cms/post/add') }}">Add New</a></h2>
 <table class="table table-bordered">
     <tr>
         <th>ID</th>
@@ -31,6 +31,4 @@
     </tr>
     {% endfor %}
 </table>
-<br>
-<a href="{{ admin_path('cms/post/add') }}">Add New</a>
 {% endblock %}

@@ -2,36 +2,28 @@
 namespace App\Module\Cms\Controller\Admin;
 use Core\Controller;
 use Core\View;
-use App\Module\Cms\Model\Post as PostModel;
 use App\Helper;
 use Core\Session;
 use Core\Url;
-use App\Module\User\Model\User as UserModel;
 use App\Module\Cms\Model\Tag as TagModel;
 /**
- * Post controller
+ * Tag controller
  *
  * PHP version 7.0
  */
-class Post extends Controller
+class Tag extends Controller
 {
-    protected $postModel;
     protected $session;
     protected $url;
-    protected $userModel;
     protected $tagModel;
     protected $cacheData = [];
 
     public function __construct(
         array $routeParams,
-        PostModel $post,
-        UserModel $user,
         Session $session,
         Url $url,
         TagModel $tag
     ) {
-        $this->postModel = $post;
-        $this->userModel = $user;
         $this->tagModel = $tag;
         $this->session = $session;
         $this->url = $url;
@@ -45,9 +37,9 @@ class Post extends Controller
      */
     public function indexAction()
     {
-        $posts = $this->postModel->getAll();
-        View::renderTemplate('Cms::backend/post/index.html', [
-            'posts' => $posts
+        $tags = $this->tagModel->getAll();
+        View::renderTemplate('Cms::backend/tag/index.html', [
+            'tags' => $tags
         ]);
     }
 
@@ -59,32 +51,18 @@ class Post extends Controller
     public function editAction()
     {
         $id = isset($this->routeParams['id']) ? $this->routeParams['id'] : null;
-        $post = $this->postModel->load($id);
-        $post = $this->session->getFormData('post_form_data', $post);
+        $tag = $this->tagModel->load($id);
+        $tag = $this->session->getFormData('tag_form_data', $tag);
         $selectActive = [['id' => 0, 'name' => 'False'], ['id' => 1, 'name' => 'True']];
-        $users = $this->userModel->getAll();
-        $selectUsers = [];
-        $selectUsers[] = ['id' => 0, 'name' => 'Please select ...'];
-        foreach ($users as $user) {
-            $selectUsers[] = ['id' => $user->id, 'name' => $user->display_name];
+        $colors = $this->tagModel->getColors();
+        $selectColor = [];
+        foreach ($colors as $key => $color) {
+            $selectColor[] = ['id' => $key, 'color' => $color];
         }
-        $tags = $this->tagModel->getAll();
-        $selectTags = [];
-        foreach ($tags as $tag) {
-            $selectTags[] = ['id' => $tag->id, 'name' => $tag->name];
-        }
-        if (isset($post->tag_ids)) {
-            $postTagIds = $post->tag_ids;
-        } else {
-            $postTagIds = $this->postModel->getPostTagIds($id);
-        }
-
-        View::renderTemplate('Cms::backend/post/edit.html', [
-            'post' => $post,
+        View::renderTemplate('Cms::backend/tag/edit.html', [
+            'tag' => $tag,
             'selectActive' => $selectActive,
-            'selectUsers' => $selectUsers,
-            'selectTags' => $selectTags,
-            'postTagIds' => $postTagIds
+            'selectColor' => $selectColor
         ]);
     }
 
@@ -96,72 +74,60 @@ class Post extends Controller
             if ($errorMsg) {
                 $this->session->setFormData('post_form_data', $this->cacheData);
                 $this->session->setMessage('error', implode(', ', $errorMsg));
-                $id ? $this->redirect(Helper::getAdminUrl("cms/post/{$id}/edit")) :
-                    $this->redirect(Helper::getAdminUrl('cms/post/add'));
+                $id ? $this->redirect(Helper::getAdminUrl("cms/tag/{$id}/edit")) :
+                    $this->redirect(Helper::getAdminUrl('cms/tag/add'));
             } else {
                 $data = $this->sanitizeData($_POST);
-                $result = $this->postModel->save($data, $id);
-                $resultTag = $this->postModel->updatePostTag($id, $_POST['tag_ids']);
-                if ($result && $resultTag) {
+                $result = $this->tagModel->save($data, $id);
+                if ($result) {
                     $this->session->setMessage('success', 'Save successfully');
                 } else {
                     $this->session->setMessage('error', 'Save unsuccessfully');
                 }
             }
         }
-        $this->redirect(Helper::getAdminUrl('cms/post'));
+        $this->redirect(Helper::getAdminUrl('cms/tag'));
     }
 
     public function deleteAction()
     {
         $id = $this->routeParams['id'];
-        $result = $this->postModel->delete($id);
+        $result = $this->tagModel->delete($id);
         if ($result) {
             $this->session->setMessage('success', 'Delete successfully');
         } else {
             $this->session->setMessage('error', 'Delete successfully');
         }
-        $this->redirect(Helper::getAdminUrl('cms/post'));
+        $this->redirect(Helper::getAdminUrl('cms/tag'));
     }
 
     protected function validateData($data)
     {
         $msg = array();
-        if (empty($data['title'])) {
-            $msg[] = 'Missing title';
+        if (empty($data['name'])) {
+            $msg[] = 'Missing name';
         } else {
-            $this->cacheData['title'] = $data['title'];
+            $this->cacheData['name'] = $data['name'];
         }
-        if (empty($data['content'])) {
-            $msg[] = 'Missing content';
-        } else {
-            $this->cacheData['content'] = $data['content'];
-        }
-        if ($data['user_id'] == 0) {
-            $msg[] = 'Select user';
-        } else {
-            $this->cacheData['user_id'] = $data['user_id'];
-        }
-        if ($data['tag_ids']) {
-            $this->cacheData['tag_ids'] = $data['tag_ids'];
+        if ($data['color']) {
+            $this->cacheData['color'] = $data['color'];
         }
         return $msg;
     }
 
     protected function sanitizeData($data)
     {
-        $title = $this->cleanInput($data['title']);
+        $name = $this->cleanInput($data['name']);
         if (!$data['alias']) {
-            $data['alias'] = $title;
+            $data['alias'] = $name;
         }
         $alias = $this->cleanInput($data['alias']);
         $alias = $this->url->slug($alias, array('toascii'=>true,'tolower'=>true));
         $escapeData = [
-            'title' => $title,
+            'name' => $name,
             'alias' => $alias,
-            'content' => $this->cleanInput($data['content']),
-            'is_active' => $data['is_active'],
-            'user_id' => $data['user_id']
+            'color' => $this->cleanInput($data['color']),
+            'is_active' => $data['is_active']
         ];
         return $escapeData;
     }
@@ -169,24 +135,24 @@ class Post extends Controller
     public function active()
     {
         $id = $this->routeParams['id'];
-        $result = $this->postModel->save(['is_active' => 1], $id);
+        $result = $this->tagModel->save(['is_active' => 1], $id);
         if ($result) {
             $this->session->setMessage('success', 'Update successfully');
         } else {
             $this->session->setMessage('error', 'Update successfully');
         }
-        $this->redirect(Helper::getAdminUrl('cms/post'));
+        $this->redirect(Helper::getAdminUrl('cms/tag'));
     }
 
     public function inactive()
     {
         $id = $this->routeParams['id'];
-        $result = $this->postModel->save(['is_active' => 0], $id);
+        $result = $this->tagModel->save(['is_active' => 0], $id);
         if ($result) {
             $this->session->setMessage('success', 'Update successfully');
         } else {
             $this->session->setMessage('error', 'Update successfully');
         }
-        $this->redirect(Helper::getAdminUrl('cms/post'));
+        $this->redirect(Helper::getAdminUrl('cms/tag'));
     }
 }
