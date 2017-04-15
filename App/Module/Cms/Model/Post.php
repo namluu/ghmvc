@@ -12,11 +12,15 @@ class Post extends Model
     public function getAll($isActiveOnly = false)
     {
         $db = $this->getDB();
-        $sql = "SELECT main.*, u.username, u.display_name FROM {$this->_table} AS main";
+        $sql = "SELECT main.*, u.username, u.display_name, COUNT(c.id) AS comment_count 
+                FROM {$this->_table} AS main";
         $sql .= ' LEFt JOIN user AS u ON main.user_id = u.id';
+        $sql .= ' LEFt JOIN cms_comment AS c ON main.id = c.post_id';
         if ($isActiveOnly) {
             $sql .= ' WHERE main.is_active = 1';
         }
+        $sql .= ' GROUP BY main.id';
+
         $stmt = $db->query($sql);
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }

@@ -4,5 +4,43 @@
 
 {% block body %}
 <h1>{{ post.title }}</h1>
-<div>{{ post.content }}</div>
+<div class="tag">
+    {% for tag in post.tags %}
+    {% set tagUrl = path('cms/tag/'~tag.alias~'/view') %}
+    <a href="{{ tagUrl }}" class="label label-default {{ tag.color }}">{{ tag.name }}</a>
+    {% endfor %}
+</div>
+<br>
+<p class="author">
+    <a href="{{ path() }}">{{ post.user.display_name }}</a> written {{ post.created_at|date('d/m/Y') }}
+</p>
+<br>
+<div class="post-content">{{ post.content }}</div>
+<h3>Comment</h3>
+<div class="comment">
+    {% for comment in post.comments %}
+    <div class="item row">
+        <div class="col-md-1"><img src="{{ path('images/avatar.jpg') }}" alt="" width="50"></div>
+        <div class="col-md-9">
+            <div class="item-header">
+                <a href="{{ path() }}">{{ comment.user_id }}</a> <small>{{ comment.created_at|time_ago }}</small>
+            </div>
+            <div class="item-content">
+                {{ comment.content }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<form action="{{ path('cms/comment/add') }}" method="post">
+    <div class="form-group">
+        <textarea name="content" rows="3" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+    <input type="hidden" name="post_url" value="{{ path('post/'~post.alias) }}">
+    <input type="hidden" name="post_id" value="{{ post.id }}">
+    <input type="hidden" name="user_id" value="1">
+</form>
 {% endblock %}

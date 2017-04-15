@@ -26,8 +26,10 @@
             </div>
         </div>
         <div class="col-md-2">
-            13 <span class="glyphicon glyphicon-thumbs-up"></span>
-            15 <span class="glyphicon glyphicon-comment"></span>
+            <a href="{{ path('post/'~post.alias) }}">
+                <!--13 <span class="glyphicon glyphicon-thumbs-up"></span>-->
+                {{ post.comment_count }} <span class="glyphicon glyphicon-comment"></span>
+            </a>
         </div>
     </div>
     {% endfor %}

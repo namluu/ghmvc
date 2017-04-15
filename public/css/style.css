@@ -9,3 +9,5 @@
 .label-success, .label-success[href]:hover { background-color: #3c763d; }
 .label-info, .label-info[href]:hover { background-color: #31708f; }
 .label-warning, .label-warning[href]:hover { background-color: #8a6d3b; }
+
+.post-content { font-size: 15px;line-height: 2; }

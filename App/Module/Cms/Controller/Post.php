@@ -4,6 +4,8 @@ use Core\Controller;
 use Core\View;
 use App\Module\Cms\Model\Post as PostModel;
 use App\Module\Cms\Model\Tag as TagModel;
+use App\Module\User\Model\User as UserModel;
+use App\Module\Cms\Model\Comment as CommentModel;
 /**
  * Home controller
  *
@@ -13,11 +15,20 @@ class Post extends Controller
 {
     protected $postModel;
     protected $tagModel;
+    protected $userModel;
+    protected $commentModel;
 
-    public function __construct(array $routeParams, PostModel $post, TagModel $tag)
-    {
+    public function __construct(
+        array $routeParams,
+        PostModel $post,
+        TagModel $tag,
+        UserModel $user,
+        CommentModel $comment
+    ) {
         $this->postModel = $post;
         $this->tagModel = $tag;
+        $this->userModel = $user;
+        $this->commentModel = $comment;
         parent::__construct($routeParams);
     }
 
@@ -28,7 +39,7 @@ class Post extends Controller
      */
     public function indexAction()
     {
-        $posts = $this->postModel->getAll();
+        $posts = $this->postModel->getAll(true);
         foreach ($posts as $post) {
             $tagIds = $this->postModel->getPostTagIds($post->id);
             $post->tags = $this->tagModel->getAllBy('id', $tagIds);
@@ -53,6 +64,10 @@ class Post extends Controller
         if (!$post) {
             throw new \Exception('Post not found.', 404);
         }
+        $tagIds = $this->postModel->getPostTagIds($post->id);
+        $post->tags = $this->tagModel->getAllBy('id', $tagIds);
+        $post->user = $this->userModel->getOneBy('id', $post->user_id);
+        $post->comments = $this->commentModel->getAllBy('post_id', [$post->id]);
         View::renderTemplate('Cms::frontend/post/view.html', [
             'post' => $post
         ]);

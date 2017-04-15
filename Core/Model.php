@@ -52,9 +52,8 @@ abstract class Model
     /**
      * Get one record by column
      *
-     * @param $key
-     * @param $value
-     *
+     * @param string $key
+     * @param string $value
      * @return object
      */
     public function getOneBy($key, $value)
@@ -66,6 +65,13 @@ abstract class Model
         return $query->fetch(PDO::FETCH_OBJ);
     }
 
+    /**
+     * Get all record by column
+     *
+     * @param string $key
+     * @param array $values
+     * @return object
+     */
     public function getAllBy($key, $values)
     {
         if (!$values) {
