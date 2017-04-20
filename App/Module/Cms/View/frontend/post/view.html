@@ -15,7 +15,7 @@
     <a href="{{ path() }}">{{ post.user.display_name }}</a> written {{ post.created_at|date('d/m/Y') }}
 </p>
 <br>
-<div class="post-content">{{ post.content }}</div>
+<div class="post-content">{{ post.content|raw }}</div>
 <h3>Comment</h3>
 <div class="comment">
     {% for comment in post.comments %}

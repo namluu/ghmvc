@@ -11,6 +11,7 @@
 /*require_once dirname(__DIR__) . '/vendor/Twig/lib/Twig/Autoloader.php';
 Twig_Autoloader::register();*/
 require '../vendor/autoload.php';
+
 /**
  * Autoloader
  */
@@ -21,6 +22,11 @@ spl_autoload_register(function ($class) {
         require $root . '/' . str_replace('\\', '/', $class) . '.php';
     }
 });
+
+/**
+ * Init application
+ */
+date_default_timezone_set(App\Config::TIMEZONE);
 
 /**
  * Error and Exception handling

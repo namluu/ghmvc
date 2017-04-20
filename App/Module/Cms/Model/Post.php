@@ -27,6 +27,10 @@ class Post extends Model
 
     public function getPostTagIds($postId)
     {
+        if (!$postId) {
+            return null;
+        }
+
         $db = $this->getDB();
 
         $sql = "SELECT tag_id FROM cms_post_tag WHERE post_id = {$postId}";

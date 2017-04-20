@@ -2,6 +2,7 @@
 namespace Core;
 
 use App\Helper;
+use Core\Ckeditor;
 
 class TwigExtension extends \Twig_Extension
 {
@@ -14,7 +15,8 @@ class TwigExtension extends \Twig_Extension
             new \Twig_Function('get_login_user', [$this, 'getLoginUser']),
             new \Twig_Function('select_option', [$this, 'selectOption'], ['is_safe' => ['html']]),
             new \Twig_Function('select_color', [$this, 'selectColor'], ['is_safe' => ['html']]),
-            new \Twig_Function('btn_active', [$this, 'btnActive'], ['is_safe' => ['html']])
+            new \Twig_Function('btn_active', [$this, 'btnActive'], ['is_safe' => ['html']]),
+            new \Twig_Function('ckeditor', [$this, 'ckeditor'], ['is_safe' => ['html']])
         ];
     }
 
@@ -141,5 +143,11 @@ class TwigExtension extends \Twig_Extension
                 . ' ' . $val . (($numberOfUnits > 1) ? 's' : '') . ' ago';
         }
         return 'a few seconds ago';
+    }
+
+    public function ckeditor($name='content',$value='',$template='Full',$width = '100%',$height='100px',$extent='')
+    {
+        $ckeditor = Ckeditor::getInstance();
+        return $ckeditor->create_editor($name, $value, $template, $width, $height, $extent);
     }
 }

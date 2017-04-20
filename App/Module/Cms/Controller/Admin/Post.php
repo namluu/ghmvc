@@ -8,6 +8,7 @@ use Core\Session;
 use Core\Url;
 use App\Module\User\Model\User as UserModel;
 use App\Module\Cms\Model\Tag as TagModel;
+use Core\Ckeditor;
 /**
  * Post controller
  *
@@ -21,6 +22,7 @@ class Post extends Controller
     protected $userModel;
     protected $tagModel;
     protected $cacheData = [];
+    protected $ckeditor;
 
     public function __construct(
         array $routeParams,
@@ -28,8 +30,10 @@ class Post extends Controller
         UserModel $user,
         Session $session,
         Url $url,
-        TagModel $tag
+        TagModel $tag,
+        Ckeditor $ckeditor
     ) {
+        $this->ckeditor = $ckeditor;
         $this->postModel = $post;
         $this->userModel = $user;
         $this->tagModel = $tag;
@@ -73,6 +77,7 @@ class Post extends Controller
         foreach ($tags as $tag) {
             $selectTags[] = ['id' => $tag->id, 'name' => $tag->name];
         }
+        // edit form post back - has cache
         if (isset($post->tag_ids)) {
             $postTagIds = $post->tag_ids;
         } else {
@@ -84,7 +89,8 @@ class Post extends Controller
             'selectActive' => $selectActive,
             'selectUsers' => $selectUsers,
             'selectTags' => $selectTags,
-            'postTagIds' => $postTagIds
+            'postTagIds' => $postTagIds,
+            'ckeditor' => $this->ckeditor
         ]);
     }
 
@@ -101,7 +107,11 @@ class Post extends Controller
             } else {
                 $data = $this->sanitizeData($_POST);
                 $result = $this->postModel->save($data, $id);
-                $resultTag = $this->postModel->updatePostTag($id, $_POST['tag_ids']);
+                $resultTag = true;
+                if (isset($_POST['tag_ids'])) {
+                    $resultTag = $this->postModel->updatePostTag($id, $_POST['tag_ids']);
+                }
+
                 if ($result && $resultTag) {
                     $this->session->setMessage('success', 'Save successfully');
                 } else {
@@ -142,7 +152,7 @@ class Post extends Controller
         } else {
             $this->cacheData['user_id'] = $data['user_id'];
         }
-        if ($data['tag_ids']) {
+        if (isset($data['tag_ids'])) {
             $this->cacheData['tag_ids'] = $data['tag_ids'];
         }
         return $msg;
@@ -159,7 +169,7 @@ class Post extends Controller
         $escapeData = [
             'title' => $title,
             'alias' => $alias,
-            'content' => $this->cleanInput($data['content']),
+            'content' => html_entity_decode($data['content']),
             'is_active' => $data['is_active'],
             'user_id' => $data['user_id']
         ];

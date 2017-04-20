@@ -24,4 +24,6 @@ class Config
     const ADMIN_URL = self::BASE_URL.self::ADMIN_URI.'/';
 
     const SALT = '23drf4yy6@aw177';
+
+    const TIMEZONE = 'Asia/Ho_Chi_Minh';
 }
