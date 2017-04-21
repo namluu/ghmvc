@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="item-content">
-                {{ post.content|slice(0, 180) ~ '...' }}
+                {{ post.content|striptags|slice(0, 180) ~ '...' }}
             </div>
             <div class="item-meta small">
                 <a href="{{ path('user/'~post.username~'/profile') }}">

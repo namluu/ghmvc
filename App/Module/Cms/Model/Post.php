@@ -20,6 +20,7 @@ class Post extends Model
             $sql .= ' WHERE main.is_active = 1';
         }
         $sql .= ' GROUP BY main.id';
+        $sql .= ' ORDER BY created_at DESC';
 
         $stmt = $db->query($sql);
         return $stmt->fetchAll(\PDO::FETCH_OBJ);

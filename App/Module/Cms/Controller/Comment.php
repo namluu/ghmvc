@@ -28,10 +28,9 @@ class Comment extends Controller
     public function addAction()
     {
         if ($_POST) {
-            $redirectUrl = $_POST['post_url'] ? $_POST['post_url'] : Helper::getUrl();
             if (empty($_POST['content'])) {
                 $this->session->setMessage('error', 'Missing content');
-                $this->redirect($redirectUrl);
+                $this->redirect($this->getPreviousUrl());
             }
             $data = $this->sanitizeData($_POST);
             $result = $this->commentModel->save($data);
@@ -40,7 +39,7 @@ class Comment extends Controller
             } else {
                 $this->session->setMessage('error', 'Save unsuccessfully');
             }
-            $this->redirect($redirectUrl);
+            $this->redirect($this->getPreviousUrl());
         }
     }
 

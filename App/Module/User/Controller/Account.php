@@ -33,7 +33,13 @@ class Account extends Controller
      */
     public function loginAction()
     {
+        if (isset($_GET['back-url'])) {
+            $backUrl = $_GET['back-url'];
+        } else {
+            $backUrl = null;
+        }
         View::renderTemplate('User::frontend/account/login.html', [
+            'back_url' => $backUrl
         ]);
     }
 
@@ -58,7 +64,11 @@ class Account extends Controller
                     ];
                     $this->session->set('login_user', $userData);
                     $this->session->setMessage('success', 'Login successfully');
-                    $this->redirect(Helper::getUrl('user/account'));
+                    if ($_POST['back_url']) {
+                        $this->redirect($_POST['back_url']);
+                    } else {
+                        $this->redirect(Helper::getUrl('user/account'));
+                    }
                 } else {
                     $this->session->setMessage('error', 'Wrong account');
                 }

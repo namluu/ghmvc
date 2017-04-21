@@ -12,18 +12,19 @@
 </div>
 <br>
 <p class="author">
-    <a href="{{ path() }}">{{ post.user.display_name }}</a> written {{ post.created_at|date('d/m/Y') }}
+    <a href="{{ path('user/'~post.user.username~'/profile') }}">{{ post.user.display_name }}</a> written {{ post.created_at|date('d/m/Y') }}
 </p>
 <br>
 <div class="post-content">{{ post.content|raw }}</div>
+
 <h3>Comment</h3>
 <div class="comment">
     {% for comment in post.comments %}
     <div class="item row">
-        <div class="col-md-1"><img src="{{ path('images/avatar.jpg') }}" alt="" width="50"></div>
+        <div class="col-md-1"><a href="{{ path('user/'~comment.username~'/profile') }}"><img src="{{ path('images/avatar.jpg') }}" alt="" width="50"></a></div>
         <div class="col-md-9">
             <div class="item-header">
-                <a href="{{ path() }}">{{ comment.user_id }}</a> <small>{{ comment.created_at|time_ago }}</small>
+                <a href="{{ path('user/'~comment.username~'/profile') }}">{{ comment.display_name }}</a> <small>{{ comment.created_at|time_ago }}</small>
             </div>
             <div class="item-content">
                 {{ comment.content }}
@@ -32,6 +33,10 @@
     </div>
     {% endfor %}
 </div>
+
+{% set back_url = path('post/'~post.alias)|url_encode %}
+{% if is_login() %}
+{% set loginUser = get_login_user() %}
 <form action="{{ path('cms/comment/add') }}" method="post">
     <div class="form-group">
         <textarea name="content" rows="3" class="form-control"></textarea>
@@ -39,8 +44,10 @@
     <div class="form-group">
         <button type="submit" class="btn btn-default">Submit</button>
     </div>
-    <input type="hidden" name="post_url" value="{{ path('post/'~post.alias) }}">
     <input type="hidden" name="post_id" value="{{ post.id }}">
-    <input type="hidden" name="user_id" value="1">
+    <input type="hidden" name="user_id" value="{{ loginUser.id }}">
 </form>
+{% else %}
+<p><a href="{{ path('user/account/login?back-url='~back_url) }}">Please login to comment</a></p>
+{% endif %}
 {% endblock %}

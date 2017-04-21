@@ -76,4 +76,9 @@ abstract class Controller
         header('Location: '.$location);
         die;
     }
+
+    public function getPreviousUrl()
+    {
+        return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+    }
 }

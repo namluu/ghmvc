@@ -106,13 +106,13 @@ class Post extends Controller
                     $this->redirect(Helper::getAdminUrl('cms/post/add'));
             } else {
                 $data = $this->sanitizeData($_POST);
-                $result = $this->postModel->save($data, $id);
+                $resultPostId = $this->postModel->save($data, $id);
                 $resultTag = true;
                 if (isset($_POST['tag_ids'])) {
-                    $resultTag = $this->postModel->updatePostTag($id, $_POST['tag_ids']);
+                    $resultTag = $this->postModel->updatePostTag($resultPostId, $_POST['tag_ids']);
                 }
 
-                if ($result && $resultTag) {
+                if ($resultPostId && $resultTag) {
                     $this->session->setMessage('success', 'Save successfully');
                 } else {
                     $this->session->setMessage('error', 'Save unsuccessfully');

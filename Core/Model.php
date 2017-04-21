@@ -127,7 +127,8 @@ abstract class Model
             $cols = array_keys($data);
             $insertQuery = $this->_getInsertSqlQuery($cols, [$line]);
             $stmt = $db->prepare($insertQuery);
-            return $stmt->execute($bind);
+            $stmt->execute($bind);
+            return $db->lastInsertId();
         } else {
             foreach ($data as $key => $row) {
                 $values[] = $key . '=?';
@@ -135,7 +136,8 @@ abstract class Model
             }
             $updateQuery = $this->_getUpdateSqlQuery($values, $id);
             $stmt = $db->prepare($updateQuery);
-            return $stmt->execute($bind);
+            $stmt->execute($bind);
+            return $id;
         }
     }
 

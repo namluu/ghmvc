@@ -11,3 +11,4 @@
 .label-warning, .label-warning[href]:hover { background-color: #8a6d3b; }
 
 .post-content { font-size: 15px;line-height: 2; }
+.post-content img { max-width: 100%;height: auto !important; }
