@@ -2,7 +2,6 @@
 namespace Core;
 
 use App\Helper;
-use Core\Ckeditor;
 
 class TwigExtension extends \Twig_Extension
 {

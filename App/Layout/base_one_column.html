@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ path('css/bootstrap.min.css') }}" />
+    {% block styles_extra %}
+    {% endblock %}
     <link rel="stylesheet" href="{{ path('css/style.css') }}" />
 </head>
 <body>
@@ -32,15 +34,10 @@
 
     <div class="container">
         <div class="row">
-            <section class="col-md-9">
+            <section class="col-md-12">
             {% block body %}
             {% endblock %}
             </section>
-            <sidebar class="col-md-3">
-            {% block sidebar %}
-                {% include 'Section/sidebar.html' %}
-            {% endblock %}
-            </sidebar>
         </div>
     </div>
 
@@ -50,5 +47,7 @@
 
     <script src="{{ path('js/jquery-3.1.1.min.js') }}"></script>
     <script src="{{ path('js/bootstrap.min.js') }}"></script>
+    {% block scripts_extra %}
+    {% endblock %}
 </body>
 </html>

@@ -8,6 +8,11 @@ class Helper
         return Config::BASE_URL . $url;
     }
 
+    public static function getPath($folder = '')
+    {
+        return dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . $folder;
+    }
+
     public static function getAdminUrl($url = '')
     {
         return Config::ADMIN_URL . $url;

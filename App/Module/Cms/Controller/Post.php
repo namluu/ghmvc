@@ -1,7 +1,11 @@
 <?php
 namespace App\Module\Cms\Controller;
+use App\Helper;
 use Core\Controller;
+use Core\Session;
+use Core\Url;
 use Core\View;
+use Core\UploadHandler;
 use App\Module\Cms\Model\Post as PostModel;
 use App\Module\Cms\Model\Tag as TagModel;
 use App\Module\User\Model\User as UserModel;
@@ -17,14 +21,20 @@ class Post extends Controller
     protected $tagModel;
     protected $userModel;
     protected $commentModel;
+    protected $session;
+    protected $url;
 
     public function __construct(
         array $routeParams,
         PostModel $post,
         TagModel $tag,
         UserModel $user,
-        CommentModel $comment
+        CommentModel $comment,
+        Session $session,
+        Url $url
     ) {
+        $this->url = $url;
+        $this->session = $session;
         $this->postModel = $post;
         $this->tagModel = $tag;
         $this->userModel = $user;
@@ -75,6 +85,52 @@ class Post extends Controller
 
     public function addAction()
     {
-        echo 'post add';
+        View::renderTemplate('Cms::frontend/post/add.html', [
+        ]);
+    }
+
+    public function postSubmitAction()
+    {
+        if ($_POST) {
+            $data = $this->sanitizeData($_POST);
+            $resultPostId = $this->postModel->save($data);
+            /*$resultTag = true;
+            if (isset($_POST['tag_ids'])) {
+                $resultTag = $this->postModel->updatePostTag($resultPostId, $_POST['tag_ids']);
+            }*/
+
+            if ($resultPostId) {
+                $this->session->setMessage('success', 'Save successfully');
+            } else {
+                $this->session->setMessage('error', 'Save unsuccessfully');
+            }
+            $post = $post = $this->postModel->getOneBy('id', $resultPostId);
+
+            $this->redirect(Helper::getUrl('post/'.$post->alias));
+        }
+        $this->redirect($this->getPreviousUrl());
+    }
+
+    protected function sanitizeData($data)
+    {
+        $user = $this->session->get('login_user');
+        $title = $this->cleanInput($data['title']);
+        $alias = $this->url->slug($title, array('toascii'=>true,'tolower'=>true));
+        $escapeData = [
+            'title' => $title,
+            'alias' => $alias,
+            'content' => html_entity_decode($data['content']),
+            'is_active' => 1,
+            'user_id' => $user['id']
+        ];
+        return $escapeData;
+    }
+
+    public function upload()
+    {
+        $upload_handler = new UploadHandler(array(
+            'upload_dir' => Helper::getPath('public/uploads/'),
+            'upload_url' => Helper::getUrl('uploads/'),
+        ));
     }
 }

@@ -1,0 +1,17 @@
+.medium-editor-insert-plugin .medium-insert-buttons button {
+    color: #333;
+    border: 1px solid #333;
+}
+.editable {
+    font-size: 15px;
+    min-height: 200px;
+}
+.control-title {
+    font-size: 22px;
+    font-weight: bold;
+    border: none;
+    padding: 0;
+}
+.medium-editor-insert-plugin .medium-insert-buttons .medium-insert-buttons-show span {
+    margin-top: 0;
+}
