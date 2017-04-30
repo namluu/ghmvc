@@ -6,6 +6,7 @@ use Core\Session;
 use Core\Url;
 use Core\View;
 use Core\UploadHandler;
+use Core\Paginator;
 use App\Module\Cms\Model\Post as PostModel;
 use App\Module\Cms\Model\Tag as TagModel;
 use App\Module\User\Model\User as UserModel;
@@ -23,6 +24,7 @@ class Post extends Controller
     protected $commentModel;
     protected $session;
     protected $url;
+    protected $paginator;
 
     public function __construct(
         array $routeParams,
@@ -31,8 +33,10 @@ class Post extends Controller
         UserModel $user,
         CommentModel $comment,
         Session $session,
-        Url $url
+        Url $url,
+        Paginator $paginator
     ) {
+        $this->paginator = $paginator;
         $this->url = $url;
         $this->session = $session;
         $this->postModel = $post;
@@ -49,13 +53,18 @@ class Post extends Controller
      */
     public function indexAction()
     {
-        $posts = $this->postModel->getAll(true);
+        $limit = 2;
+        $page = $this->routeParams['page'];
+        $posts = $this->postModel->getAll(true, $limit, $page);
         foreach ($posts as $post) {
             $tagIds = $this->postModel->getPostTagIds($post->id);
             $post->tags = $this->tagModel->getAllBy('id', $tagIds);
         }
+        $totalRows = $this->postModel->countBy('is_active', 1);
+        $paginator = $this->paginator->init($totalRows, $limit, $page, $this->routeParams);
         View::renderTemplate('Cms::frontend/post/index.html', [
-            'posts' => $posts
+            'posts' => $posts,
+            'paginator' => $paginator
         ]);
     }
 

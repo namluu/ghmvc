@@ -73,6 +73,7 @@ class Router
                     }
                 }
                 $this->params = $params;
+                $this->params['path'] = $url;
                 return true;
             }
         }

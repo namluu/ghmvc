@@ -6,6 +6,7 @@ use App\Module\Cms\Model\Post as PostModel;
 use App\Helper;
 use Core\Session;
 use Core\Url;
+use Core\Paginator;
 use App\Module\User\Model\User as UserModel;
 use App\Module\Cms\Model\Tag as TagModel;
 use Core\Ckeditor;
@@ -23,6 +24,7 @@ class Post extends Controller
     protected $tagModel;
     protected $cacheData = [];
     protected $ckeditor;
+    protected $paginator;
 
     public function __construct(
         array $routeParams,
@@ -31,8 +33,10 @@ class Post extends Controller
         Session $session,
         Url $url,
         TagModel $tag,
-        Ckeditor $ckeditor
+        Ckeditor $ckeditor,
+        Paginator $paginator
     ) {
+        $this->paginator = $paginator;
         $this->ckeditor = $ckeditor;
         $this->postModel = $post;
         $this->userModel = $user;
@@ -49,9 +53,14 @@ class Post extends Controller
      */
     public function indexAction()
     {
-        $posts = $this->postModel->getAll();
+        $limit = 10;
+        $page = $this->routeParams['page'];
+        $posts = $this->postModel->getAll(false, $limit, $page);
+        $totalRows = $this->postModel->count();
+        $paginator = $this->paginator->init($totalRows, $limit, $page, $this->routeParams);
         View::renderTemplate('Cms::backend/post/index.html', [
-            'posts' => $posts
+            'posts' => $posts,
+            'paginator' => $paginator
         ]);
     }
 

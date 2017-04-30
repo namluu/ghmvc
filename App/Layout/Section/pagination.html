@@ -1,0 +1,33 @@
+{% if paginator.totalPage %}
+<nav class="pagination">
+    <ul class="pagination">
+
+        <li class="{% if paginator.isFirstPage() %}disabled{% endif %}">
+            <a href="{{ paginator.getPageLink() }}" title="First">&laquo;</a>
+        </li>
+
+        {% if paginator.isStartJump() %}
+        <li>
+            <span>...</span>
+        </li>
+        {% endif %}
+
+        {% for i in paginator.start..paginator.end %}
+        {% set class = paginator.page == i ? 'active' : '' %}
+        <li class="{{ class }}">
+            <a href="{{ paginator.getPageLink() }}?page={{ i }}">{{ i }}</a>
+        </li>
+        {% endfor %}
+
+        {% if paginator.isEndJump() %}
+        <li>
+            <span>...</span>
+        </li>
+        {% endif %}
+
+        <li class="{% if paginator.isLastPage() %}disabled{% endif %}">
+            <a href="{{ paginator.getPageLink() }}?page={{ paginator.totalPage }}" title="Last">&raquo;</a>
+        </li>
+    </ul>
+</nav>
+{% endif %}

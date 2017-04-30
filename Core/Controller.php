@@ -20,6 +20,11 @@ abstract class Controller
      */
     public function __construct($routeParams)
     {
+        if (isset($_GET['page'])) {
+            $routeParams['page'] = $_GET['page'];
+        } else {
+            $routeParams['page'] = 1;
+        }
         $this->routeParams = $routeParams;
     }
     /**

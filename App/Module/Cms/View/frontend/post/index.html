@@ -34,4 +34,7 @@
     </div>
     {% endfor %}
 </div>
+
+{% include 'Section/pagination.html' with {'paginator': paginator} %}
+
 {% endblock %}

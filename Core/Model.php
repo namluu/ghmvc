@@ -150,6 +150,17 @@ abstract class Model
         return $query->execute();
     }
 
+    public function count()
+    {
+        $db = $this->getDB();
+
+        $sql = "SELECT COUNT(*) FROM {$this->_table}";
+        if ($result = $db->query($sql)) {
+            return $result->fetchColumn();
+        }
+        return 0;
+    }
+
     public function countBy($key, $value)
     {
         $db = $this->getDB();

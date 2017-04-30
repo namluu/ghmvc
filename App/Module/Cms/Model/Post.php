@@ -9,7 +9,7 @@ class Post extends Model
 {
     protected $_table = 'cms_post';
 
-    public function getAll($isActiveOnly = false)
+    public function getAll($isActiveOnly = false, $limit = 10, $page = 1)
     {
         $db = $this->getDB();
         $sql = "SELECT main.*, u.username, u.display_name, COUNT(c.id) AS comment_count 
@@ -21,6 +21,10 @@ class Post extends Model
         }
         $sql .= ' GROUP BY main.id';
         $sql .= ' ORDER BY created_at DESC';
+
+        if ($limit != 'all') {
+            $sql .= ' LIMIT '. ($page - 1) * $limit . ',' . $limit;
+        }
 
         $stmt = $db->query($sql);
         return $stmt->fetchAll(\PDO::FETCH_OBJ);

@@ -12,3 +12,5 @@
 
 .post-content { font-size: 15px;line-height: 2; }
 .post-content img { max-width: 100%;height: auto !important; }
+
+.pagination>.disabled>a, .pagination>.disabled>a:focus, .pagination>.disabled>a:hover { cursor: default;background-color: #eee; }

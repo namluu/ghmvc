@@ -4,6 +4,7 @@
 
 {% block body %}
 <h2>List Post <a class="btn btn-default" href="{{ admin_path('cms/post/add') }}">Add New</a></h2>
+{% include 'Section/pagination.html' with {'paginator': paginator} %}
 <table class="table table-bordered">
     <tr>
         <th>ID</th>
@@ -31,4 +32,5 @@
     </tr>
     {% endfor %}
 </table>
+{% include 'Section/pagination.html' with {'paginator': paginator} %}
 {% endblock %}
