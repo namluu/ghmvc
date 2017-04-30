@@ -1,0 +1,23 @@
+{% extends 'Admin/base.html' %}
+
+{% block title %}Configuration{% endblock %}
+
+{% block body %}
+<h2>Configuration</h2>
+
+<form action="{{ admin_path('dashboard/configuration/save') }}" method="post" class="form-horizontal">
+    {% for config in data %}
+    <div class="form-group">
+        <label class="col-sm-2 control-label">{{ config.title }}</label>
+        <div class="col-sm-10">
+            <input type="text" name="{{ config.id }}" value="{{ config.value}}" class="form-control">
+        </div>
+    </div>
+    {% endfor %}
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <input type="submit" value="Submit" class="btn btn-default">
+        </div>
+    </div>
+</form>
+{% endblock %}

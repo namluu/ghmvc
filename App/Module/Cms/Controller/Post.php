@@ -53,7 +53,7 @@ class Post extends Controller
      */
     public function indexAction()
     {
-        $limit = 2;
+        $limit = \App\Config::getConfig('pagination_frontend');
         $page = $this->routeParams['page'];
         $posts = $this->postModel->getAll(true, $limit, $page);
         foreach ($posts as $post) {

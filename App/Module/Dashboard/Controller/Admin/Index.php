@@ -21,7 +21,7 @@ class Index extends Controller
      */
     public function indexAction()
     {
-        View::renderTemplate('Dashboard::admin/index.html', [
+        View::renderTemplate('Dashboard::backend/index.html', [
         ]);
     }
 }

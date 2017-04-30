@@ -3,6 +3,7 @@ namespace App;
 
 class Config
 {
+    public static $config;
     /**
      * Database
      */
@@ -11,19 +12,19 @@ class Config
     const DB_USER = 'root';
     const DB_PASSWORD = '';
 
-    /**
-     * Debug
-     */
-    const SHOW_ERRORS = true;
+    public function loadConfig()
+    {
+        $model = new \App\Module\Dashboard\Model\Configuration();
+        self::$config = $model->getAll();
+    }
 
-    /**
-     * Setting
-     */
-    const BASE_URL = 'http://ghmvc.loc/';
-    const ADMIN_URI = 'admin_37wh1';
-    const ADMIN_URL = self::BASE_URL.self::ADMIN_URI.'/';
-
-    const SALT = '23drf4yy6@aw177';
-
-    const TIMEZONE = 'Asia/Ho_Chi_Minh';
+    public static function getConfig($key)
+    {
+        foreach (self::$config as $data) {
+            if ($data->key == $key) {
+                return $data->value;
+            }
+        }
+        return null;
+    }
 }

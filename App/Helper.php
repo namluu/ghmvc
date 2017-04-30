@@ -5,7 +5,7 @@ class Helper
 {
     public static function getUrl($url = '')
     {
-        return Config::BASE_URL . $url;
+        return Config::getConfig('base_url') . $url;
     }
 
     public static function getPath($folder = '')
@@ -15,7 +15,7 @@ class Helper
 
     public static function getAdminUrl($url = '')
     {
-        return Config::ADMIN_URL . $url;
+        return Config::getConfig('base_url') . Config::getConfig('admin_uri') . '/' . $url;
     }
 
     public static function selectOption($name,$data,$selected,$value,$text,$exten)

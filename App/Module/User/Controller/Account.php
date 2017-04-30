@@ -54,7 +54,7 @@ class Account extends Controller
             $password = $this->cleanInput($_POST['password']);
             if ( filter_var($email,FILTER_VALIDATE_EMAIL) ) {
                 $user = $this->userModel->getOneBy('email', $email);
-                $hash = md5(Config::SALT . $password);
+                $hash = md5(Config::getConfig('salt') . $password);
                 if ($user && $user->is_active && $hash === $user->password) {
                     $userData = [
                         'id' => $user->id,
@@ -147,7 +147,7 @@ class Account extends Controller
         }
 
         if (!$errorMsg) {
-            $hash = md5(Config::SALT.$password);
+            $hash = md5(Config::getConfig('salt').$password);
             $data = array(
                 'display_name' => $displayName,
                 'username' => $username,

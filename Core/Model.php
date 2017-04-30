@@ -46,7 +46,10 @@ abstract class Model
             $sql .= sprintf(' WHERE %s', 'is_active = 1');
         }
 
-        return $db->query($sql, PDO::FETCH_OBJ);
+        //return $db->query($sql, PDO::FETCH_OBJ);
+        $sth = $db->prepare($sql);
+        $sth->execute();
+        return $sth->fetchAll(PDO::FETCH_OBJ);
     }
 
     /**

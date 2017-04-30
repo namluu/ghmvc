@@ -53,7 +53,7 @@ class Post extends Controller
      */
     public function indexAction()
     {
-        $limit = 10;
+        $limit = \App\Config::getConfig('pagination_backend');
         $page = $this->routeParams['page'];
         $posts = $this->postModel->getAll(false, $limit, $page);
         $totalRows = $this->postModel->count();

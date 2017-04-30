@@ -23,10 +23,13 @@ spl_autoload_register(function ($class) {
     }
 });
 
+$config = new App\Config();
+$config->loadConfig();
+
 /**
  * Init application
  */
-date_default_timezone_set(App\Config::TIMEZONE);
+date_default_timezone_set($config->getConfig('timezone'));
 
 /**
  * Error and Exception handling
@@ -41,7 +44,7 @@ session_start();
  * Routing
  */
 $router = new Core\Router();
-$adminUri = App\Config::ADMIN_URI;
+$adminUri = $config->getConfig('admin_uri');
 // Add the routes
 $router->add($adminUri.'/*', ['namespace' => 'Admin', 'module' => 'Dashboard', 'controller' => 'Index', 'action' => 'index']);
 $router->add($adminUri.'/{module}', ['namespace' => 'Admin', 'controller' => 'Index', 'action' => 'index']);
