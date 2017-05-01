@@ -2,6 +2,36 @@
 
 {% block title %}Edit: {{ user.display_name }}{% endblock %}
 
+{% block scripts_extra %}
+<script src="{{ path('medium/js/jquery.ui.widget.js')}}"></script>
+<script src="{{ path('medium/js/jquery.fileupload.js') }}"></script>
+<script>
+    $(function () {
+        'use strict';
+        var url = "{{ path('user/account/upload') }}";
+        $('#fileupload').fileupload({
+            url: url,
+            dataType: 'json',
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    //$('<p/>').text(file.name).appendTo('#fileDemo');
+                    $('#fileDemo').prop('src', file.url);
+                    $('input[name="avatar"]').prop('value', file.name);
+                });
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .progress-bar').css(
+                    'width',
+                    progress + '%'
+                );
+            }
+        }).prop('disabled', !$.support.fileInput)
+            .parent().addClass($.support.fileInput ? undefined : 'disabled');
+    });
+</script>
+{% endblock %}
+
 {% block body %}
 <h1>{{ user.display_name }}</h1>
 <form action="{{ path('user/account/save') }}" method="post" class="form-horizontal">
@@ -18,7 +48,27 @@
         </div>
     </div>
     <div class="form-group">
+        <label class="col-sm-2 control-label">Avatar</label>
+        <div class="col-sm-3">
+            <div>
+                <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>Select files...</span>
+                    <input id="fileupload" type="file" name="files[]" multiple>
+                </span>
+            </div>
+            <br>
+            <img id="fileDemo" src="{{ path('uploads/user/'~user.avatar) }}" alt="" width="150">
+        </div>
+        <div class="col-sm-7">
+            <div id="progress" class="progress">
+                <div class="progress-bar progress-bar-success"></div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
         <input type="hidden" name="id" value="{{ user.id }}">
+        <input type="hidden" name="avatar" value="">
         <div class="col-sm-offset-2 col-sm-10">
             <input type="submit" value="Submit" class="btn btn-default">
         </div>

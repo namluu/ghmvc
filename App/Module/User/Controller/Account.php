@@ -61,7 +61,8 @@ class Account extends Controller
                         'id' => $user->id,
                         'username' => $user->username,
                         'display_name' => $user->display_name,
-                        'role' => 'user'
+                        'role' => 'user',
+                        'avatar' => $user->avatar
                     ];
                     $this->session->set('login_user', $userData);
                     $this->session->setMessage('success', 'Login successfully');
@@ -266,8 +267,27 @@ class Account extends Controller
     {
         $escapeData = [
             'display_name' => $this->cleanInput($data['display_name']),
-            'email' => $this->cleanInput($data['email'])
+            'email' => $this->cleanInput($data['email']),
+            'avatar' => $data['avatar']
         ];
         return $escapeData;
+    }
+
+    public function upload()
+    {
+        $upload_handler = new \Core\UploadHandler(array(
+            'upload_dir' => Helper::getPath('public/uploads/user/'),
+            'upload_url' => Helper::getUrl('uploads/user/'),
+            'image_versions' => array(
+                '' => array(
+                    'auto_orient' => true
+                ),
+                'thumbnail' => array(
+                    'max_width' => 150,
+                    'max_height' => 150,
+                    'crop' => true
+                )
+            )
+        ));
     }
 }

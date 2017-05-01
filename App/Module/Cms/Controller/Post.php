@@ -138,8 +138,8 @@ class Post extends Controller
     public function upload()
     {
         $upload_handler = new UploadHandler(array(
-            'upload_dir' => Helper::getPath('public/uploads/'),
-            'upload_url' => Helper::getUrl('uploads/'),
+            'upload_dir' => Helper::getPath('public/uploads/cms/'),
+            'upload_url' => Helper::getUrl('uploads/cms/'),
         ));
     }
 }

@@ -12,7 +12,7 @@ class Post extends Model
     public function getAll($isActiveOnly = false, $limit = 10, $page = 1)
     {
         $db = $this->getDB();
-        $sql = "SELECT main.*, u.username, u.display_name, COUNT(c.id) AS comment_count 
+        $sql = "SELECT main.*, u.username, u.display_name, u.avatar, COUNT(c.id) AS comment_count 
                 FROM {$this->_table} AS main";
         $sql .= ' LEFt JOIN user AS u ON main.user_id = u.id';
         $sql .= ' LEFt JOIN cms_comment AS c ON main.id = c.post_id';

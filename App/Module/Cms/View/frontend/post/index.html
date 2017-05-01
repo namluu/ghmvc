@@ -6,7 +6,7 @@
 <div class="feed">
     {% for post in posts %}
     <div class="item row">
-        <div class="col-md-1"><img src="{{ path('images/avatar.jpg') }}" alt="" width="50"></div>
+        <div class="col-md-1">{{ avatar(post.avatar, 50, 'class="img-circle"') }}</div>
         <div class="col-md-9">
             <div class="item-header">
                 <a href="{{ path('post/'~post.alias) }}">{{ post.title }}</a>

@@ -15,7 +15,8 @@ class TwigExtension extends \Twig_Extension
             new \Twig_Function('select_option', [$this, 'selectOption'], ['is_safe' => ['html']]),
             new \Twig_Function('select_color', [$this, 'selectColor'], ['is_safe' => ['html']]),
             new \Twig_Function('btn_active', [$this, 'btnActive'], ['is_safe' => ['html']]),
-            new \Twig_Function('ckeditor', [$this, 'ckeditor'], ['is_safe' => ['html']])
+            new \Twig_Function('ckeditor', [$this, 'ckeditor'], ['is_safe' => ['html']]),
+            new \Twig_Function('avatar', [$this, 'avatar'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -148,5 +149,21 @@ class TwigExtension extends \Twig_Extension
     {
         $ckeditor = Ckeditor::getInstance();
         return $ckeditor->create_editor($name, $value, $template, $width, $height, $extent);
+    }
+
+    public function avatar($name, $size = 150, $ext = '')
+    {
+        if ($name) {
+            if ($size == 'full') {
+                $link = $this->path('uploads/user/'.$name);
+            } else {
+                $link = $this->path('uploads/user/thumbnail/'.$name);
+            }
+        } else {
+            $link = $this->path('uploads/user/thumbnail/avatar_big.jpg');
+        }
+
+
+        return sprintf('<img src="%s" width="%s" %s>', $link, $size, $ext);
     }
 }
