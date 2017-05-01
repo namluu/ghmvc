@@ -31,7 +31,12 @@ class Configuration extends Controller
      */
     public function indexAction()
     {
-        $data = $this->configurationModel->getAll();
+        if (Config::$config) {
+            $data = Config::$config;
+        } else {
+            $data = $this->configurationModel->getAll();
+        }
+
         View::renderTemplate('Dashboard::backend/configuration/index.html', [
             'data' => $data
         ]);

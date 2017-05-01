@@ -17,6 +17,7 @@ class Account extends Controller
     protected $userModel;
     protected $session;
     protected $url;
+    protected $cacheData = [];
 
     public function __construct(array $routeParams, User $user, Session $session, Url $url)
     {
@@ -67,7 +68,7 @@ class Account extends Controller
                     if ($_POST['back_url']) {
                         $this->redirect($_POST['back_url']);
                     } else {
-                        $this->redirect(Helper::getUrl('user/account'));
+                        $this->redirect(Helper::getUrl('user/'.$user->username));
                     }
                 } else {
                     $this->session->setMessage('error', 'Wrong account');
@@ -75,8 +76,8 @@ class Account extends Controller
             }
         } else {
             $this->session->setMessage('error', 'Please enter your account');
-            $this->redirect(Helper::getUrl('user/account/login'));
         }
+        $this->redirect(Helper::getUrl('user/account/login'));
     }
 
     /**
@@ -173,5 +174,100 @@ class Account extends Controller
     {
         View::renderTemplate('User::frontend/account/index.html', [
         ]);
+    }
+
+    public function viewAction()
+    {
+        $username = $this->routeParams['username'];
+        $user = $this->userModel->getOneBy('username', $username);
+        if (!$user) {
+            throw new \Exception('No route matched.', 404);
+        }
+        View::renderTemplate('User::frontend/account/view.html', [
+            'user' => $user
+        ]);
+    }
+
+    public function editAction()
+    {
+        $id = $this->routeParams['id'];
+        $loginUser = $this->session->get('login_user');
+        if ($loginUser['id'] != $id) {
+            throw new \Exception('No route matched.', 404);
+        }
+        $user = $this->userModel->getOneBy('id', $id);
+        if (!$user) {
+            throw new \Exception('User not found', 500);
+        }
+        View::renderTemplate('User::frontend/account/edit.html', [
+            'user' => $user
+        ]);
+    }
+
+    public function saveAction()
+    {
+        if ($_POST) {
+            $id = (int)$_POST['id'];
+            $user = $this->userModel->getOneBy('id', $id);
+            if (!$user) {
+                throw new \Exception('User not found', 500);
+            }
+            $errorMsg = $this->validateData($_POST, $user->email);
+            if ($errorMsg) {
+                $this->session->setFormData('user_form_data_edit', $this->cacheData);
+                $this->session->setMessage('error', implode(', ', $errorMsg));
+                $id ? $this->redirect(Helper::getUrl("user/account/{$id}/edit")) :
+                    $this->redirect(Helper::getUrl('user/'.$user->username));
+            } else {
+                $data = $this->sanitizeData($_POST);
+                $result = $this->userModel->save($data, $id);
+
+                if ($result) {
+                    $this->session->setMessage('success', 'Save successfully');
+                } else {
+                    $this->session->setMessage('error', 'Save unsuccessfully');
+                }
+            }
+            $this->redirect(Helper::getUrl('user/'.$user->username));
+        }
+        throw new \Exception('No route matched.', 404);
+    }
+
+    protected function validateData($data, $email)
+    {
+        $msg = array();
+        if (empty($data['display_name'])) {
+            $msg[] = 'Missing name';
+        } else {
+            $this->cacheData['display_name'] = $data['display_name'];
+        }
+        if (empty($data['email'])) {
+            $msg[] = 'Missing email';
+        } else {
+            if ( !filter_var($data['email'],FILTER_VALIDATE_EMAIL) ) {
+                $msg[] = 'Please enter valid email address.';
+            } else {
+                // check email exist or not
+                if ($data['email'] != $email) {
+                    $count = $this->userModel->countBy('email', $data['email']);
+                    if ($count) {
+                        $msg[] = 'Provided Email is already in use.';
+                    }
+                }
+
+                $this->cacheData['email'] = $data['email'];
+            }
+        }
+
+        return $msg;
+    }
+
+    protected function sanitizeData($data)
+    {
+        $escapeData = [
+            'display_name' => $this->cleanInput($data['display_name']),
+            'email' => $this->cleanInput($data['email'])
+        ];
+        return $escapeData;
     }
 }
