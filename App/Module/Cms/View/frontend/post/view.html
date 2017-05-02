@@ -6,6 +6,17 @@
 <link rel="stylesheet" href="{{ path('medium/css/medium-editor-insert-plugin.min.css')}}">
 {% endblock %}
 
+{% block scripts_extra %}
+<script>
+    $('.medium-insert-images').on('click', 'img', function () {
+        var link = this.src;
+        if (link.length) {
+            window.location.href = link;
+        }
+    });
+</script>
+{% endblock %}
+
 {% block body %}
 <h1>{{ post.title }}</h1>
 <div class="tag">

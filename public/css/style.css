@@ -37,3 +37,5 @@
 .btn-github:hover { background-color: #4C4C4C; color: #FFFFFF; }
 .btn-google { background-color: #d14836; color: #FFFFFF; }
 .btn-google:hover { background-color: #c53727; color: #FFFFFF; }
+
+.medium-insert-images img { cursor: -webkit-zoom-in; cursor: zoom-in; }

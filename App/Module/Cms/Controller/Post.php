@@ -25,6 +25,7 @@ class Post extends Controller
     protected $session;
     protected $url;
     protected $paginator;
+    protected $cacheData = [];
 
     public function __construct(
         array $routeParams,
@@ -101,21 +102,28 @@ class Post extends Controller
     public function postSubmitAction()
     {
         if ($_POST) {
-            $data = $this->sanitizeData($_POST);
-            $resultPostId = $this->postModel->save($data);
-            /*$resultTag = true;
-            if (isset($_POST['tag_ids'])) {
-                $resultTag = $this->postModel->updatePostTag($resultPostId, $_POST['tag_ids']);
-            }*/
-
-            if ($resultPostId) {
-                $this->session->setMessage('success', 'Save successfully');
+            $id = isset($_POST['id']) ? (int)$_POST['id'] : null;
+            $errorMsg = $this->validateData($_POST);
+            if ($errorMsg) {
+                $this->session->setFormData('post_form_data_fo', $this->cacheData);
+                $this->session->setMessage('error', implode(', ', $errorMsg));
             } else {
-                $this->session->setMessage('error', 'Save unsuccessfully');
-            }
-            $post = $post = $this->postModel->getOneBy('id', $resultPostId);
+                $data = $this->sanitizeData($_POST);
+                $resultPostId = $this->postModel->save($data);
+                /*$resultTag = true;
+                if (isset($_POST['tag_ids'])) {
+                    $resultTag = $this->postModel->updatePostTag($resultPostId, $_POST['tag_ids']);
+                }*/
 
-            $this->redirect(Helper::getUrl('post/'.$post->alias));
+                if ($resultPostId) {
+                    $this->session->setMessage('success', 'Save successfully');
+                } else {
+                    $this->session->setMessage('error', 'Save unsuccessfully');
+                }
+                $post = $post = $this->postModel->getOneBy('id', $resultPostId);
+
+                $this->redirect(Helper::getUrl('post/' . $post->alias));
+            }
         }
         $this->redirect($this->getPreviousUrl());
     }
@@ -133,6 +141,22 @@ class Post extends Controller
             'user_id' => $user['id']
         ];
         return $escapeData;
+    }
+
+    protected function validateData($data)
+    {
+        $msg = array();
+        if (empty($data['title'])) {
+            $msg[] = 'Missing title';
+        } else {
+            $this->cacheData['title'] = $data['title'];
+        }
+        if (empty($this->cleanInput($data['content']))) {
+            $msg[] = 'Missing content';
+        } else {
+            $this->cacheData['content'] = $data['content'];
+        }
+        return $msg;
     }
 
     public function upload()
