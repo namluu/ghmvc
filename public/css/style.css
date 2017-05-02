@@ -28,3 +28,12 @@
     height: 100%;
 }
 .menu-avatar { margin-top: 5px; }
+
+.btn-facebook { background-color: #3B579D; color: #FFFFFF; }
+.btn-facebook:hover { background-color: #314983; color: #FFFFFF; }
+.btn-twitter { background-color: #4092CC; color: #FFFFFF; }
+.btn-twitter:hover { background-color: #399ADE; color: #FFFFFF; }
+.btn-github { background-color: #5C6166; color: #FFFFFF; }
+.btn-github:hover { background-color: #4C4C4C; color: #FFFFFF; }
+.btn-google { background-color: #d14836; color: #FFFFFF; }
+.btn-google:hover { background-color: #c53727; color: #FFFFFF; }

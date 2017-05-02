@@ -2,6 +2,10 @@
 
 {% block title %}{{ post.title }}{% endblock %}
 
+{% block styles_extra %}
+<link rel="stylesheet" href="{{ path('medium/css/medium-editor-insert-plugin.min.css')}}">
+{% endblock %}
+
 {% block body %}
 <h1>{{ post.title }}</h1>
 <div class="tag">

@@ -5,7 +5,6 @@
 {% block styles_extra %}
 <link rel="stylesheet" href="{{ path('medium/css/medium-editor.min.css')}}">
 <link rel="stylesheet" href="{{ path('medium/css/default.css')}}">
-<link rel="stylesheet" href="{{ path('medium/css/font-awesome.css')}}">
 <link rel="stylesheet" href="{{ path('medium/css/medium-editor-insert-plugin.min.css')}}">
 <link rel="stylesheet" href="{{ path('medium/css/custom.css')}}">
 {% endblock %}
@@ -21,6 +20,7 @@
 <script src="{{ path('medium/js/core.js') }}"></script>
 <script src="{{ path('medium/js/embeds.js') }}"></script>
 <script src="{{ path('medium/js/images.js') }}"></script>
+<script src="{{ path('medium/js/newpart.js') }}"></script>
 <script>
     var editor = new MediumEditor('.editable', ['encoding', 'URL']);
     $(function () {

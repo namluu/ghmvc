@@ -2878,7 +2878,7 @@ MediumEditor.extensions = {};
             aria: 'ordered list',
             tagNames: ['ol'],
             useQueryState: true,
-            contentDefault: '<b>1.</b>',
+            contentDefault: '<i class="fa fa-list-ol"></i>',
             contentFA: '<i class="fa fa-list-ol"></i>'
         },
         'unorderedlist': {
@@ -2887,7 +2887,7 @@ MediumEditor.extensions = {};
             aria: 'unordered list',
             tagNames: ['ul'],
             useQueryState: true,
-            contentDefault: '<b>&bull;</b>',
+            contentDefault: '<i class="fa fa-list-ul"></i>',
             contentFA: '<i class="fa fa-list-ul"></i>'
         },
         'indent': {
@@ -2979,7 +2979,7 @@ MediumEditor.extensions = {};
             action: 'append-pre',
             aria: 'preformatted text',
             tagNames: ['pre'],
-            contentDefault: '<b>0101</b>',
+            contentDefault: '<i class="fa fa-code fa-lg"></i>',
             contentFA: '<i class="fa fa-code fa-lg"></i>'
         },
         'h1': {
