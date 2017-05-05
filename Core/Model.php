@@ -164,11 +164,17 @@ abstract class Model
         return 0;
     }
 
-    public function countBy($key, $value)
+    /**
+     * @param array $options [[key => value],[key => value]]
+     * @return int
+     */
+    public function countBy($options)
     {
         $db = $this->getDB();
-
-        $sql = "SELECT COUNT(*) FROM {$this->_table} WHERE {$key} = '{$value}'";
+        $sql = "SELECT COUNT(*) FROM {$this->_table} WHERE 1 = 1";
+        foreach ($options as $key => $value) {
+            $sql .= sprintf(' AND %s = %s', $key, $value);
+        }
         if ($result = $db->query($sql)) {
             return $result->fetchColumn();
         }

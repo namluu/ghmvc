@@ -61,7 +61,7 @@ class Post extends Controller
             $tagIds = $this->postModel->getPostTagIds($post->id);
             $post->tags = $this->tagModel->getAllBy('id', $tagIds);
         }
-        $totalRows = $this->postModel->countBy('is_active', 1);
+        $totalRows = $this->postModel->countBy(['is_active' => 1]);
         $paginator = $this->paginator->init($totalRows, $limit, $page, $this->routeParams);
         View::renderTemplate('Cms::frontend/post/index.html', [
             'posts' => $posts,

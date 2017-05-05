@@ -56,4 +56,24 @@ class Post extends Model
         }
         return parent::insertMultiple($data);
     }
+
+    public function getAllBy($key, $values, $isActiveOnly = false, $limit = 10, $page = 1)
+    {
+        if (!$values) {
+            return null;
+        }
+        $db = $this->getDB();
+        $qMarks = str_repeat('?,', count($values) - 1) . '?';
+        $sql = "SELECT * FROM {$this->_table} WHERE {$key} IN ($qMarks)";
+        if ($isActiveOnly) {
+            $sql .= ' AND is_active = 1';
+        }
+        $sql .= ' ORDER BY created_at DESC';
+        if ($limit != 'all') {
+            $sql .= ' LIMIT '. ($page - 1) * $limit . ',' . $limit;
+        }
+        $sth = $db->prepare($sql);
+        $sth->execute($values);
+        return $sth->fetchAll(\PDO::FETCH_OBJ);
+    }
 }

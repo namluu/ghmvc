@@ -154,10 +154,16 @@ class TwigExtension extends \Twig_Extension
     public function avatar($name, $size = 150, $ext = '')
     {
         if ($name) {
-            if ($size == 'full') {
-                $link = $this->path('uploads/user/'.$name);
+            // full link - social
+            if (strpos($name, 'http') !== false) {
+                $link = $name;
             } else {
-                $link = $this->path('uploads/user/thumbnail/'.$name);
+                // file name
+                if ($size == 'full') {
+                    $link = $this->path('uploads/user/' . $name);
+                } else {
+                    $link = $this->path('uploads/user/thumbnail/' . $name);
+                }
             }
         } else {
             $link = $this->path('uploads/user/thumbnail/avatar_big.jpg');

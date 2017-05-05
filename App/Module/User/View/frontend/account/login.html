@@ -25,10 +25,10 @@
     <input type="hidden" name="back_url" value="{{ back_url }}">
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-6">
-            <a href="" class="btn btn-default btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
-            <a href="" class="btn btn-default btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
-            <a href="" class="btn btn-default btn-github"><i class="fa fa-github-alt"></i> Github</a>
-            <a href="" class="btn btn-default btn-google"><i class="fa fa-google-plus"></i> Google</a>
+            <a href="{{ path('user/auth/facebook') }}" class="btn btn-default btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
+            <a href="{{ path('user/auth/twitter') }}" class="btn btn-default btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
+            <a href="{{ path('user/auth/github') }}" class="btn btn-default btn-github"><i class="fa fa-github-alt"></i> Github</a>
+            <a href="{{ path('user/auth/google') }}" class="btn btn-default btn-google"><i class="fa fa-google-plus"></i> Google</a>
         </div>
     </div>
 </form>

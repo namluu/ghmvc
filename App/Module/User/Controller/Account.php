@@ -8,6 +8,8 @@ use App\Module\User\Model\User;
 use Core\Session;
 use App\Config;
 use Core\Url;
+use App\Module\Cms\Model\Post as PostModel;
+use Core\Paginator;
 
 /**
  * PHP version 7.0
@@ -17,14 +19,24 @@ class Account extends Controller
     protected $userModel;
     protected $session;
     protected $url;
+    protected $postModel;
+    protected $paginator;
     protected $cacheData = [];
 
-    public function __construct(array $routeParams, User $user, Session $session, Url $url)
-    {
+    public function __construct(
+        array $routeParams,
+        User $user,
+        Session $session,
+        Url $url,
+        PostModel $post,
+        Paginator $paginator
+    ) {
         parent::__construct($routeParams);
         $this->userModel = $user;
         $this->session = $session;
         $this->url = $url;
+        $this->postModel = $post;
+        $this->paginator = $paginator;
     }
 
     /**
@@ -118,9 +130,9 @@ class Account extends Controller
             $errorMsg[] = 'Name must contain alphabets and numbers.';*/
         } else {
             // check name exist or not
-            $count = $this->userModel->countBy('display_name', $displayName);
+            $count = $this->userModel->countBy(['display_name' => $displayName]);
             $username = $this->url->slug($displayName, array('toascii'=>true,'tolower'=>true));
-            $countUsername = $this->userModel->countBy('username', $username);
+            $countUsername = $this->userModel->countBy(['username' => $username]);
             if ($count || $countUsername) {
                 $errorMsg[] = 'Provided Username is already in use.';
             }
@@ -132,7 +144,7 @@ class Account extends Controller
             $errorMsg[] = 'Please enter valid email address.';
         } else {
             // check email exist or not
-            $count = $this->userModel->countBy('email', $email);
+            $count = $this->userModel->countBy(['email' => $email]);
             if ($count) {
                 $errorMsg[] = 'Provided Email is already in use.';
             }
@@ -184,8 +196,15 @@ class Account extends Controller
         if (!$user) {
             throw new \Exception('No route matched.', 404);
         }
+        $limit = \App\Config::getConfig('pagination_frontend');
+        $page = $this->routeParams['page'];
+        $posts = $this->postModel->getAllBy('user_id', [$user->id], true, $limit, $page);
+        $totalRows = $this->postModel->countBy(['is_active' => 1, 'user_id' => $user->id]);
+        $paginator = $this->paginator->init($totalRows, $limit, $page, $this->routeParams);
         View::renderTemplate('User::frontend/account/view.html', [
-            'user' => $user
+            'user' => $user,
+            'posts' => $posts,
+            'paginator' => $paginator
         ]);
     }
 
@@ -250,7 +269,7 @@ class Account extends Controller
             } else {
                 // check email exist or not
                 if ($data['email'] != $email) {
-                    $count = $this->userModel->countBy('email', $data['email']);
+                    $count = $this->userModel->countBy(['email' => $data['email']]);
                     if ($count) {
                         $msg[] = 'Provided Email is already in use.';
                     }

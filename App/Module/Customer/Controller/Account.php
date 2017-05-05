@@ -63,7 +63,7 @@ class Account extends Controller
             $errorMsg[] = 'Name must contain alphabets and numbers.';
         } else {
             // check fullname exist or not
-            $count = $this->customerModel->countBy('username', $username);
+            $count = $this->customerModel->countBy(['username' => $username]);
             if ($count) {
                 $errorMsg[] = 'Provided FullName is already in use.';
             }

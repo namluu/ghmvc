@@ -5,4 +5,37 @@
 {% block body %}
 <h1>{{ user.display_name }}</h1>
 <div>{{ avatar(user.avatar) }}</div>
+<br>
+<div class="feed">
+    {% for post in posts %}
+    <div class="item row">
+        <div class="col-md-10">
+            <div class="item-header">
+                <a href="{{ path('post/'~post.alias) }}">{{ post.title }}</a>
+                <div class="tag">
+                    {% for tag in post.tags %}
+                    {% set tagUrl = path('cms/tag/'~tag.alias~'/view') %}
+                    <a href="{{ tagUrl }}" class="label label-default {{ tag.color }}">{{ tag.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="item-content">
+                {{ post.content|striptags|slice(0, 180) ~ '...' }}
+            </div>
+            <div class="item-meta small">
+                <a href="{{ path('user/'~post.username~'/profile') }}">
+                    {{ post.display_name }}</a> written {{ post.created_at|time_ago }}
+            </div>
+        </div>
+        <div class="col-md-2">
+            <a href="{{ path('post/'~post.alias) }}">
+                <!--13 <span class="glyphicon glyphicon-thumbs-up"></span>-->
+                {{ post.comment_count }} <span class="glyphicon glyphicon-comment"></span>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% include 'Section/pagination.html' with {'paginator': paginator} %}
 {% endblock %}
