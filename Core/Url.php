@@ -67,4 +67,69 @@ class Url
         if($num<=0x1FFFFF)   return chr(($num>>18)+240).chr((($num>>12)&63)+128).chr((($num>>6)&63)+128).chr(($num&63)+128);
         return '';
     }
+
+    public static function getCurrentLink()
+    {
+        return (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    }
+
+    /**
+     * Add request parameter into url
+     *
+     * @param  string $url
+     * @param  array $param array( 'key' => value )
+     * @return string
+     */
+    public static function addRequestParam($url, $params)
+    {
+        $url = self::getCurrentLink();
+
+        $startDelimiter = false === strpos($url, '?') ? '?' : '&';
+
+        $arrQueryParams = [];
+        foreach ($params as $key => $value) {
+            if (is_numeric($key) || is_object($value)) {
+                continue;
+            }
+            if (is_array($value)) {
+                // $key[]=$value1&$key[]=$value2 ...
+                $arrQueryParams[] = $key . '[]=' . implode('&' . $key . '[]=', $value);
+            } elseif ($value === null) {
+                $arrQueryParams[] = $key;
+            } else {
+                if (isset($_GET[$key])) { // exist param on url
+                    $url = self::removeRequestParam($url, $key);
+                }
+                $arrQueryParams[] = $key . '=' . $value;
+            }
+        }
+        if (!empty($arrQueryParams)) {
+            $url .= $startDelimiter . implode('&', $arrQueryParams);
+        }
+
+        return $url;
+    }
+
+    /**
+     * Remove request parameter from url
+     * @param string $url
+     * @param string $paramKey
+     * @param bool $caseSensitive
+     * @return string
+     */
+    public static function removeRequestParam($url, $paramKey, $caseSensitive = false)
+    {
+        $url = self::getCurrentLink();
+        $regExpression = '/\\?[^#]*?(' . preg_quote($paramKey, '/') . '\\=[^#&]*&?)/' . ($caseSensitive ? '' : 'i');
+        while (preg_match($regExpression, $url, $matches) !== 0) {
+            $paramString = $matches[1];
+            // if ampersand is at the end of $paramString
+            if (substr($paramString, -1, 1) != '&') {
+                $url = preg_replace('/(&|\\?)?' . preg_quote($paramString, '/') . '/', '', $url);
+            } else {
+                $url = str_replace($paramString, '', $url);
+            }
+        }
+        return $url;
+    }
 }

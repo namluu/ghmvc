@@ -1,0 +1,36 @@
+{% extends 'Admin/base.html' %}
+
+{% block title %}Users{% endblock %}
+
+{% block body %}
+<h2>List User <a class="btn btn-default" href="{{ admin_path('cms/user/add') }}">Add New</a></h2>
+{% include 'Section/pagination.html' with {'paginator': paginator} %}
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Display name</th>
+        <th>Email</th>
+        <th>Active</th>
+        <th>Action</th>
+    </tr>
+    {% for user in users %}
+    {% set editUrl = admin_path("user/user/#{user.id}/edit") %}
+    {% set deleteUrl = admin_path("user/user/#{user.id}/delete") %}
+    {% set activeUrl = admin_path("user/user/#{user.id}/active") %}
+    {% set inactiveUrl = admin_path("user/user/#{user.id}/inactive") %}
+    <tr class="{{ user.is_active ? : 'active' }}">
+        <td>{{ user.id }}</td>
+        <td><a href="{{ editUrl }}">{{ user.username }}</a></td>
+        <td>{{ user.display_name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ btn_active(user.is_active, activeUrl, inactiveUrl) }}</td>
+        <td>
+            <a href="{{ editUrl }}">Edit</a> |
+            <a href="{{ deleteUrl }}" onclick="return confirmDelete();">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% include 'Section/pagination.html' with {'paginator': paginator} %}
+{% endblock %}

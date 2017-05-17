@@ -23,7 +23,9 @@ class TwigExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_Filter('time_ago', [$this, 'timeAgo'])
+            new \Twig_Filter('time_ago', [$this, 'timeAgo']),
+            new \Twig_Filter('add_request_param', [$this, 'addRequestParam']),
+            new \Twig_Filter('remove_request_param', [$this, 'removeRequestParam'])
         ];
     }
 
@@ -171,5 +173,16 @@ class TwigExtension extends \Twig_Extension
 
 
         return sprintf('<img src="%s" width="%s" %s>', $link, $size, $ext);
+    }
+
+    // with filter, first param is the object left of the filter
+    public function addRequestParam($url, $params)
+    {
+        return Url::addRequestParam($url, $params);
+    }
+
+    public function removeRequestParam($url, $params)
+    {
+        return Url::removeRequestParam($url, $params);
     }
 }

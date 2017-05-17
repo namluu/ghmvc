@@ -3,6 +3,10 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
+<div class="filter">
+    <a href="{{ path('post')|remove_request_param('hottest') }}">Newest</a>
+    <a href="{{ path('post')|add_request_param({'hottest': 1}) }}">Hottest</a>
+</div>
 <div class="feed">
     {% for post in posts %}
     <div class="item row">

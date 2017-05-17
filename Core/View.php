@@ -19,8 +19,9 @@ class View
                 $paths[] = dirname(__DIR__) . '/App/Module/'.$module.'/View';
             }
             $loader = new \Twig_Loader_Filesystem($paths);
-            self::$twig = new \Twig_Environment($loader);
+            self::$twig = new \Twig_Environment($loader, ['debug' => true]);
             self::$twig->addExtension(new TwigExtension());
+            self::$twig->addExtension(new \Twig_Extension_Debug());
         }
     }
 
