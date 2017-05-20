@@ -1,46 +1,43 @@
-{% extends 'base.html' %}
+{% extends 'base_one_column.html' %}
 
 {% block title %}Register{% endblock %}
 
 {% block body %}
-<h1>Sign Up</h1>
-<form action="{{ path('user/account/registerSubmit') }}" method="post" class="form-horizontal">
-    <div class="form-group">
-        <label for="email" class="col-sm-2 control-label">Email</label>
-        <div class="col-sm-5">
-            <input type="text" name="email" id="email" value="{{ user.email }}" class="form-control">
+<div class="row register-form">
+    <div class="col-md-5 col-md-offset-3">
+        <h1 class="text-center header-logo">Kipalog</h1>
+        <div class="text-center small-basic-segment">
+            Chia sẻ và học hỏi kiến thức một cách dễ dàng hơn.
         </div>
+        <form action="{{ path('user/account/registerSubmit') }}" method="post" class="form-horizontal">
+            <div class="form-group has-feedback">
+                <input type="text" name="username" id="username" value="{{ user.username }}" class="form-control" placeholder="Username">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" name="email" id="email" value="{{ user.email }}" class="form-control" placeholder="Email">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" name="confirm-password" id="confirm-password" class="form-control" placeholder="Xác nhận password">
+                <span class="glyphicon glyphicon-refresh form-control-feedback"></span>
+            </div>
+            <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input id="tos" type="checkbox"> Đồng ý với <a href="">điều khoản sử dụng</a>
+                </label>
+            </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register" class="btn btn-primary btn-block">
+            </div>
+        </form>
     </div>
-    <div class="form-group">
-        <label for="display_name" class="col-sm-2 control-label">Display name</label>
-        <div class="col-sm-5">
-            <input type="text" name="display_name" id="display_name" value="{{ user.display_name }}" class="form-control">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="password" class="col-sm-2 control-label">Password</label>
-        <div class="col-sm-5">
-            <input type="password" name="password" id="password" class="form-control">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="confirm-password" class="col-sm-2 control-label">Confirm Password</label>
-        <div class="col-sm-5">
-            <input type="password" name="confirm-password" id="confirm-password" class="form-control">
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-5">
-            <input type="submit" value="Register" class="btn btn-default">
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-6">
-            <a href="{{ path('user/auth/facebook') }}" class="btn btn-default btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
-            <a href="{{ path('user/auth/twitter') }}" class="btn btn-default btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
-            <a href="{{ path('user/auth/github') }}" class="btn btn-default btn-github"><i class="fa fa-github-alt"></i> Github</a>
-            <a href="{{ path('user/auth/google') }}" class="btn btn-default btn-google"><i class="fa fa-google-plus"></i> Google</a>
-        </div>
-    </div>
-</form>
+</div>
+
 {% endblock %}

@@ -7,7 +7,6 @@ use App\Helper;
 use App\Module\User\Model\User;
 use Core\Session;
 use App\Config;
-use Core\Url;
 use App\Module\Cms\Model\Post as PostModel;
 use Core\Paginator;
 
@@ -18,7 +17,6 @@ class Account extends Controller
 {
     protected $userModel;
     protected $session;
-    protected $url;
     protected $postModel;
     protected $paginator;
     protected $cacheData = [];
@@ -27,14 +25,12 @@ class Account extends Controller
         array $routeParams,
         User $user,
         Session $session,
-        Url $url,
         PostModel $post,
         Paginator $paginator
     ) {
         parent::__construct($routeParams);
         $this->userModel = $user;
         $this->session = $session;
-        $this->url = $url;
         $this->postModel = $post;
         $this->paginator = $paginator;
     }
@@ -115,28 +111,26 @@ class Account extends Controller
 
         $errorMsg = array();
         $dataCache = array();
-        $displayName = $this->cleanInput($_POST['display_name']);
-        $username = $displayName;
+        $username = $this->cleanInput($_POST['username']);
         $email = $this->cleanInput($_POST['email']);
         $password = $this->cleanInput($_POST['password']);
         $passwordConfirm = $this->cleanInput($_POST['confirm-password']);
 
         // basic name validation
-        if (empty($displayName)) {
-            $errorMsg[] = 'Please enter your display name.';
-        } elseif (strlen($displayName) < 3) {
-            $errorMsg[] = 'Name must have at least 3 characters.';
-        /*} elseif (!preg_match("/^[a-zA-Z0-9]+$/",$username)) {
-            $errorMsg[] = 'Name must contain alphabets and numbers.';*/
+        if (empty($username)) {
+            $errorMsg[] = 'Please enter your username.';
+        } elseif (strlen($username) < 3) {
+            $errorMsg[] = 'Username must have at least 3 characters.';
+        } elseif (!preg_match("/^[a-zA-Z0-9]+$/",$username)) {
+            $errorMsg[] = 'Name must contain alphabets and numbers.';
         } else {
             // check name exist or not
-            $count = $this->userModel->countBy(['display_name' => $displayName]);
-            $username = $this->url->slug($displayName, array('toascii'=>true,'tolower'=>true));
+            $count = $this->userModel->countBy(['username' => $username]);
             $countUsername = $this->userModel->countBy(['username' => $username]);
             if ($count || $countUsername) {
                 $errorMsg[] = 'Provided Username is already in use.';
             }
-            $dataCache['display_name'] = $displayName;
+            $dataCache['username'] = $username;
         }
 
         // basic email validation
@@ -163,7 +157,7 @@ class Account extends Controller
         if (!$errorMsg) {
             $hash = md5(Config::getConfig('salt').$password);
             $data = array(
-                'display_name' => $displayName,
+                'display_name' => $username,
                 'username' => $username,
                 'password' => $hash,
                 'email' => $email

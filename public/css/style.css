@@ -60,3 +60,8 @@ h2.intro { margin: 25px 0 }
 .topic { line-height: 2 }
 .topic .panel img { -webkit-filter: grayscale(1); -moz-filter: grayscale(1); -ms-filter: grayscale(1); filter: grayscale(1);  opacity: .8; }
 .topic .panel img:hover { -webkit-filter: grayscale(0); -moz-filter: grayscale(0); -ms-filter: grayscale(0); filter: grayscale(0); }
+.has-feedback .form-control { padding-left: 42.5px; }
+.form-horizontal .has-feedback .form-control-feedback { right: auto; left: 15px; opacity: 0.5; }
+.register-form .form-group { margin-bottom: 30px; }
+.header-logo { text-transform: uppercase; font-size: 2.5em; margin: .8em 0; }
+.small-basic-segment { padding: 10px 0 40px; font-size: 16px; }
