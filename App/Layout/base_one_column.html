@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="{{ path('css/style.css') }}" />
 </head>
 <body>
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default bg-navy">
         <div class="container">
             <ul class="nav navbar-nav">
-                <li><a href="{{ path() }}">Home</a></li>
+                <li><a href="{{ path() }}">KIPALOG</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if is_login() %}
@@ -22,28 +22,42 @@
                 <li><p class="navbar-text"><span>Hello: {{ loginUser.display_name }}</span></p></li>
                 <li><a href="{{ path('user/account/logout') }}">Logout</a></li>
                 {% else %}
-                <li><a href="{{ path('user/account/register') }}">Register</a></li>
-                <li><a href="{{ path('user/account/login') }}">Login</a></li>
+                <li><a href="{{ path('user/account/login') }}"><small><span class="glyphicon glyphicon-log-in"></span></small> Đăng nhập</a></li>
                 {% endif %}
             </ul>
         </div>
     </nav>
 
-    <br><br>
-
     <div class="container">{% include 'Section/messages.html' %}</div>
 
-    <div class="container">
+    <div class="container {% block main_site_class %}{% endblock %}">
         <div class="row">
-            <section class="col-md-12">
+            <div class="col-md-12">
             {% block body %}
             {% endblock %}
-            </section>
+            </div>
         </div>
     </div>
 
     <footer class="site-footer">
-        <div class="container"></div>
+        <div class="container"><hr></div>
+        <div class="container">
+            <div class="links">
+                <a target="_blank" href="http://kipalog.com/tos">
+                    Điều khoản
+                </a>
+                <a target="_blank" href="https://www.facebook.com/groups/1466126020344500/">
+                    Phản hồi
+                </a>
+                <a target="_blank" href="https://github.com/Kipalog/Issue-tracker">
+                    Yêu cầu
+                </a>
+                <a target="_blank" href="https://www.facebook.com/pages/Kipalog/486208978117754">
+                    Fanpage
+                </a>
+                <span class="copyright pull-right">Copyright © 2015 Kipalog</span>
+            </div>
+        </div>
     </footer>
 
     <script src="{{ path('js/jquery-3.1.1.min.js') }}"></script>

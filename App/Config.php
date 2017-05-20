@@ -8,7 +8,7 @@ class Config
      * Database
      */
     const DB_HOST = 'localhost';
-    const DB_NAME = 'ghmvc';
+    const DB_NAME = 'kipalog';
     const DB_USER = 'root';
     const DB_PASSWORD = '';
 
