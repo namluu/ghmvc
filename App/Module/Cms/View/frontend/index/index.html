@@ -34,7 +34,7 @@
 
 {% block body %}
 <section class="title">
-    <h1 class="big-title">Nền tảng chia sẻ kiến thức cho lập trình viên</h1>
+    <h1 class="big-title">{{ 'Nền tảng chia sẻ kiến thức cho lập trình viên'|trans }}</h1>
     <h2 class="description">
         <span>Ruby On Rails, Lotus, Python, Sysadmin, NodeJS, AngularJS, UI/UX, Haskell, Scala...</span>
         <br>
@@ -47,12 +47,12 @@
         Tham gia ngay với
     </span>
     <span>
-        <a href="{{ path('user/auth/facebook') }}" class="btn btn-default btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
-        <a href="{{ path('user/auth/twitter') }}" class="btn btn-default btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
-        <a href="{{ path('user/auth/github') }}" class="btn btn-default btn-github"><i class="fa fa-github-alt"></i> Github</a>
+        <a href="{{ mlpath('user/auth/facebook') }}" class="btn btn-default btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
+        <a href="{{ mlpath('user/auth/twitter') }}" class="btn btn-default btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
+        <a href="{{ mlpath('user/auth/github') }}" class="btn btn-default btn-github"><i class="fa fa-github-alt"></i> Github</a>
     </span>
     <span class="call_to_action">
-        Hoặc <a class="email" href="{{ path('user/account/register') }}">đăng ký bằng email</a>
+        Hoặc <a class="email" href="{{ mlpath('user/account/register') }}">đăng ký bằng email</a>
     </span>
 </section>
 
@@ -165,12 +165,12 @@
 
 <section class="signup">
     <span>
-        <a href="{{ path('user/auth/facebook') }}" class="btn btn-default btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
-        <a href="{{ path('user/auth/twitter') }}" class="btn btn-default btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
-        <a href="{{ path('user/auth/github') }}" class="btn btn-default btn-github"><i class="fa fa-github-alt"></i> Github</a>
+        <a href="{{ mlpath('user/auth/facebook') }}" class="btn btn-default btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
+        <a href="{{ mlpath('user/auth/twitter') }}" class="btn btn-default btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
+        <a href="{{ mlpath('user/auth/github') }}" class="btn btn-default btn-github"><i class="fa fa-github-alt"></i> Github</a>
     </span>
     <span class="call_to_action">
-        Hoặc <a class="email" href="{{ path('user/account/register') }}">đăng ký bằng email</a>
+        Hoặc <a class="email" href="{{ mlpath('user/account/register') }}">đăng ký bằng email</a>
     </span>
 </section>
 

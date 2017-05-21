@@ -7,9 +7,9 @@
     <div class="col-md-5 col-md-offset-3">
         <h1 class="text-center header-logo">Kipalog</h1>
         <div class="text-center small-basic-segment">
-            Chia sẻ và học hỏi kiến thức một cách dễ dàng hơn.
+            {{ 'Chia sẻ và học hỏi kiến thức một cách dễ dàng hơn.'|trans }}
         </div>
-        <form action="{{ path('user/account/registerSubmit') }}" method="post" class="form-horizontal">
+        <form action="{{ mlpath('user/account/registerSubmit') }}" method="post" class="form-horizontal">
             <div class="form-group has-feedback">
                 <input type="text" name="username" id="username" value="{{ user.username }}" class="form-control" placeholder="Username">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>

@@ -25,20 +25,7 @@ spl_autoload_register(function ($class) {
 
 $config = new App\Config();
 $config->loadConfig();
-
-/**
- * Init application
- */
-date_default_timezone_set($config->getConfig('timezone'));
-
-/**
- * Error and Exception handling
- */
-error_reporting(E_ALL);
-set_error_handler('Core\Error::errorHandler');
-set_exception_handler('Core\Error::exceptionHandler');
-
-session_start();
+$config->init();
 
 /**
  * Routing

@@ -9,6 +9,7 @@ class TwigExtension extends \Twig_Extension
     {
         return [
             new \Twig_Function('path', [$this, 'path']),
+            new \Twig_Function('mlpath', [$this, 'mlpath']),
             new \Twig_Function('admin_path', [$this, 'adminPath']),
             new \Twig_Function('is_login', [$this, 'isLogin']),
             new \Twig_Function('get_login_user', [$this, 'getLoginUser']),
@@ -25,7 +26,8 @@ class TwigExtension extends \Twig_Extension
         return [
             new \Twig_Filter('time_ago', [$this, 'timeAgo']),
             new \Twig_Filter('add_request_param', [$this, 'addRequestParam']),
-            new \Twig_Filter('remove_request_param', [$this, 'removeRequestParam'])
+            new \Twig_Filter('remove_request_param', [$this, 'removeRequestParam']),
+            new \Twig_Filter('trans', [$this, 'trans'])
         ];
     }
 
@@ -37,6 +39,16 @@ class TwigExtension extends \Twig_Extension
     public function adminPath($string = '')
     {
         return Helper::getAdminUrl($string);
+    }
+
+    public function mlpath($string = '')
+    {
+        return Helper::getLink($string);
+    }
+
+    public function trans($key)
+    {
+        return \Core\Language::get($key, $key);
     }
 
     public function isLogin()

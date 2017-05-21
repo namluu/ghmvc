@@ -118,7 +118,7 @@ class Account extends Controller
 
         // basic name validation
         if (empty($username)) {
-            $errorMsg[] = 'Please enter your username.';
+            $errorMsg[] = Helper::__('Please enter your username.');
         } elseif (strlen($username) < 3) {
             $errorMsg[] = 'Username must have at least 3 characters.';
         } elseif (!preg_match("/^[a-zA-Z0-9]+$/",$username)) {
@@ -128,7 +128,7 @@ class Account extends Controller
             $count = $this->userModel->countBy(['username' => $username]);
             $countUsername = $this->userModel->countBy(['username' => $username]);
             if ($count || $countUsername) {
-                $errorMsg[] = 'Provided Username is already in use.';
+                $errorMsg[] = Helper::__('Provided Username is already in use.');
             }
             $dataCache['username'] = $username;
         }
@@ -164,11 +164,11 @@ class Account extends Controller
             );
             $this->userModel->save($data);
             $this->session->setMessage('success', 'Register successfully');
-            $this->redirect(Helper::getUrl('user/account/login'));
+            $this->redirect(Helper::getLink('user/account/login'));
         }
         $this->session->setFormData('user_form_data', $dataCache);
         $this->session->setMessage('error', join('<br>', $errorMsg));
-        $this->redirect(Helper::getUrl('user/account/register'));
+        $this->redirect(Helper::getLink('user/account/register'));
     }
 
     public function logout()

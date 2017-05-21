@@ -8,6 +8,25 @@ class Helper
         return Config::getConfig('base_url') . $url;
     }
 
+    public static function getLink($url = '')
+    {
+        global $router;
+        $params = $router->getParams();
+        $lang = $params['lang'];
+        if ($lang != 'vi') {
+            return Config::getConfig('base_url') . $lang . '/' . $url;
+        }
+        return Config::getConfig('base_url') . $url;
+    }
+
+    // translate helpers
+    public static function __($key, $default = '') {
+        if (!$default) {
+            $default = $key;
+        }
+        return \Core\Language::get($key, $default);
+    }
+
     public static function getPath($folder = '')
     {
         return dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . $folder;

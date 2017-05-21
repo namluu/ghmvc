@@ -27,4 +27,32 @@ class Config
         }
         return null;
     }
+
+    public function init()
+    {
+        /**
+         * Init application
+         */
+        date_default_timezone_set($this->getConfig('timezone'));
+
+        /**
+         * Error and Exception handling
+         */
+        error_reporting(E_ALL);
+        set_error_handler('Core\Error::errorHandler');
+        set_exception_handler('Core\Error::exceptionHandler');
+
+        /**
+         * Session
+         */
+        session_start();
+
+        /**
+         * Define
+         */
+        define ('DS', DIRECTORY_SEPARATOR);
+        define ('ROOT', dirname(dirname(__FILE__)));
+
+
+    }
 }

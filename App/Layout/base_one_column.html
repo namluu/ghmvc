@@ -18,11 +18,11 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if is_login() %}
                 {% set loginUser = get_login_user() %}
-                <li><a href="{{ path('cms/post/add') }}">Post new</a></li>
+                <li><a href="{{ mlpath('cms/post/add') }}">Post new</a></li>
                 <li><p class="navbar-text"><span>Hello: {{ loginUser.display_name }}</span></p></li>
-                <li><a href="{{ path('user/account/logout') }}">Logout</a></li>
+                <li><a href="{{ mlpath('user/account/logout') }}">Logout</a></li>
                 {% else %}
-                <li><a href="{{ path('user/account/login') }}"><small><span class="glyphicon glyphicon-log-in"></span></small> Đăng nhập</a></li>
+                <li><a href="{{ mlpath('user/account/login') }}"><small><span class="glyphicon glyphicon-log-in"></span></small> Đăng nhập</a></li>
                 {% endif %}
             </ul>
         </div>

@@ -1,6 +1,5 @@
 <?php
 namespace Core;
-use App\Config;
 
 /**
 * Router
@@ -64,7 +63,16 @@ class Router
      */
     public function match($url)
     {
+        $objLanguage = new \Core\Language();
+        $currentLanguage = '';
         foreach ($this->routes as $route => $params) {
+            $availableLanguages = $objLanguage->getAvailableLanguages();
+            $defaultLanguage = $objLanguage->getDefaultLanguage();
+            $parts = explode('/', $url);
+            if (!$currentLanguage && in_array($parts[0], $availableLanguages)) {
+                $currentLanguage = $parts[0];
+                $url = str_replace($parts[0].'/', '', $url);
+            }
             if (preg_match($route, $url, $matches)) {
                 // Get named capture group values
                 foreach ($matches as $key => $match) {
@@ -74,6 +82,10 @@ class Router
                 }
                 $this->params = $params;
                 $this->params['path'] = $url;
+                $this->params['lang'] = $currentLanguage ? $currentLanguage : $defaultLanguage;
+
+                $objLanguage->load($this->params['lang']);
+
                 return true;
             }
         }
