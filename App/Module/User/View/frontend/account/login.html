@@ -1,35 +1,40 @@
-{% extends 'base.html' %}
+{% extends 'base_one_column.html' %}
 
 {% block title %}Login{% endblock %}
 
 {% block body %}
-<h1>Sign In</h1>
-<form action="{{ path('user/account/loginSubmit') }}" method="post" class="form-horizontal">
-    <div class="form-group">
-        <label for="email" class="col-sm-2 control-label">Email</label>
-        <div class="col-sm-5">
-            <input type="text" name="email" id="email" class="form-control">
+<div class="row register-form">
+    <div class="col-md-5 col-md-offset-3">
+        <h1 class="text-center header-logo">Kipalog</h1>
+        <div class="text-center small-basic-segment">
+            {{ 'Chia sẻ và học hỏi kiến thức một cách dễ dàng hơn.'|trans }}
         </div>
+        <form action="{{ path('user/account/loginSubmit') }}" method="post" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-10">
+                    <input type="text" name="email" id="email" value="{{ user.email }}" class="form-control" placeholder="Email">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-10">
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-10">
+                    <input type="submit" value="Login" class="btn btn-success btn-block">
+                </div>
+            </div>
+            <input type="hidden" name="back_url" value="{{ back_url }}">
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-10">
+                    <a href="{{ path('user/auth/facebook') }}" class="btn btn-default btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
+                    <a href="{{ path('user/auth/twitter') }}" class="btn btn-default btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
+                    <a href="{{ path('user/auth/github') }}" class="btn btn-default btn-github"><i class="fa fa-github-alt"></i> Github</a>
+                    <a href="{{ path('user/auth/google') }}" class="btn btn-default btn-google"><i class="fa fa-google-plus"></i> Google</a>
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="form-group">
-        <label for="password" class="col-sm-2 control-label">Password</label>
-        <div class="col-sm-5">
-            <input type="password" name="password" id="password" class="form-control">
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-5">
-            <input type="submit" value="Login" class="btn btn-default">
-        </div>
-    </div>
-    <input type="hidden" name="back_url" value="{{ back_url }}">
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-6">
-            <a href="{{ path('user/auth/facebook') }}" class="btn btn-default btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
-            <a href="{{ path('user/auth/twitter') }}" class="btn btn-default btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
-            <a href="{{ path('user/auth/github') }}" class="btn btn-default btn-github"><i class="fa fa-github-alt"></i> Github</a>
-            <a href="{{ path('user/auth/google') }}" class="btn btn-default btn-google"><i class="fa fa-google-plus"></i> Google</a>
-        </div>
-    </div>
-</form>
+</div>
 {% endblock %}

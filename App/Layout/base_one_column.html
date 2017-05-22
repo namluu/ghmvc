@@ -22,6 +22,7 @@
                 <li><p class="navbar-text"><span>Hello: {{ loginUser.display_name }}</span></p></li>
                 <li><a href="{{ mlpath('user/account/logout') }}">Logout</a></li>
                 {% else %}
+                <li><a href="{{ mlpath('user/account/register') }}"><small><span class="glyphicon glyphicon-user"></span></small> Đăng ký</a></li>
                 <li><a href="{{ mlpath('user/account/login') }}"><small><span class="glyphicon glyphicon-log-in"></span></small> Đăng nhập</a></li>
                 {% endif %}
             </ul>
