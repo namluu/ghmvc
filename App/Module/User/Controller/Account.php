@@ -190,6 +190,9 @@ class Account extends Controller
         if (!$user) {
             throw new \Exception('No route matched.', 404);
         }
+        $followeds = $this->userModel->getFolloweds($user->id);
+        $followers = $this->userModel->getFollowers($user->id);
+        $followedIds = $this->userModel->getFollowedIds($user->id);
         $limit = \App\Config::getConfig('pagination_frontend');
         $page = $this->routeParams['page'];
         $posts = $this->postModel->getAllBy('user_id', [$user->id], true, $limit, $page);
@@ -198,7 +201,10 @@ class Account extends Controller
         View::renderTemplate('User::frontend/account/view.html', [
             'user' => $user,
             'posts' => $posts,
-            'paginator' => $paginator
+            'paginator' => $paginator,
+            'followeds' => $followeds,
+            'followers' => $followers,
+            'followedIds' => $followedIds
         ]);
     }
 
@@ -302,5 +308,33 @@ class Account extends Controller
                 )
             )
         ));
+    }
+
+    public function follow()
+    {
+        $this->updateRelation(true);
+    }
+
+    public function unfollow()
+    {
+        $this->updateRelation(false);
+    }
+
+    protected function updateRelation($follow = true)
+    {
+        if ($_POST) {
+            $followerId = (int)$_POST['follower_id'];
+            $user = $this->userModel->getOneBy('id', $followerId);
+            if (!$user) {
+                throw new \Exception('User not found', 500);
+            }
+            $followedId = (int)$_POST['followed_id'];
+            $user = $this->userModel->getOneBy('id', $followedId);
+            if (!$user) {
+                throw new \Exception('User not found', 500);
+            }
+            $this->userModel->updateRelation($followerId, $followedId, $follow);
+        }
+        $this->redirect($this->getPreviousUrl());
     }
 }

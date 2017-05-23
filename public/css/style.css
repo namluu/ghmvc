@@ -65,3 +65,8 @@ h2.intro { margin: 25px 0 }
 .register-form .form-group { margin-bottom: 30px; }
 .header-logo { text-transform: uppercase; font-size: 2.5em; margin: .8em 0; }
 .small-basic-segment { padding: 10px 0 40px; font-size: 16px; }
+.user-info { padding-top: 50px; }
+.navbar-nav>li>a.dropdown-toggle-avatar { padding: 5px }
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover { background-color: #2c4762; }
+.nav .separate {     border: 1px solid rgba(255,255,255,0.2); height: 30px; display: inline-block; margin: 10px; }
+.navbar .glyphicon-bell { font-size: 18px; }

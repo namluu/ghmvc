@@ -18,9 +18,24 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if is_login() %}
                 {% set loginUser = get_login_user() %}
-                <li><a href="{{ mlpath('cms/post/add') }}">Post new</a></li>
-                <li><p class="navbar-text"><span>Hello: {{ loginUser.display_name }}</span></p></li>
-                <li><a href="{{ mlpath('user/account/logout') }}">Logout</a></li>
+                <li><a href="{{ mlpath('cms/post/add') }}"><span class="glyphicon glyphicon-pencil"></span> Post new</a></li>
+                <li><a href="{{ mlpath('post/') }}"><span class="glyphicon glyphicon-home"></span> Trang chủ</a></li>
+                <li class="separate"></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bell"></span> <span class="badge label-danger">42</span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="">new</a></li>
+                        <li><a href="">new</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle dropdown-toggle-avatar" data-toggle="dropdown">{{ avatar(loginUser.avatar, 38, 'class="img-circle menu-avatar"') }} <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ mlpath('user/'~loginUser.username) }}">My page</a></li>
+                        <li><a href="{{ mlpath('user/account/'~loginUser.id~'/edit') }}">Edit</a></li>
+                        <li><a href="{{ mlpath('user/account/logout') }}">Logout</a></li>
+                    </ul>
+                </li>
                 {% else %}
                 <li><a href="{{ mlpath('user/account/register') }}"><small><span class="glyphicon glyphicon-user"></span></small> Đăng ký</a></li>
                 <li><a href="{{ mlpath('user/account/login') }}"><small><span class="glyphicon glyphicon-log-in"></span></small> Đăng nhập</a></li>
