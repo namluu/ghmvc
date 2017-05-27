@@ -10,6 +10,7 @@ use Core\Paginator;
 use App\Module\Cms\Model\Post as PostModel;
 use App\Module\Cms\Model\Tag as TagModel;
 use App\Module\User\Model\User as UserModel;
+use App\Module\User\Model\Action as UserActionModel;
 use App\Module\Cms\Model\Comment as CommentModel;
 /**
  * Home controller
@@ -21,6 +22,7 @@ class Post extends Controller
     protected $postModel;
     protected $tagModel;
     protected $userModel;
+    protected $userActionModel;
     protected $commentModel;
     protected $session;
     protected $url;
@@ -32,6 +34,7 @@ class Post extends Controller
         PostModel $post,
         TagModel $tag,
         UserModel $user,
+        UserActionModel $action,
         CommentModel $comment,
         Session $session,
         Url $url,
@@ -43,6 +46,7 @@ class Post extends Controller
         $this->postModel = $post;
         $this->tagModel = $tag;
         $this->userModel = $user;
+        $this->userActionModel = $action;
         $this->commentModel = $comment;
         parent::__construct($routeParams);
     }
@@ -116,6 +120,15 @@ class Post extends Controller
                 }*/
 
                 if ($resultPostId) {
+                    $current = date('Y-m-d H:i:s');
+                    $actionId = $this->userActionModel->save([
+                        'user_id' => $data['user_id'],
+                        'action_type' => 'post_add',
+                        'action_detail' => $resultPostId,
+                        'created_at' => $current
+                    ]);
+                    $this->userModel->updateRelationVersion($data['user_id'], $current);
+
                     $this->session->setMessage('success', 'Save successfully');
                 } else {
                     $this->session->setMessage('error', 'Save unsuccessfully');

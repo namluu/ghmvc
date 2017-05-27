@@ -21,11 +21,16 @@
                 <li><a href="{{ mlpath('cms/post/add') }}"><span class="glyphicon glyphicon-pencil"></span> Post new</a></li>
                 <li><a href="{{ mlpath('post/') }}"><span class="glyphicon glyphicon-home"></span> Trang chủ</a></li>
                 <li class="separate"></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bell"></span> <span class="badge label-danger">42</span></a>
+                <li class="dropdown noti">
+                    {% set notifications = get_user_notification(loginUser.id) %}
+                    {% set num_notification = count_user_notification(loginUser.id) %}
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bell"></span> {% if num_notification %}<span class="badge label-danger">{{ num_notification }}</span>{% endif %}</a>
                     <ul class="dropdown-menu">
-                        <li><a href="">new</a></li>
-                        <li><a href="">new</a></li>
+                        {% for noti in notifications %}
+                        <li><a href="{{ noti.link }}">{{ noti.content|raw }}</a></li>
+                        {% else %}
+                        <li><a href="">No Update</a></li>
+                        {% endfor %}
                     </ul>
                 </li>
                 <li class="dropdown">

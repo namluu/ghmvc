@@ -45,7 +45,7 @@ class Url
             $str = $this->toPlainLatin($str);
 
         $str = str_replace(array('(',')','-','=',',','.','/','#','?','+','!','@','$','%','^','&','*',':',"\t","\r","\n","　"), " ", $str);
-        $str = str_replace(array("'", "’"), '', $str);
+        $str = str_replace(array("'", "’",'"', '“', '”'), '', $str);
         $str = preg_replace('/[\s]{2,}/', ' ', $str);
         $str = preg_replace('/[\s]$/', '', $str);
         $str = str_replace(' ', '-', $str);

@@ -115,6 +115,11 @@ abstract class Model
         }
     }
 
+    /**
+     * @param array $data
+     * @param int $id
+     * @return int $id
+     */
     public function save($data, $id = null)
     {
         $db = $this->getDB();

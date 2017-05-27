@@ -18,6 +18,8 @@ class TwigExtension extends \Twig_Extension
             new \Twig_Function('btn_active', [$this, 'btnActive'], ['is_safe' => ['html']]),
             new \Twig_Function('ckeditor', [$this, 'ckeditor'], ['is_safe' => ['html']]),
             new \Twig_Function('avatar', [$this, 'avatar'], ['is_safe' => ['html']]),
+            new \Twig_Function('get_user_notification', [$this, 'getUserNotification'], ['is_safe' => ['html']]),
+            new \Twig_Function('count_user_notification', [$this, 'countUserNotification']),
         ];
     }
 
@@ -196,5 +198,19 @@ class TwigExtension extends \Twig_Extension
     public function removeRequestParam($url, $params)
     {
         return Url::removeRequestParam($url, $params);
+    }
+
+    public function getUserNotification($userId)
+    {
+        $userModel = new \App\Module\User\Model\User();
+        $notifications = $userModel->getNotificationUser($userId);
+        return $notifications;
+    }
+
+    public function countUserNotification($userId)
+    {
+        $userModel = new \App\Module\User\Model\User();
+        $notifications = $userModel->countNewUpdateVersions($userId);
+        return $notifications;
     }
 }
