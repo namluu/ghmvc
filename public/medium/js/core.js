@@ -8,6 +8,7 @@
             editor: null,
             enabled: true,
             addons: {
+                imagelink: true,
                 images: true, // boolean or object containing configuration
                 embeds: true,
                 newpart: true
