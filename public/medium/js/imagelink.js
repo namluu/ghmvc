@@ -4,9 +4,9 @@
 
     /** Default values */
     var pluginName = 'mediumInsert',
-        addonName = 'Newpart',
+        addonName = 'Imagelink',
         defaults = {
-            label: '<i class="fa fa-level-down" title="Add a new part"></i>'
+            label: '<span class="glyphicon glyphicon-picture" title="Add an image link"></span>'
         };
 
     /**
@@ -20,7 +20,7 @@
      * @return {void}
      */
 
-    function Newpart (el, options) {
+    function Imagelink (el, options) {
         this.el = el;
         this.$el = $(el);
         this.templates = window.MediumInsert.Templates;
@@ -40,7 +40,7 @@
      * @return {void}
      */
 
-    Newpart.prototype.init = function () {
+    Imagelink.prototype.init = function () {
         this.events();
     };
 
@@ -50,7 +50,7 @@
      * @return {void}
      */
 
-    Newpart.prototype.events = function () {
+    Imagelink.prototype.events = function () {
 
     };
 
@@ -59,7 +59,7 @@
      *
      * @return {object} Core object
      */
-    Newpart.prototype.getCore = function () {
+    Imagelink.prototype.getCore = function () {
         return this.core;
     };
 
@@ -71,9 +71,12 @@
      * @return {void}
      */
 
-    Newpart.prototype.add = function () {
-        var $place = this.$el.find('.medium-insert-active');
-        $place.before('<p class="clearfix"></p>');
+    Imagelink.prototype.add = function () {
+        var imgLink = prompt("Please enter your image link", "http://");
+        if (imgLink != null) {
+            var $place = this.$el.find('.medium-insert-active');
+            $place.before('<div class="medium-insert-images"><img src="' + imgLink + '" /></div>');
+        }
     };
 
 
@@ -82,7 +85,7 @@
     $.fn[pluginName + addonName] = function (options) {
         return this.each(function () {
             if (!$.data(this, 'plugin_' + pluginName + addonName)) {
-                $.data(this, 'plugin_' + pluginName + addonName, new Newpart(this, options));
+                $.data(this, 'plugin_' + pluginName + addonName, new Imagelink(this, options));
             }
         });
     };

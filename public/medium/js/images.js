@@ -8,7 +8,7 @@
     var pluginName = 'mediumInsert',
         addonName = 'Images', // first char is uppercase
         defaults = {
-            label: '<span class="glyphicon glyphicon-picture" title="Add an image"></span>',
+            label: '<i class="fa fa-file-image-o" title="Upload an image"></i>',
             deleteMethod: 'POST',
             deleteScript: 'delete.php',
             preview: true,
