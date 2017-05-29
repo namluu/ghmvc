@@ -154,11 +154,11 @@ class TwigExtension extends \Twig_Extension
         foreach ($units as $unit => $val) {
             if ($time < $unit) continue;
             $numberOfUnits = floor($time / $unit);
-            return ($val == 'second') ? 'a few seconds ago' :
-                (($numberOfUnits > 1) ? $numberOfUnits : 'a')
-                . ' ' . $val . (($numberOfUnits > 1) ? 's' : '') . ' ago';
+            return ($val == 'second') ? Helper::__('a few seconds ago') :
+                (($numberOfUnits > 1) ? $numberOfUnits : Helper::__('a'))
+                . ' ' . Helper::__($val . (($numberOfUnits > 1) ? 's' : '')) .' '. Helper::__('ago');
         }
-        return 'a few seconds ago';
+        return Helper::__('a few seconds ago');
     }
 
     public function ckeditor($name='content',$value='',$template='Full',$width = '100%',$height='100px',$extent='')

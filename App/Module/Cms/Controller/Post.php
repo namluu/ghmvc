@@ -109,7 +109,7 @@ class Post extends Controller
             $id = isset($_POST['id']) ? (int)$_POST['id'] : null;
             $errorMsg = $this->validateData($_POST);
             if ($errorMsg) {
-                $this->session->setFormData('post_form_data_fo', $this->cacheData);
+                //$this->session->setFormData('post_form_data_from', $this->cacheData);
                 $this->session->setMessage('error', implode(', ', $errorMsg));
             } else {
                 $data = $this->sanitizeData($_POST);
@@ -121,7 +121,7 @@ class Post extends Controller
 
                 if ($resultPostId) {
                     $current = date('Y-m-d H:i:s');
-                    $actionId = $this->userActionModel->save([
+                    $this->userActionModel->save([
                         'user_id' => $data['user_id'],
                         'action_type' => 'post_add',
                         'action_detail' => $resultPostId,

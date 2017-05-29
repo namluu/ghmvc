@@ -78,6 +78,8 @@ class User extends Model
                         $result = $this->getOneBy('id', $action->action_detail);
                         $news[$key]->content .= $result->title;
                         $news[$key]->link = \App\Helper::getLink('post/'.$result->alias);
+                        $news[$key]->avatar = $fromUser->avatar;
+                        $news[$key]->created_at = $action->created_at;
                         break;
                     default:
                         break;
@@ -114,5 +116,13 @@ class User extends Model
             return $result->fetchColumn();
         }
         return 0;
+    }
+
+    public function readNotification($userId, $current)
+    {
+        $this->_table = 'user_relation';
+        $this->_key = 'follower_id';
+        $data = ['read_version_at' => $current];
+        $this->save($data, $userId);
     }
 }

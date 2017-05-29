@@ -337,4 +337,18 @@ class Account extends Controller
         }
         $this->redirect($this->getPreviousUrl());
     }
+
+    public function readNotification()
+    {
+        if ($_POST) {
+            $userId = (int)$_POST['user_id'];
+            $user = $this->userModel->getOneBy('id', $userId);
+            if (!$user) {
+                throw new \Exception('User not found', 500);
+            }
+            $current = date('Y-m-d H:i:s');
+            $this->userModel->readNotification($userId, $current);
+            echo json_encode('');
+        }
+    }
 }
