@@ -9,7 +9,7 @@ class Post extends Model
 {
     protected $_table = 'cms_post';
 
-    public function getAll($isActiveOnly = false, $limit = 10, $page = 1)
+    public function getAll($isActiveOnly = false, $limit = 10, $page = 1, $isHot = false)
     {
         $db = $this->getDB();
         $sql = "SELECT main.*, u.username, u.display_name, u.avatar, COUNT(c.id) AS comment_count 
@@ -18,6 +18,9 @@ class Post extends Model
         $sql .= ' LEFt JOIN cms_comment AS c ON main.id = c.post_id';
         if ($isActiveOnly) {
             $sql .= ' WHERE main.is_active = 1';
+        }
+        if ($isHot) {
+            $sql .= ' AND main.is_hot = 1';
         }
         $sql .= ' GROUP BY main.id';
         $sql .= ' ORDER BY created_at DESC';

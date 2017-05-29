@@ -60,12 +60,13 @@ class Post extends Controller
     {
         $limit = \App\Config::getConfig('pagination_frontend');
         $page = $this->routeParams['page'];
-        $posts = $this->postModel->getAll(true, $limit, $page);
+        $isHot = isset($_GET['hottest']) && $_GET['hottest'] ? 1 : 0;
+        $posts = $this->postModel->getAll(true, $limit, $page, $isHot);
         foreach ($posts as $post) {
             $tagIds = $this->postModel->getPostTagIds($post->id);
             $post->tags = $this->tagModel->getAllBy('id', $tagIds);
         }
-        $totalRows = $this->postModel->countBy(['is_active' => 1]);
+        $totalRows = $this->postModel->countBy(['is_active' => 1, 'is_hot' => $isHot]);
         $paginator = $this->paginator->init($totalRows, $limit, $page, $this->routeParams);
         View::renderTemplate('Cms::frontend/post/index.html', [
             'posts' => $posts,

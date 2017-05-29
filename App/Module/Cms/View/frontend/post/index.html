@@ -4,8 +4,8 @@
 
 {% block body %}
 <div class="filter">
-    <a href="{{ path('post')|remove_request_param('hottest') }}">Newest</a>
-    <a href="{{ path('post')|add_request_param({'hottest': 1}) }}">Hottest</a>
+    <a href="{{ path('post')|remove_request_param('hottest') }}">{{ 'Newest'|trans }}</a>&nbsp;&nbsp;|&nbsp;
+    <a href="{{ path('post')|add_request_param({'hottest': 1}) }}">{{ 'Hottest'|trans }}</a>
 </div>
 <div class="feed">
     {% for post in posts %}
@@ -26,7 +26,7 @@
             </div>
             <div class="item-meta small">
                 <a href="{{ path('user/'~post.username) }}">
-                    {{ post.display_name }}</a> written {{ post.created_at|time_ago }}
+                    {{ post.display_name }}</a> {{ 'written'|trans }} {{ post.created_at|time_ago }}
             </div>
         </div>
         <div class="col-md-2">

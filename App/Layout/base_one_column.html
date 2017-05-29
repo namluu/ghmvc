@@ -13,7 +13,7 @@
     <nav class="navbar navbar-default bg-navy">
         <div class="container">
             <ul class="nav navbar-nav">
-                <li><a href="{{ path() }}">KIPALOG</a></li>
+                <li><a href="{{ mlpath() }}">Kipalog</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if is_login() %}
@@ -51,26 +51,7 @@
         </div>
     </div>
 
-    <footer class="site-footer">
-        <div class="container"><hr></div>
-        <div class="container">
-            <div class="links">
-                <a target="_blank" href="http://kipalog.com/tos">
-                    Điều khoản
-                </a>
-                <a target="_blank" href="https://www.facebook.com/groups/1466126020344500/">
-                    Phản hồi
-                </a>
-                <a target="_blank" href="https://github.com/Kipalog/Issue-tracker">
-                    Yêu cầu
-                </a>
-                <a target="_blank" href="https://www.facebook.com/pages/Kipalog/486208978117754">
-                    Fanpage
-                </a>
-                <span class="copyright pull-right">Copyright © 2015 Kipalog</span>
-            </div>
-        </div>
-    </footer>
+    <footer class="site-footer">{% include 'Section/footer.html' %}</footer>
     <script>
     var global_variables = {
         site_url: "{{ mlpath() }}",

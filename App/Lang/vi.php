@@ -5,5 +5,17 @@ return [
     'a few seconds ago' => 'vài giây trước',
     'a' => 'một',
     'days' => 'ngày',
-    'ago' => 'trước'
+    'day' => 'ngày',
+    'weeks' => 'tuần',
+    'week' => 'tuần',
+    'months' => 'tháng',
+    'month' => 'tháng',
+    'years' => 'năm',
+    'year' => 'năm',
+    'ago' => 'trước',
+    'Title' => 'Tiêu đề',
+    'Type some text' => 'Nhập nội dung',
+    'Newest' => 'Mới nhất',
+    'Hottest' => 'Hay nhất',
+    'written' => 'viết'
 ];

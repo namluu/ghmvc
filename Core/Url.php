@@ -82,7 +82,7 @@ class Url
      */
     public static function addRequestParam($url, $params)
     {
-        $url = self::getCurrentLink();
+        //$url = self::getCurrentLink();
 
         $startDelimiter = false === strpos($url, '?') ? '?' : '&';
 
