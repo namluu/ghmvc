@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ path('css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="{{ path('css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{ path('css/font-awesome.min.css') }}" />
     {% block styles_extra %}
     {% endblock %}
     <link rel="stylesheet" href="{{ path('css/style.css') }}" />
@@ -18,8 +18,8 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if is_login() %}
                 {% set loginUser = get_login_user() %}
-                <li><a href="{{ mlpath('cms/post/add') }}"><span class="glyphicon glyphicon-pencil"></span> Post new</a></li>
-                <li><a href="{{ mlpath('post/') }}"><span class="glyphicon glyphicon-home"></span> Trang chủ</a></li>
+                <li><a href="{{ mlpath('cms/post/add') }}"><span class="glyphicon glyphicon-pencil"></span> {{ 'Post new'|trans }}</a></li>
+                <li><a href="{{ mlpath('post/') }}"><span class="glyphicon glyphicon-home"></span> {{ 'Home'|trans }}</a></li>
                 <li class="separate"></li>
                 <li class="dropdown noti">
                     {% include 'Section/notification.html' %}
@@ -40,23 +40,30 @@
         </div>
     </nav>
 
+    <br><br>
+
     <div class="container">{% include 'Section/messages.html' %}</div>
 
-    <div class="container {% block main_site_class %}{% endblock %}">
+    <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <section class="col-md-9">
             {% block body %}
             {% endblock %}
-            </div>
+            </section>
+            <sidebar class="col-md-3">
+            {% block sidebar %}
+                {% include 'Section/sidebar.html' %}
+            {% endblock %}
+            </sidebar>
         </div>
     </div>
 
     <footer class="site-footer">{% include 'Section/footer.html' %}</footer>
     <script>
-    var global_variables = {
-        site_url: "{{ mlpath() }}",
-        current_user_id: "{{ loginUser ? loginUser.id : '' }}"
-    }
+        var global_variables = {
+            site_url: "{{ mlpath() }}",
+            current_user_id: "{{ loginUser ? loginUser.id : '' }}"
+        }
     </script>
     <script src="{{ path('js/jquery-3.1.1.min.js') }}"></script>
     <script src="{{ path('js/bootstrap.min.js') }}"></script>

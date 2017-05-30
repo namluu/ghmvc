@@ -17,5 +17,9 @@ return [
     'Type some text' => 'Nhập nội dung',
     'Newest' => 'Mới nhất',
     'Hottest' => 'Hay nhất',
-    'written' => 'viết'
+    'written' => 'viết',
+    'Post new' => 'Viết bài',
+    'Home' => 'Trang chủ',
+    'post' => 'bài viết',
+    'followed' => 'người theo dõi'
 ];

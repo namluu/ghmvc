@@ -1,0 +1,14 @@
+{% if loginUser %}
+<div class="meta-profile">
+    <div class="media">
+        <div class="media-left">{{ avatar(loginUser.avatar, 90, 'class="img-circle menu-avatar"') }}</div>
+        <div class="media-body">
+            <a href=""><h2>{{ loginUser.display_name }}</h2></a>
+            <div class="extra">
+                {{ countPost }} {{ 'post'|trans }}<br>
+                {{ countFollow }} {{ 'followed'|trans }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}

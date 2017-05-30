@@ -68,9 +68,16 @@ class Post extends Controller
         }
         $totalRows = $this->postModel->countBy(['is_active' => 1, 'is_hot' => $isHot]);
         $paginator = $this->paginator->init($totalRows, $limit, $page, $this->routeParams);
+        $userLogin = $this->session->get('login_user');
+
+        $countPost = $userLogin ? $this->postModel->countBy(['user_id' => $userLogin['id']]) : 0;
+        $countFollow = $userLogin ? count($this->userModel->getFollowedIds($userLogin['id'])) : 0;
+
         View::renderTemplate('Cms::frontend/post/index.html', [
             'posts' => $posts,
-            'paginator' => $paginator
+            'paginator' => $paginator,
+            'countPost' => $countPost,
+            'countFollow' => $countFollow
         ]);
     }
 

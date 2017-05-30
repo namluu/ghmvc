@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_2_columns.html' %}
 
 {% block title %}Home{% endblock %}
 
@@ -41,4 +41,8 @@
 
 {% include 'Section/pagination.html' with {'paginator': paginator} %}
 
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'frontend/sidebar.html' %}
 {% endblock %}
