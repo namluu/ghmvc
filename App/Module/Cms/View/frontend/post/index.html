@@ -44,5 +44,5 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% include 'frontend/sidebar.html' %}
+    {% include 'frontend/sidebar.html' with {user: loginUser} %}
 {% endblock %}

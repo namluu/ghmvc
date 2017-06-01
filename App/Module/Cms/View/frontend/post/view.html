@@ -4,16 +4,22 @@
 
 {% block styles_extra %}
 <link rel="stylesheet" href="{{ path('medium/css/medium-editor-insert-plugin.min.css')}}">
+<link rel="stylesheet" href="{{ path('js/fruidbox/fluidbox.min.css') }}">
 {% endblock %}
 
 {% block scripts_extra %}
+<script src="{{ path('js/fruidbox/jquery.ba-throttle-debounce.min.js') }}"></script>
+<script src="{{ path('js/fruidbox/jquery.fluidbox.min.js') }}"></script>
 <script>
-    $('.medium-insert-images').on('click', 'img', function () {
+    $(function () {
+        $('.fruidlink').fluidbox();
+    });
+    /*$('.medium-insert-images').on('click', 'img', function () {
         var link = this.src;
         if (link.length) {
             window.location.href = link;
         }
-    });
+    });*/
 </script>
 {% endblock %}
 
@@ -27,7 +33,9 @@
 </div>
 <br>
 <p class="author">
-    <a href="{{ path('user/'~post.user.username~'/profile') }}">{{ post.user.display_name }}</a> written {{ post.created_at|date('d/m/Y') }}
+    {% set user_link = path('user/'~post.user.username~'/profile') %}
+    <a href="{{ user_link }}">{{ avatar(post.user.avatar, 30, 'class="img-circle"') }}</a>
+    <a href="{{ user_link }}">{{ post.user.display_name }}</a> {{ 'written'|trans }} {{ post.created_at|date('d/m/Y') }}
 </p>
 <br>
 <div class="post-content">{{ post.content|raw }}</div>
@@ -65,4 +73,8 @@
 {% else %}
 <p><a href="{{ path('user/account/login?back-url='~back_url) }}">Please login to comment</a></p>
 {% endif %}
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'frontend/sidebar.html' with {user: post.user} %}
 {% endblock %}

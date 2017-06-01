@@ -52,7 +52,7 @@
 
 {% block body %}
 <form action="{{ path('cms/post/post-submit') }}" method="post">
-    <input type="text" name="title" value="" class="form-control control-title" placeholder="{{ 'Title'|trans }}">
+    <input type="text" name="title" value="" class="form-control control-title" placeholder="{{ 'Title'|trans }}" required>
     <textarea name="content" class="hidden content"></textarea>
     <div class="editable" data-placeholder="{{ 'Type some text'|trans }}"></div>
     <button type="submit" class="btn btn-primary submit-post">Post</button>

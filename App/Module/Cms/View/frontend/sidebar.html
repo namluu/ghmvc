@@ -1,9 +1,12 @@
 {% if loginUser %}
 <div class="meta-profile">
     <div class="media">
-        <div class="media-left">{{ avatar(loginUser.avatar, 90, 'class="img-circle menu-avatar"') }}</div>
+        {% set user_link = path('user/'~user.username~'/profile') %}
+        <div class="media-left">
+            <a href="{{ user_link }}">{{ avatar(user.avatar, 90, 'class="img-circle menu-avatar"') }}</a>
+        </div>
         <div class="media-body">
-            <a href=""><h2>{{ loginUser.display_name }}</h2></a>
+            <a href="{{ user_link }}"><h2>{{ user.display_name }}</h2></a>
             <div class="extra">
                 {{ countPost }} {{ 'post'|trans }}<br>
                 {{ countFollow }} {{ 'followed'|trans }}

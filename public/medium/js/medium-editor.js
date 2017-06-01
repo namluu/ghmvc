@@ -2915,7 +2915,7 @@ MediumEditor.extensions = {};
                 prop: 'text-align',
                 value: 'center'
             },
-            contentDefault: '<b>C</b>',
+            contentDefault: '<i class="fa fa-align-center"></i>',
             contentFA: '<i class="fa fa-align-center"></i>'
         },
         'justifyFull': {
@@ -2939,7 +2939,7 @@ MediumEditor.extensions = {};
                 prop: 'text-align',
                 value: 'left'
             },
-            contentDefault: '<b>L</b>',
+            contentDefault: '<i class="fa fa-align-left"></i>',
             contentFA: '<i class="fa fa-align-left"></i>'
         },
         'justifyRight': {
@@ -2951,7 +2951,7 @@ MediumEditor.extensions = {};
                 prop: 'text-align',
                 value: 'right'
             },
-            contentDefault: '<b>R</b>',
+            contentDefault: '<i class="fa fa-align-right"></i>',
             contentFA: '<i class="fa fa-align-right"></i>'
         },
         // Known inline elements that are not removed, or not removed consistantly across browsers:
@@ -4893,7 +4893,7 @@ MediumEditor.extensions = {};
         /* buttons: [Array]
          * the names of the set of buttons to display on the toolbar.
          */
-        buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3', 'quote', 'orderedlist', 'unorderedlist', 'pre'],
+        buttons: ['bold', 'italic', 'underline', 'justifyLeft', 'justifyCenter', 'justifyRight', 'anchor', 'quote', 'orderedlist', 'unorderedlist', 'pre'],
 
         /* diffLeft: [Number]
          * value in pixels to be added to the X axis positioning of the toolbar.

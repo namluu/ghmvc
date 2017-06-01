@@ -75,7 +75,7 @@
         var imgLink = prompt("Please enter your image link", "http://");
         if (imgLink != null) {
             var $place = this.$el.find('.medium-insert-active');
-            $place.before('<div class="medium-insert-images"><img src="' + imgLink + '" /></div>');
+            $place.before('<div class="medium-insert-images"><a class="fruidlink" href="' + imgLink + '"><img src="' + imgLink + '" /></a></div>');
         }
     };
 

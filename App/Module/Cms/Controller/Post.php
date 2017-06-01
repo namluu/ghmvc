@@ -100,8 +100,14 @@ class Post extends Controller
         $post->tags = $this->tagModel->getAllBy('id', $tagIds);
         $post->user = $this->userModel->getOneBy('id', $post->user_id);
         $post->comments = $this->commentModel->getAllBy('post_id', [$post->id]);
+
+        $countPost = $this->postModel->countBy(['user_id' => $post->user_id]);
+        $countFollow = count($this->userModel->getFollowedIds($post->user_id));
+
         View::renderTemplate('Cms::frontend/post/view.html', [
-            'post' => $post
+            'post' => $post,
+            'countPost' => $countPost,
+            'countFollow' => $countFollow
         ]);
     }
 

@@ -387,6 +387,7 @@
             domImage = this.getDOMImage();
             domImage.onload = function () {
                 data.context.find('img').attr('src', domImage.src);
+                data.context.find('.fruidlink').attr('href', domImage.src);
 
                 if (this.options.uploadCompleted) {
                     this.options.uploadCompleted(data.context, data);
