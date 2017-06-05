@@ -1,0 +1,21 @@
+{% extends 'base_2_columns.html' %}
+
+{% block title %}Your notifications{% endblock %}
+
+{% block body %}
+<ul class="">
+    {% for noti in notifications %}
+    <li>
+        <a href="{{ noti.link }}">
+            <div class="media">
+                <div class="media-left">{{ avatar(noti.avatar, 50) }}</div>
+                <div class="media-body">
+                    <div class="content">{{ noti.content|raw }}</div>
+                    <div class="date text-muted">{{ noti.created_at|time_ago }}</div>
+                </div>
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

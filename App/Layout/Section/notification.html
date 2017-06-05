@@ -14,6 +14,9 @@
             </div>
         </a>
     </li>
+    {% if loop.last %}
+    <li><a href="{{ path('notification') }}" class="view-all">{{ 'View all'|trans }}</a></li>
+    {% endif %}
     {% else %}
     <li><a href="">No Update</a></li>
     {% endfor %}

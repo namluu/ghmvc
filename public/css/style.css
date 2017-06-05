@@ -71,6 +71,8 @@ h2.intro { margin: 25px 0 }
 .nav .separate {     border: 1px solid rgba(255,255,255,0.2); height: 30px; display: inline-block; margin: 10px; }
 .navbar .glyphicon-bell { font-size: 18px; }
 .nav .noti .dropdown-menu a { width: 450px; height: 50px; white-space: initial; display: inline-block }
+.nav .noti .dropdown-menu .view-all { height: 20px; text-align: center; font-weight: bold }
 .nav .noti .dropdown-menu li { padding: 5px 0; }
 .nav .noti .dropdown-menu .media .content { line-height: 15px; }
 .meta-profile h2 { font-size: 18px; font-weight: bold }
+.form-post-comment { padding: 0 25px; }

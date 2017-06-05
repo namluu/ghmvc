@@ -40,11 +40,11 @@
 <br>
 <div class="post-content">{{ post.content|raw }}</div>
 
-<h3>Comment</h3>
+<h3>{{ 'Comment'|trans }}</h3>
 <div class="comment">
     {% for comment in post.comments %}
     <div class="item row">
-        <div class="col-md-1"><a href="{{ path('user/'~comment.username~'/profile') }}"><img src="{{ path('images/avatar.jpg') }}" alt="" width="50"></a></div>
+        <div class="col-md-1"><a href="{{ path('user/'~comment.username~'/profile') }}"><img src="{{ path('images/avatar.jpg') }}" alt="" width="50" class="img-circle"></a></div>
         <div class="col-md-9">
             <div class="item-header">
                 <a href="{{ path('user/'~comment.username~'/profile') }}">{{ comment.display_name }}</a> <small>{{ comment.created_at|time_ago }}</small>
@@ -55,24 +55,29 @@
         </div>
     </div>
     {% endfor %}
+    <br>
+    {% set back_url = path('post/'~post.alias)|url_encode %}
+    {% if is_login() %}
+    {% set loginUser = get_login_user() %}
+    <form action="{{ path('cms/comment/add') }}" method="post" class="form-horizontal form-post-comment">
+        <div class="form-group">
+            <div class="col-md-1"><a href="{{ path('user/'~comment.username~'/profile') }}"><img src="{{ path('images/avatar.jpg') }}" alt="" width="50" class="img-circle"></a></div>
+            <div class="col-md-9">
+                <textarea name="content" rows="3" class="form-control" placeholder="{{ 'Write comment'|trans }}"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-9 col-md-offset-1">
+                <button type="submit" class="btn btn-default">{{ 'Send'|trans }}</button>
+            </div>
+        </div>
+        <input type="hidden" name="post_id" value="{{ post.id }}">
+        <input type="hidden" name="user_id" value="{{ loginUser.id }}">
+    </form>
+    {% else %}
+    <p><a href="{{ path('user/account/login?back-url='~back_url) }}">Please login to comment</a></p>
+    {% endif %}
 </div>
-
-{% set back_url = path('post/'~post.alias)|url_encode %}
-{% if is_login() %}
-{% set loginUser = get_login_user() %}
-<form action="{{ path('cms/comment/add') }}" method="post">
-    <div class="form-group">
-        <textarea name="content" rows="3" class="form-control"></textarea>
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-default">Submit</button>
-    </div>
-    <input type="hidden" name="post_id" value="{{ post.id }}">
-    <input type="hidden" name="user_id" value="{{ loginUser.id }}">
-</form>
-{% else %}
-<p><a href="{{ path('user/account/login?back-url='~back_url) }}">Please login to comment</a></p>
-{% endif %}
 {% endblock %}
 
 {% block sidebar %}

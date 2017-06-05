@@ -141,7 +141,7 @@ class Post extends Controller
                         'action_detail' => $resultPostId,
                         'created_at' => $current
                     ]);
-                    $this->userModel->updateRelationVersion($data['user_id'], $current);
+                    $this->userActionModel->updateRelationVersion($data['user_id'], $current);
 
                     $this->session->setMessage('success', 'Save successfully');
                 } else {

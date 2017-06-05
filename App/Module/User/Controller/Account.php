@@ -5,6 +5,7 @@ use Core\Controller;
 use Core\View;
 use App\Helper;
 use App\Module\User\Model\User;
+use App\Module\User\Model\Action;
 use Core\Session;
 use App\Config;
 use App\Module\Cms\Model\Post as PostModel;
@@ -16,6 +17,7 @@ use Core\Paginator;
 class Account extends Controller
 {
     protected $userModel;
+    protected $actionModel;
     protected $session;
     protected $postModel;
     protected $paginator;
@@ -24,12 +26,14 @@ class Account extends Controller
     public function __construct(
         array $routeParams,
         User $user,
+        Action $action,
         Session $session,
         PostModel $post,
         Paginator $paginator
     ) {
         parent::__construct($routeParams);
         $this->userModel = $user;
+        $this->actionModel = $action;
         $this->session = $session;
         $this->postModel = $post;
         $this->paginator = $paginator;
@@ -333,7 +337,7 @@ class Account extends Controller
             if (!$user) {
                 throw new \Exception('User not found', 500);
             }
-            $this->userModel->updateRelation($followerId, $followedId, $follow);
+            $this->actionModel->updateRelation($followerId, $followedId, $follow);
         }
         $this->redirect($this->getPreviousUrl());
     }

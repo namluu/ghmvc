@@ -25,5 +25,9 @@ return [
     'Post new' => 'Viết bài',
     'Home' => 'Trang chủ',
     'post' => 'bài viết',
-    'followed' => 'người theo dõi'
+    'followed' => 'người theo dõi',
+    'View all' => 'Xem tất cả',
+    'Comment' => 'Bình luận',
+    'Write comment' => 'Viết bình luận',
+    'Send' => 'Gửi'
 ];
