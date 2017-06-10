@@ -350,8 +350,7 @@ class Account extends Controller
             if (!$user) {
                 throw new \Exception('User not found', 500);
             }
-            $current = date('Y-m-d H:i:s');
-            $this->userModel->readNotification($userId, $current);
+            $this->actionModel->readNotification($userId);
             echo json_encode('');
         }
     }

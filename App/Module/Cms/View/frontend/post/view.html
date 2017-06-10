@@ -43,8 +43,12 @@
 <h3>{{ 'Comment'|trans }}</h3>
 <div class="comment">
     {% for comment in post.comments %}
-    <div class="item row">
-        <div class="col-md-1"><a href="{{ path('user/'~comment.username~'/profile') }}"><img src="{{ path('images/avatar.jpg') }}" alt="" width="50" class="img-circle"></a></div>
+    <div class="item row" id="comment-{{ comment.id }}">
+        <div class="col-md-1">
+            <a href="{{ path('user/'~comment.username~'/profile') }}">
+                {{ avatar(comment.avatar, 50, 'class="img-circle"') }}
+            </a>
+        </div>
         <div class="col-md-9">
             <div class="item-header">
                 <a href="{{ path('user/'~comment.username~'/profile') }}">{{ comment.display_name }}</a> <small>{{ comment.created_at|time_ago }}</small>
@@ -61,7 +65,11 @@
     {% set loginUser = get_login_user() %}
     <form action="{{ path('cms/comment/add') }}" method="post" class="form-horizontal form-post-comment">
         <div class="form-group">
-            <div class="col-md-1"><a href="{{ path('user/'~comment.username~'/profile') }}"><img src="{{ path('images/avatar.jpg') }}" alt="" width="50" class="img-circle"></a></div>
+            <div class="col-md-1">
+                <a href="{{ path('user/'~comment.username~'/profile') }}">
+                    {{ avatar(loginUser.avatar, 50, 'class="img-circle"') }}
+                </a>
+            </div>
             <div class="col-md-9">
                 <textarea name="content" rows="3" class="form-control" placeholder="{{ 'Write comment'|trans }}"></textarea>
             </div>

@@ -155,15 +155,7 @@ class Post extends Controller
                 }
 
                 if ($resultPostId && $resultTag) {
-                    $current = date('Y-m-d H:i:s');
-                    $this->userActionModel->save([
-                        'user_id' => $data['user_id'],
-                        'action_type' => 'post_add',
-                        'action_detail' => $resultPostId,
-                        'created_at' => $current
-                    ]);
-                    $this->userActionModel->updateRelationVersion($data['user_id'], $current);
-
+                    $this->userActionModel->setEventNewPost($data['user_id'], $resultPostId);
                     $this->session->setMessage('success', 'Save successfully');
                 } else {
                     $this->session->setMessage('error', 'Save unsuccessfully');

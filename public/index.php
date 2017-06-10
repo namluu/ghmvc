@@ -41,12 +41,12 @@ $router->add($adminUri.'/{module}/{controller}/{id:\d+}/{action}', ['namespace' 
 $router->add('', ['module' => 'cms', 'controller' => 'Index', 'action' => 'index']);
 $router->add('post/*', ['module' => 'cms', 'controller' => 'post', 'action' => 'index']);
 $router->add('about-us', ['module' => 'cms', 'controller' => 'page', 'action' => 'view', 'id' => 1]);
-$router->add('{module}', ['controller' => 'Index', 'action' => 'index']);
 $router->add('page/{url:[\w\-]+}/*', ['module' => 'cms', 'controller' => 'page', 'action' => 'view']);
 $router->add('post/{id:\d+}/*', ['module' => 'cms', 'controller' => 'post', 'action' => 'view']);
 $router->add('post/{alias:[\w\-]+}/*', ['module' => 'cms', 'controller' => 'post', 'action' => 'view']);
 $router->add('user/{username:[\w\-]+}/*', ['module' => 'user', 'controller' => 'account', 'action' => 'view']);
 $router->add('notification/*', ['module' => 'user', 'controller' => 'notification', 'action' => 'index']);
+$router->add('{module}', ['controller' => 'Index', 'action' => 'index']);
 $router->add('{module}/{controller}', ['action' => 'index']);
 $router->add('{module}/{controller}/{action}');
 $router->add('{module}/{controller}/{id:\d+}/{action}');

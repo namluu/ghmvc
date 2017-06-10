@@ -202,15 +202,15 @@ class TwigExtension extends \Twig_Extension
 
     public function getUserNotification($userId)
     {
-        $notiModel = new \App\Module\User\Model\Notification();
-        $notifications = $notiModel->getNotificationUser($userId, 7);
+        $actionModel = new \App\Module\User\Model\Action();
+        $notifications = $actionModel->getNotificationUser($userId, 7);
         return $notifications;
     }
 
     public function countUserNotification($userId)
     {
-        $notiModel = new \App\Module\User\Model\Notification();
-        $notifications = $notiModel->countNewUpdateVersions($userId);
+        $actionModel = new \App\Module\User\Model\Action();
+        $notifications = count($actionModel->getUnreadNotificationId($userId));
         return $notifications;
     }
 }

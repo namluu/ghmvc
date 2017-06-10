@@ -1,7 +1,7 @@
 {% set notifications = get_user_notification(loginUser.id) %}
 {% set num_notification = count_user_notification(loginUser.id) %}
 <a id="noti-bell" href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-bell"></span> {% if num_notification %}<span class="badge label-danger">{{ num_notification }}</span>{% endif %}</a>
-<ul class="dropdown-menu">
+<ul class="dropdown-menu dropdown-noti">
     {% for noti in notifications %}
     <li>
         <a href="{{ noti.link }}">
