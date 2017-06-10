@@ -9,6 +9,7 @@ use Core\UploadHandler;
 use Core\Paginator;
 use App\Module\Cms\Model\Post as PostModel;
 use App\Module\Cms\Model\Tag as TagModel;
+use App\Module\Cms\Model\PostTag;
 use App\Module\User\Model\User as UserModel;
 use App\Module\User\Model\Action as UserActionModel;
 use App\Module\Cms\Model\Comment as CommentModel;
@@ -21,6 +22,7 @@ class Post extends Controller
 {
     protected $postModel;
     protected $tagModel;
+    protected $postTagModel;
     protected $userModel;
     protected $userActionModel;
     protected $commentModel;
@@ -33,6 +35,7 @@ class Post extends Controller
         array $routeParams,
         PostModel $post,
         TagModel $tag,
+        PostTag $postTag,
         UserModel $user,
         UserActionModel $action,
         CommentModel $comment,
@@ -45,6 +48,7 @@ class Post extends Controller
         $this->session = $session;
         $this->postModel = $post;
         $this->tagModel = $tag;
+        $this->postTagModel = $postTag;
         $this->userModel = $user;
         $this->userActionModel = $action;
         $this->commentModel = $comment;
@@ -63,7 +67,7 @@ class Post extends Controller
         $isHot = isset($_GET['hottest']) && $_GET['hottest'] ? 1 : 0;
         $posts = $this->postModel->getAll(true, $limit, $page, $isHot);
         foreach ($posts as $post) {
-            $tagIds = $this->postModel->getPostTagIds($post->id);
+            $tagIds = $this->postTagModel->getPostTagIds($post->id);
             $post->tags = $this->tagModel->getAllBy('id', $tagIds);
         }
         $totalRows = $this->postModel->countBy(['is_active' => 1, 'is_hot' => $isHot]);
@@ -96,7 +100,7 @@ class Post extends Controller
         if (!$post) {
             throw new \Exception('Post not found.', 404);
         }
-        $tagIds = $this->postModel->getPostTagIds($post->id);
+        $tagIds = $this->postTagModel->getPostTagIds($post->id);
         $post->tags = $this->tagModel->getAllBy('id', $tagIds);
         $post->user = $this->userModel->getOneBy('id', $post->user_id);
         $post->comments = $this->commentModel->getAllBy('post_id', [$post->id]);
@@ -113,7 +117,13 @@ class Post extends Controller
 
     public function addAction()
     {
+        $tags = $this->tagModel->getAll(true);
+        $tagArray = [];
+        foreach ($tags as $tag) {
+            $tagArray[] = ['value' => $tag->id, 'label' => $tag->name];
+        }
         View::renderTemplate('Cms::frontend/post/add.html', [
+            'tagArray' => $tagArray
         ]);
     }
 
@@ -128,12 +138,23 @@ class Post extends Controller
             } else {
                 $data = $this->sanitizeData($_POST);
                 $resultPostId = $this->postModel->save($data);
-                /*$resultTag = true;
-                if (isset($_POST['tag_ids'])) {
-                    $resultTag = $this->postModel->updatePostTag($resultPostId, $_POST['tag_ids']);
-                }*/
+                $resultTag = true;
+                if (isset($_POST['tag'])) {
+                    $tags = explode(',', $_POST['tag']);
+                    $tagIds = [];
+                    foreach ($tags as $tag) {
+                        if (is_numeric($tag)) {
+                            $tagIds[] = $tag;
+                        } else {
+                            $dataTag = $this->sanitizeTagData($tag);
+                            $resultTag = $this->tagModel->save($dataTag);
+                            $tagIds[] = $resultTag;
+                        }
+                    }
+                    $resultTag = $this->postTagModel->updatePostTag($resultPostId, $tagIds);
+                }
 
-                if ($resultPostId) {
+                if ($resultPostId && $resultTag) {
                     $current = date('Y-m-d H:i:s');
                     $this->userActionModel->save([
                         'user_id' => $data['user_id'],
@@ -147,7 +168,7 @@ class Post extends Controller
                 } else {
                     $this->session->setMessage('error', 'Save unsuccessfully');
                 }
-                $post = $post = $this->postModel->getOneBy('id', $resultPostId);
+                $post = $this->postModel->getOneBy('id', $resultPostId);
 
                 $this->redirect(Helper::getUrl('post/' . $post->alias));
             }
@@ -166,6 +187,19 @@ class Post extends Controller
             'content' => html_entity_decode($data['content']),
             'is_active' => 1,
             'user_id' => $user['id']
+        ];
+        return $escapeData;
+    }
+
+    protected function sanitizeTagData($name)
+    {
+        $name = $this->cleanInput($name);
+        $alias = $this->url->slug($name, array('toascii'=>true,'tolower'=>true));
+        $escapeData = [
+            'name' => $name,
+            'alias' => $alias,
+            'color' => $this->tagModel->getRandomColor(),
+            'is_active' => 1
         ];
         return $escapeData;
     }

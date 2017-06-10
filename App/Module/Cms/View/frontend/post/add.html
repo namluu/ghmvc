@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="{{ path('medium/css/default.css')}}">
 <link rel="stylesheet" href="{{ path('medium/css/medium-editor-insert-plugin.min.css')}}">
 <link rel="stylesheet" href="{{ path('medium/css/custom.css')}}">
+<link rel="stylesheet" href="{{ path('css/jquery-ui.css')}}">
+<link rel="stylesheet" href="{{ path('js/tokenfield/bootstrap-tokenfield.min.css')}}">
 {% endblock %}
 
 {% block scripts_extra %}
@@ -22,6 +24,8 @@
 <script src="{{ path('medium/js/images.js') }}"></script>
 <script src="{{ path('medium/js/newpart.js') }}"></script>
 <script src="{{ path('medium/js/imagelink.js') }}"></script>
+<script src="{{ path('js/jquery-ui.min.js') }}"></script>
+<script src="{{ path('js/tokenfield/bootstrap-tokenfield.js') }}"></script>
 <script>
     var editor = new MediumEditor('.editable', ['encoding', 'URL']);
     $(function () {
@@ -46,13 +50,25 @@
             var elContent = allContents["element-0"].value;
             $('.content').html(elContent);
         });
+
+        $('#tokenfield').tokenfield({
+            autocomplete: {
+                //source: ['red','blue','green','yellow','violet','brown','purple','black','white'],
+                source: {{ tagArray|json_encode()|raw }},
+                delay: 100
+            },
+            showAutocompleteOnFocus: true
+        })
     });
 </script>
 {% endblock %}
 
 {% block body %}
 <form action="{{ path('cms/post/post-submit') }}" method="post">
-    <input type="text" name="title" value="" class="form-control control-title" placeholder="{{ 'Title'|trans }}" required>
+    <input type="text" name="title" value="" class="form-control control-title" placeholder="{{ 'Title-placeholder'|trans }}" required>
+    <br>
+    <input type="text" name="tag" class="form-control" id="tokenfield" value="" placeholder="{{ 'Tag-placeholder'|trans }}" />
+    <br>
     <textarea name="content" class="hidden content"></textarea>
     <div class="editable" data-placeholder="{{ 'Type some text'|trans }}"></div>
     <button type="submit" class="btn btn-primary submit-post">Post</button>

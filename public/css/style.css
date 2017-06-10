@@ -12,7 +12,7 @@
 .label-info, .label-info[href]:hover { background-color: #31708f; }
 .label-warning, .label-warning[href]:hover { background-color: #8a6d3b; }
 
-.post-content { font-size: 15px;line-height: 2; }
+.post-content { font-size: 15px;line-height: 2;margin-bottom: 20px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 20px; }
 .post-content img { max-width: 100%;height: auto !important; }
 
 .pagination>.disabled>a, .pagination>.disabled>a:focus, .pagination>.disabled>a:hover { cursor: default;background-color: #eee; }

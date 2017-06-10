@@ -10,6 +10,7 @@ use Core\Paginator;
 use App\Module\User\Model\User as UserModel;
 use App\Module\Cms\Model\Tag as TagModel;
 use Core\Ckeditor;
+use App\Module\Cms\Model\PostTag;
 /**
  * Post controller
  *
@@ -25,6 +26,7 @@ class Post extends Controller
     protected $cacheData = [];
     protected $ckeditor;
     protected $paginator;
+    protected $postTagModel;
 
     public function __construct(
         array $routeParams,
@@ -33,6 +35,7 @@ class Post extends Controller
         Session $session,
         Url $url,
         TagModel $tag,
+        PostTag $postTag,
         Ckeditor $ckeditor,
         Paginator $paginator
     ) {
@@ -41,6 +44,7 @@ class Post extends Controller
         $this->postModel = $post;
         $this->userModel = $user;
         $this->tagModel = $tag;
+        $this->postTagModel = $postTag;
         $this->session = $session;
         $this->url = $url;
         parent::__construct($routeParams);
@@ -90,7 +94,7 @@ class Post extends Controller
         if (isset($post->tag_ids)) {
             $postTagIds = $post->tag_ids;
         } else {
-            $postTagIds = $this->postModel->getPostTagIds($id);
+            $postTagIds = $this->postTagModel->getPostTagIds($id);
         }
 
         View::renderTemplate('Cms::backend/post/edit.html', [
@@ -118,7 +122,7 @@ class Post extends Controller
                 $resultPostId = $this->postModel->save($data, $id);
                 $resultTag = true;
                 if (isset($_POST['tag_ids'])) {
-                    $resultTag = $this->postModel->updatePostTag($resultPostId, $_POST['tag_ids']);
+                    $resultTag = $this->postTagModel->updatePostTag($resultPostId, $_POST['tag_ids']);
                 }
 
                 if ($resultPostId && $resultTag) {

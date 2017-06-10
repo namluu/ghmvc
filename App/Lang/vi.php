@@ -29,5 +29,7 @@ return [
     'View all' => 'Xem tất cả',
     'Comment' => 'Bình luận',
     'Write comment' => 'Viết bình luận',
-    'Send' => 'Gửi'
+    'Send' => 'Gửi',
+    'Title-placeholder' => 'Tựa đề hay gây ấn tượng cho người đọc',
+    'Tag-placeholder' => 'Tag hợp lý giúp bài viết dễ tìm thấy hơn'
 ];

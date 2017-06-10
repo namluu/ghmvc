@@ -20,4 +20,9 @@ class Tag extends Model
             'label-warning' => '#8a6d3b'
         ];
     }
+
+    public function getRandomColor()
+    {
+        return array_rand($this->getColors());
+    }
 }

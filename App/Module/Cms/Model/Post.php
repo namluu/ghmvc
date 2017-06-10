@@ -33,33 +33,6 @@ class Post extends Model
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
 
-    public function getPostTagIds($postId)
-    {
-        if (!$postId) {
-            return null;
-        }
-
-        $db = $this->getDB();
-
-        $sql = "SELECT tag_id FROM cms_post_tag WHERE post_id = {$postId}";
-        if ($result = $db->query($sql)) {
-            return $result->fetchAll(\PDO::FETCH_COLUMN);
-        }
-        return [];
-    }
-
-    public function updatePostTag($postId, $tagIds)
-    {
-        $this->_table = 'cms_post_tag';
-        $this->_key = 'post_id';
-        parent::delete($postId);
-        $data = [];
-        foreach ($tagIds as $tagId) {
-            $data[] = ['post_id' => $postId, 'tag_id' => $tagId];
-        }
-        return parent::insertMultiple($data);
-    }
-
     public function getAllBy($key, $values, $isActiveOnly = false, $limit = 10, $page = 1)
     {
         if (!$values) {
