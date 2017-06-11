@@ -31,5 +31,9 @@ return [
     'Write comment' => 'Viết bình luận',
     'Send' => 'Gửi',
     'Title-placeholder' => 'Tựa đề hay gây ấn tượng cho người đọc',
-    'Tag-placeholder' => 'Tag hợp lý giúp bài viết dễ tìm thấy hơn'
+    'Tag-placeholder' => 'Tag hợp lý giúp bài viết dễ tìm thấy hơn',
+    'Reply' => 'Trả lời',
+    'Write reply' => 'Viết trả lời',
+    'comment on your post' => 'bình luận bài viết của bạn',
+    'reply your comment' => 'trả lời bình luận của bạn'
 ];

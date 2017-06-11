@@ -37,12 +37,42 @@ class Comment extends Controller
             $data = $this->sanitizeData($_POST);
             $result = $this->commentModel->save($data);
             if ($result) {
-                $this->userActionModel->setEventNewComment($data['user_id'], $result);
+                if ($_POST['post_owner_id'] != $data['user_id']) {
+                    $this->userActionModel->setEventNewComment($data['user_id'], $result);
+                }
                 $this->session->setMessage('success', 'Save successfully');
             } else {
                 $this->session->setMessage('error', 'Save unsuccessfully');
             }
             $this->redirect($this->getPreviousUrl().'#comment-'.$result);
+        }
+    }
+
+    public function addReplyAction()
+    {
+        if ($_POST) {
+            if (empty($_POST['reply'])) {
+                $this->session->setMessage('error', 'Missing reply content');
+                $this->redirect($this->getPreviousUrl());
+            }
+            $data = $this->sanitizeReplyData($_POST);
+            $result = $this->commentModel->save($data);
+            if ($result) {
+                if ($_POST['comment_owner_id'] != $data['user_id']) {
+                    $this->userActionModel->setEventNewReply($data['user_id'], $result);
+                }
+                $this->session->setMessage('success', 'Save successfully');
+            } else {
+                $this->session->setMessage('error', 'Save unsuccessfully');
+            }
+            if (isset($_POST['comment_id'])) {
+                $commentIds = explode('-', $_POST['comment_id']);
+                $commentId = $commentIds[0];
+            } else {
+                $commentId = $result;
+            }
+
+            $this->redirect($this->getPreviousUrl().'#comment-'.$commentId);
         }
     }
 
@@ -52,6 +82,17 @@ class Comment extends Controller
             'content' => $this->cleanInput($data['content']),
             'user_id' => $data['user_id'],
             'post_id' => $data['post_id']
+        ];
+        return $escapeData;
+    }
+
+    protected function sanitizeReplyData($data)
+    {
+        $escapeData = [
+            'content' => $this->cleanInput($data['reply']),
+            'user_id' => $data['user_id'],
+            'post_id' => $data['post_id'],
+            'parent_id' => $data['comment_id']
         ];
         return $escapeData;
     }

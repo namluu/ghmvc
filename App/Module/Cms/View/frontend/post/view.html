@@ -42,7 +42,8 @@
 
 <h3>{{ 'Comment'|trans }}</h3>
 <div class="comment">
-    {% for comment in post.comments %}
+    {% for comment in post.comments if comment.id %}
+    {% set latest_comment = comment %}
     <div class="item row" id="comment-{{ comment.id }}">
         <div class="col-md-1">
             <a href="{{ path('user/'~comment.username~'/profile') }}">
@@ -51,10 +52,35 @@
         </div>
         <div class="col-md-9">
             <div class="item-header">
-                <a href="{{ path('user/'~comment.username~'/profile') }}">{{ comment.display_name }}</a> <small>{{ comment.created_at|time_ago }}</small>
+                <a href="{{ path('user/'~comment.username~'/profile') }}">
+                    {{ comment.display_name }}
+                </a>
+                <span>{{ comment.content }}</span>
+                {% for reply in comment.reply %}
+                {% set latest_comment = reply %}
+                <div class="media">
+                    <div class="media-left">{{ avatar(reply.avatar, 30, 'class="img-circle"') }}</div>
+                    <div class="media-body">
+                        <a href="{{ path('user/'~comment.username~'/profile') }}">
+                            <strong>{{ reply.display_name }}</strong>
+                        </a>
+                        <span>{{ reply.content }}</span>&nbsp;&ndash;&nbsp;<small>{{ reply.created_at|time_ago }}</small>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            <div class="item-content">
-                {{ comment.content }}
+            <div class="item-reply">
+                <a href="">{{ 'Reply'|trans }}</a>&nbsp;&ndash;&nbsp;<small>{{ comment.created_at|time_ago }}</small>
+                <form action="{{ path('cms/comment/addReply') }}" method="post" class="form-post-reply">
+                    <div class="media">
+                        <div class="media-left">{{ avatar(loginUser.avatar, 30, 'class="img-circle"') }}</div>
+                        <div class="media-body"><input type="text" name="reply" placeholder="{{ 'Write reply'|trans }}" class="form-control control-reply" /></div>
+                    </div>
+                    <input type="hidden" name="post_id" value="{{ post.id }}">
+                    <input type="hidden" name="user_id" value="{{ loginUser.id }}">
+                    <input type="hidden" name="comment_owner_id" value="{{ latest_comment.user_id }}">
+                    <input type="hidden" name="comment_id" value="{{ comment.id ~ '-' ~ latest_comment.id }}">
+                </form>
             </div>
         </div>
     </div>
@@ -81,6 +107,7 @@
         </div>
         <input type="hidden" name="post_id" value="{{ post.id }}">
         <input type="hidden" name="user_id" value="{{ loginUser.id }}">
+        <input type="hidden" name="post_owner_id" value="{{ post.user_id }}">
     </form>
     {% else %}
     <p><a href="{{ path('user/account/login?back-url='~back_url) }}">Please login to comment</a></p>

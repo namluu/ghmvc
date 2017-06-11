@@ -103,7 +103,21 @@ class Post extends Controller
         $tagIds = $this->postTagModel->getPostTagIds($post->id);
         $post->tags = $this->tagModel->getAllBy('id', $tagIds);
         $post->user = $this->userModel->getOneBy('id', $post->user_id);
-        $post->comments = $this->commentModel->getAllBy('post_id', [$post->id]);
+        $comments = $this->commentModel->getAllBy('post_id', [$post->id]);
+        $commentSorted = [];
+        foreach ($comments as $comment) {
+            if ($comment->parent_id == 0) {
+                $commentSorted[$comment->id] = $comment;
+            }
+        }
+        foreach ($comments as $comment) {
+            if ($comment->parent_id != 0) {
+                $parentIds = explode('-', $comment->parent_id);
+                $parentId = $parentIds[0];
+                $commentSorted[$parentId]->reply[] = $comment;
+            }
+        }
+        $post->comments = $commentSorted;
 
         $countPost = $this->postModel->countBy(['user_id' => $post->user_id]);
         $countFollow = count($this->userModel->getFollowedIds($post->user_id));

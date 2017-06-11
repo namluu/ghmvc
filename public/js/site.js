@@ -23,4 +23,16 @@ $(function() {
             });
         }
     });
+    $('.comment').on('click', '.item-reply a', function (e) {
+        e.preventDefault();
+        var $form = $(this).parent().find('.form-post-reply');
+        if ($form.length) {
+            $form.show();
+        }
+    });
+    $('.comment').on('keydown', '.control-reply', function (e) {
+        if (this.value == '' && e.keyCode == 13) {
+            e.preventDefault();
+        }
+    });
 });

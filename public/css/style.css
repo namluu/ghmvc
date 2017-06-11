@@ -77,3 +77,5 @@ h2.intro { margin: 25px 0 }
 .nav .noti .dropdown-menu .media .date { font-size: 11px; }
 .meta-profile h2 { font-size: 18px; font-weight: bold }
 .form-post-comment { padding: 0 25px; }
+.comment .item-header > a { font-size: 14px; }
+.form-post-reply { margin-top: 7px; display: none }
