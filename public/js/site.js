@@ -1,4 +1,7 @@
 $(function() {
+    /**
+     * Event click notification notice
+     * */
     $('.navbar ').on('click', '#noti-bell', function() {
         var self = this,
             $unreadNotification = $(self).find('.label-danger');
@@ -23,6 +26,9 @@ $(function() {
             });
         }
     });
+    /**
+     * Hide reply form by default - show when click Reply
+     * */
     $('.comment').on('click', '.item-reply a', function (e) {
         e.preventDefault();
         var $form = $(this).parent().find('.form-post-reply');
@@ -30,9 +36,19 @@ $(function() {
             $form.show();
         }
     });
+    /**
+     * Submit reply when enter
+     * */
     $('.comment').on('keydown', '.control-reply', function (e) {
         if (this.value == '' && e.keyCode == 13) {
             e.preventDefault();
         }
+    });
+    /**
+     * Read more reply
+     * */
+    $('.reply-more').on('click', function(e) {
+        e.preventDefault();
+        $(this).hide().siblings('.media').show();
     });
 });

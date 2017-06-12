@@ -79,3 +79,7 @@ h2.intro { margin: 25px 0 }
 .form-post-comment { padding: 0 25px; }
 .comment .item-header > a { font-size: 14px; }
 .form-post-reply { margin-top: 7px; display: none }
+.comment .media { display: none }
+.comment .media:nth-last-child(-n+5) { display: inline-block }
+.reply-more { display: block; margin: 20px 0 0 20px; }
+.item-header > a.reply-more { font-weight: normal }

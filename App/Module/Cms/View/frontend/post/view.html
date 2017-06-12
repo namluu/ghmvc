@@ -56,6 +56,11 @@
                     {{ comment.display_name }}
                 </a>
                 <span>{{ comment.content }}</span>
+                {% if comment.reply|length > 5 %}
+                <a class="reply-more" href="">
+                    <span class="glyphicon glyphicon-share-alt"></span> {{ 'View previous replies'|trans }}
+                </a>
+                {% endif %}
                 {% for reply in comment.reply %}
                 {% set latest_comment = reply %}
                 <div class="media">
