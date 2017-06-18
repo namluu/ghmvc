@@ -4893,7 +4893,7 @@ MediumEditor.extensions = {};
         /* buttons: [Array]
          * the names of the set of buttons to display on the toolbar.
          */
-        buttons: ['bold', 'italic', 'underline', 'justifyLeft', 'justifyCenter', 'justifyRight', 'anchor', 'quote', 'orderedlist', 'unorderedlist', 'pre'],
+        buttons: ['h2', 'h3', 'bold', 'italic', 'underline', 'justifyLeft', 'justifyCenter', 'justifyRight', 'anchor', 'quote', 'orderedlist', 'unorderedlist', 'pre'],
 
         /* diffLeft: [Number]
          * value in pixels to be added to the X axis positioning of the toolbar.

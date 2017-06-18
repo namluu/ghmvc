@@ -15,3 +15,14 @@
     </div>
 </div>
 {% endif %}
+
+<div class="meta-tag side-separate">
+    <p class="suggest-title">
+        <span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp;{{ 'Hot tag'|trans }}
+    </p>
+    <div class="meta-tags">
+        {% for tag in tags %}
+        <a href="{{ path('cms/tag/'~tag.alias~'/view') }}"><span class="label label-default">{{ tag.name }} {{ tag.num_post }}</span></a>
+        {% endfor %}
+    </div>
+</div>

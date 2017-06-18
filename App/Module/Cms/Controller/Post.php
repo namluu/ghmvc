@@ -77,11 +77,14 @@ class Post extends Controller
         $countPost = $userLogin ? $this->postModel->countBy(['user_id' => $userLogin['id']]) : 0;
         $countFollow = $userLogin ? count($this->userModel->getFollowedIds($userLogin['id'])) : 0;
 
+        $tags = $this->tagModel->getHotTags(5);
+
         View::renderTemplate('Cms::frontend/post/index.html', [
             'posts' => $posts,
             'paginator' => $paginator,
             'countPost' => $countPost,
-            'countFollow' => $countFollow
+            'countFollow' => $countFollow,
+            'tags' => $tags
         ]);
     }
 
@@ -153,7 +156,7 @@ class Post extends Controller
                 $data = $this->sanitizeData($_POST);
                 $resultPostId = $this->postModel->save($data);
                 $resultTag = true;
-                if (isset($_POST['tag'])) {
+                if (isset($_POST['tag']) && !empty($_POST['tag'])) {
                     $tags = explode(',', $_POST['tag']);
                     $tagIds = [];
                     foreach ($tags as $tag) {

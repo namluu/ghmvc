@@ -36,5 +36,6 @@ return [
     'Write reply' => 'Viết trả lời',
     'comment on your post' => 'bình luận bài viết của bạn',
     'reply your comment' => 'trả lời bình luận của bạn',
-    'View previous replies' => 'Xem những trả lời trước'
+    'View previous replies' => 'Xem những trả lời trước',
+    'Hot tag' => 'Chủ đề nổi bật'
 ];

@@ -25,4 +25,20 @@ class Tag extends Model
     {
         return array_rand($this->getColors());
     }
+
+    public function getHotTags($num)
+    {
+        $db = $this->getDB();
+        $sql = sprintf('SELECT t.name, t.alias, COUNT(pt.post_id) AS num_post');
+        $sql .= sprintf(' FROM %s AS t', $this->_table);
+        $sql .= sprintf(' LEFT JOIN %s AS pt ON t.id = pt.tag_id', 'cms_post_tag');
+        $sql .= sprintf(' WHERE %s', 'is_active = 1');
+        $sql .= sprintf(' GROUP BY pt.tag_id');
+        $sql .= sprintf(' ORDER BY %s DESC', 'num_post');
+        $sql .= sprintf(' LIMIT %s', $num);
+
+        $sth = $db->prepare($sql);
+        $sth->execute();
+        return $sth->fetchAll(\PDO::FETCH_OBJ);
+    }
 }

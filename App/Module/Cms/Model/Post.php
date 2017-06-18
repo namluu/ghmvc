@@ -52,4 +52,16 @@ class Post extends Model
         $sth->execute($values);
         return $sth->fetchAll(\PDO::FETCH_OBJ);
     }
+
+    public function save($data, $id = null)
+    {
+        // unique alias
+        $urlMask = $data['alias'].'%';
+        $count = $this->countBy(['alias' => $urlMask], 'LIKE');
+        if ($count) {
+            $data['alias'] = sprintf('%s-%d', $data['alias'], $count + 1);
+        }
+
+        return parent::save($data, $id);
+    }
 }

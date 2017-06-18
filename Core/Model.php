@@ -171,14 +171,15 @@ abstract class Model
 
     /**
      * @param array $options [[key => value],[key => value]]
+     * @param string $operator =, LIKE,
      * @return int
      */
-    public function countBy($options)
+    public function countBy($options, $operator = '=')
     {
         $db = $this->getDB();
         $sql = "SELECT COUNT(*) FROM {$this->_table} WHERE 1 = 1";
         foreach ($options as $key => $value) {
-            $sql .= sprintf(' AND %s = %s', $key, $value);
+            $sql .= sprintf(' AND %s %s "%s"', $key, $operator, $value);
         }
         if ($result = $db->query($sql)) {
             return $result->fetchColumn();

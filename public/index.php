@@ -50,5 +50,6 @@ $router->add('{module}', ['controller' => 'Index', 'action' => 'index']);
 $router->add('{module}/{controller}', ['action' => 'index']);
 $router->add('{module}/{controller}/{action}');
 $router->add('{module}/{controller}/{id:\d+}/{action}');
+$router->add('{module}/{controller}/{alias:[\w\-]+}/{action}');
 
 $router->dispatch($_SERVER['QUERY_STRING']);
