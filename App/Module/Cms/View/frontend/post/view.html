@@ -36,6 +36,9 @@
     {% set user_link = path('user/'~post.user.username~'/profile') %}
     <a href="{{ user_link }}">{{ avatar(post.user.avatar, 30, 'class="img-circle"') }}</a>
     <a href="{{ user_link }}">{{ post.user.display_name }}</a> {{ 'written'|trans }} {{ post.created_at|date('d/m/Y') }}
+    {% if post.user_id == loginUser.id %}
+    <a href="{{ path('cms/post/'~post.id~'/edit') }}" title="{{ 'Edit'|trans }}"><span class="glyphicon glyphicon-edit"></span></a>
+    {% endif %}
 </p>
 <br>
 <div class="post-content">{{ post.content|raw }}</div>

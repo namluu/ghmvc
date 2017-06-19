@@ -134,13 +134,34 @@ class Post extends Controller
 
     public function addAction()
     {
+        $this->editAction();
+    }
+
+    public function editAction()
+    {
+        $id = isset($this->routeParams['id']) ? $this->routeParams['id'] : null;
+        $post = $this->postModel->load($id);
+        if ($post->user_id) {
+            $user = $this->session->get('login_user');
+            if ($post->user_id != $user['id']) {
+                throw new \Exception('Post not found.', 404);
+            }
+        }
+        $tagIds = $this->postTagModel->getPostTagIds($post->id);
+        $tagSelected = [];
         $tags = $this->tagModel->getAll(true);
         $tagArray = [];
         foreach ($tags as $tag) {
             $tagArray[] = ['value' => $tag->id, 'label' => $tag->name];
+            if ($tagIds && in_array($tag->id, $tagIds)) {
+                $tagSelected[] = ['value' => $tag->id, 'label' => $tag->name];
+            }
         }
-        View::renderTemplate('Cms::frontend/post/add.html', [
-            'tagArray' => $tagArray
+
+        View::renderTemplate('Cms::frontend/post/edit.html', [
+            'tagArray' => $tagArray,
+            'post' => $post,
+            'tagSelected' => $tagSelected
         ]);
     }
 
@@ -154,7 +175,7 @@ class Post extends Controller
                 $this->session->setMessage('error', implode(', ', $errorMsg));
             } else {
                 $data = $this->sanitizeData($_POST);
-                $resultPostId = $this->postModel->save($data);
+                $resultPostId = $this->postModel->save($data, $id);
                 $resultTag = true;
                 if (isset($_POST['tag']) && !empty($_POST['tag'])) {
                     $tags = explode(',', $_POST['tag']);

@@ -140,6 +140,7 @@ class Post extends Controller
         $id = $this->routeParams['id'];
         $result = $this->postModel->delete($id);
         if ($result) {
+            $this->postTagModel->delete($id);
             $this->session->setMessage('success', 'Delete successfully');
         } else {
             $this->session->setMessage('error', 'Delete successfully');
