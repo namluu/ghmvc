@@ -22,6 +22,7 @@ return [
     'Newest' => 'Mới nhất',
     'Hottest' => 'Hay nhất',
     'written' => 'viết',
+    'written in' => 'viết ngày',
     'Post new' => 'Viết bài',
     'Home' => 'Trang chủ',
     'post' => 'bài viết',

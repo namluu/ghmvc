@@ -4,46 +4,65 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ path('css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ path('css/font-awesome.min.css')}}">
     <link rel="stylesheet" href="{{ path('css/bootstrap-colorselector.css') }}" />
     <link rel="stylesheet" href="{{ path('css/admin-style.css') }}" />
 </head>
 <body>
-    <div class="container">
-        <h1>Admin</h1>
-        <nav class="navbar navbar-default">
-            <div class="container">
-                <ul class="nav navbar-nav">
-                    <li><a href="{{ admin_path() }}">Home</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cms <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+    <div class="container admin-container">
+        <div class="row equal">
+            <div class="col-md-2 clear-padding col-sidebar-menu">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-header">MAIN NAVIGATION</li>
+                    <li>
+                        <a href="{{ admin_path() }}">
+                            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-newspaper-o"></i> <span>Cms</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="sidebar-submenu">
                             <li><a href="{{ admin_path('cms/post') }}">Posts</a></li>
                             <li><a href="{{ admin_path('cms/tag') }}">Tags</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">User <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-user"></i> <span>User</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="sidebar-submenu">
                             <li><a href="{{ admin_path('user/user') }}">Users</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">System <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-cog"></i> <span>System</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="sidebar-submenu">
                             <li><a href="{{ admin_path('dashboard/configuration') }}">Configuration</a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
-        </nav>
-        <br><br>
 
-        <div class="container">{% include 'Section/messages.html' %}</div>
-
-        {% block body %}
-        {% endblock %}
+            <div class="col-md-10">
+                <h1>Admin</h1>
+                <div class="container">{% include 'Section/messages.html' %}</div>
+                {% block body %}
+                {% endblock %}
+                <footer class="page-footer">
+                    <div class="clearfix">
+                        <div class="pull-left">Copyright © 2017 Magento Commerce Inc. All rights reserved.</div>
+                        <div class="pull-right">Magento ver. 2.1.4</div>
+                    </div>
+                </footer>
+            </div>
+        </div>
     </div>
     <script src="{{ path('js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ path('js/jquery-migrate-3.0.0.js') }}"></script>
     <script src="{{ path('js/bootstrap.min.js') }}"></script>
     <script src="{{ path('js/bootstrap-colorselector.js') }}"></script>
     <script src="{{ path('js/admin.js') }}"></script>
