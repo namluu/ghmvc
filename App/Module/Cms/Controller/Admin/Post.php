@@ -4,7 +4,6 @@ use Core\Controller;
 use Core\View;
 use App\Module\Cms\Model\Post as PostModel;
 use App\Helper;
-use Core\Session;
 use Core\Url;
 use Core\Paginator;
 use App\Module\User\Model\User as UserModel;
@@ -32,7 +31,6 @@ class Post extends Controller
         array $routeParams,
         PostModel $post,
         UserModel $user,
-        Session $session,
         Url $url,
         TagModel $tag,
         PostTag $postTag,
@@ -45,7 +43,7 @@ class Post extends Controller
         $this->userModel = $user;
         $this->tagModel = $tag;
         $this->postTagModel = $postTag;
-        $this->session = $session;
+        $this->session = $this->getSession();
         $this->url = $url;
         parent::__construct($routeParams);
     }

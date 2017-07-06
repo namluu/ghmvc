@@ -3,7 +3,6 @@ namespace App\Module\Cms\Controller\Admin;
 use Core\Controller;
 use Core\View;
 use App\Helper;
-use Core\Session;
 use Core\Url;
 use App\Module\Cms\Model\Tag as TagModel;
 /**
@@ -20,12 +19,11 @@ class Tag extends Controller
 
     public function __construct(
         array $routeParams,
-        Session $session,
         Url $url,
         TagModel $tag
     ) {
         $this->tagModel = $tag;
-        $this->session = $session;
+        $this->session = $this->getSession();
         $this->url = $url;
         parent::__construct($routeParams);
     }

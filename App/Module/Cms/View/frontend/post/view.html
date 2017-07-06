@@ -8,11 +8,17 @@
 {% endblock %}
 
 {% block scripts_extra %}
+<script src="{{ path('js/toc/toc.js') }}"></script>
 <script src="{{ path('js/fruidbox/jquery.ba-throttle-debounce.min.js') }}"></script>
 <script src="{{ path('js/fruidbox/jquery.fluidbox.min.js') }}"></script>
 <script>
-    $(function () {
+    jQuery(function ($) {
+        // popup image
         $('.fruidlink').fluidbox();
+        // table of content
+        $('#toc').toc({
+            'container': '.post-content'
+        });
     });
     /*$('.medium-insert-images').on('click', 'img', function () {
         var link = this.src;
@@ -126,5 +132,14 @@
 {% endblock %}
 
 {% block sidebar %}
+<div class="wrap-sidebar" data-spy="affix" data-offset-top="100">
     {% include 'frontend/sidebar.html' with {user: post.user} %}
+
+    <div class="meta-tag side-separate">
+        <p class="suggest-title">
+            <span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp;{{ 'Menu'|trans }}
+        </p>
+        <div id="toc"></div>
+    </div>
+</div>
 {% endblock %}

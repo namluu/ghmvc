@@ -5,7 +5,6 @@ use Core\Controller;
 use Core\Social\Facebook;
 use Core\Social\Google;
 use Core\Social\Github;
-use Core\Session;
 use Core\Url;
 use App\Module\User\Model\User;
 
@@ -23,13 +22,12 @@ class Auth extends Controller
         Facebook $facebook,
         Google $google,
         Github $github,
-        Session $session,
         Url $url,
         User $user
     ) {
         $this->userModel = $user;
         $this->url = $url;
-        $this->session = $session;
+        $this->session = $this->getSession();
         $this->facebook = $facebook;
         $this->google = $google;
         $this->github = $github;

@@ -2,7 +2,6 @@
 namespace App\Module\Cms\Controller;
 use App\Helper;
 use Core\Controller;
-use Core\Session;
 use Core\Url;
 use Core\View;
 use Core\UploadHandler;
@@ -39,13 +38,12 @@ class Post extends Controller
         UserModel $user,
         UserActionModel $action,
         CommentModel $comment,
-        Session $session,
         Url $url,
         Paginator $paginator
     ) {
         $this->paginator = $paginator;
         $this->url = $url;
-        $this->session = $session;
+        $this->session = $this->getSession();
         $this->postModel = $post;
         $this->tagModel = $tag;
         $this->postTagModel = $postTag;

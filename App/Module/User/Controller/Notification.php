@@ -2,7 +2,6 @@
 namespace App\Module\User\Controller;
 
 use Core\Controller;
-use Core\Session;
 use Core\View;
 use App\Module\User\Model\Action;
 
@@ -13,10 +12,9 @@ class Notification extends Controller
 
     public function __construct(
         array $routeParams,
-        Session $session,
         Action $action
     ) {
-        $this->session = $session;
+        $this->session = $this->getSession();
         $this->action = $action;
         parent::__construct($routeParams);
     }

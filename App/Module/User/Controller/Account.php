@@ -6,7 +6,6 @@ use Core\View;
 use App\Helper;
 use App\Module\User\Model\User;
 use App\Module\User\Model\Action;
-use Core\Session;
 use App\Config;
 use App\Module\Cms\Model\Post as PostModel;
 use Core\Paginator;
@@ -18,7 +17,6 @@ class Account extends Controller
 {
     protected $userModel;
     protected $actionModel;
-    protected $session;
     protected $postModel;
     protected $paginator;
     protected $cacheData = [];
@@ -27,14 +25,12 @@ class Account extends Controller
         array $routeParams,
         User $user,
         Action $action,
-        Session $session,
         PostModel $post,
         Paginator $paginator
     ) {
         parent::__construct($routeParams);
         $this->userModel = $user;
         $this->actionModel = $action;
-        $this->session = $session;
         $this->postModel = $post;
         $this->paginator = $paginator;
     }
@@ -76,20 +72,20 @@ class Account extends Controller
                         'role' => 'user',
                         'avatar' => $user->avatar
                     ];
-                    $this->session->set('login_user', $userData);
-                    $this->session->setMessage('success', 'Login successfully');
+                    $this->getSession()->set('login_user', $userData);
+                    $this->getSession()->setMessage('success', 'Login successfully');
                     if ($_POST['back_url']) {
                         $this->redirect($_POST['back_url']);
                     } else {
                         $this->redirect(Helper::getUrl('user/'.$user->username));
                     }
                 } else {
-                    $this->session->setMessage('error', 'Wrong account');
+                    $this->getSession()->setMessage('error', 'Wrong account');
+                    $this->redirect(Helper::getUrl('user/account/login'));
                 }
             }
-        } else {
-            $this->session->setMessage('error', 'Please enter your account');
         }
+        $this->getSession()->setMessage('error', 'Please enter your account');
         $this->redirect(Helper::getUrl('user/account/login'));
     }
 
@@ -101,7 +97,7 @@ class Account extends Controller
     public function registerAction()
     {
         $user = $this->userModel->load();
-        $user = $this->session->getFormData('user_form_data', $user);
+        $user = $this->getSession()->getFormData('user_form_data', $user);
         View::renderTemplate('User::frontend/account/register.html', [
             'user' => $user
         ]);
@@ -167,17 +163,17 @@ class Account extends Controller
                 'email' => $email
             );
             $this->userModel->save($data);
-            $this->session->setMessage('success', 'Register successfully');
+            $this->getSession()->setMessage('success', 'Register successfully');
             $this->redirect(Helper::getLink('user/account/login'));
         }
-        $this->session->setFormData('user_form_data', $dataCache);
-        $this->session->setMessage('error', join('<br>', $errorMsg));
+        $this->getSession()->setFormData('user_form_data', $dataCache);
+        $this->getSession()->setMessage('error', join('<br>', $errorMsg));
         $this->redirect(Helper::getLink('user/account/register'));
     }
 
     public function logout()
     {
-        $this->session->destroy();
+        $this->getSession()->destroy();
         $this->redirect(Helper::getUrl());
     }
 
@@ -215,7 +211,7 @@ class Account extends Controller
     public function editAction()
     {
         $id = $this->routeParams['id'];
-        $loginUser = $this->session->get('login_user');
+        $loginUser = $this->getSession()->get('login_user');
         if ($loginUser['id'] != $id) {
             throw new \Exception('No route matched.', 404);
         }
@@ -238,8 +234,8 @@ class Account extends Controller
             }
             $errorMsg = $this->validateData($_POST, $user->email);
             if ($errorMsg) {
-                $this->session->setFormData('user_form_data_edit', $this->cacheData);
-                $this->session->setMessage('error', implode(', ', $errorMsg));
+                $this->getSession()->setFormData('user_form_data_edit', $this->cacheData);
+                $this->getSession()->setMessage('error', implode(', ', $errorMsg));
                 $id ? $this->redirect(Helper::getUrl("user/account/{$id}/edit")) :
                     $this->redirect(Helper::getUrl('user/'.$user->username));
             } else {
@@ -247,9 +243,9 @@ class Account extends Controller
                 $result = $this->userModel->save($data, $id);
 
                 if ($result) {
-                    $this->session->setMessage('success', 'Save successfully');
+                    $this->getSession()->setMessage('success', 'Save successfully');
                 } else {
-                    $this->session->setMessage('error', 'Save unsuccessfully');
+                    $this->getSession()->setMessage('error', 'Save unsuccessfully');
                 }
             }
             $this->redirect(Helper::getUrl('user/'.$user->username));

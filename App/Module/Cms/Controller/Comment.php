@@ -1,7 +1,6 @@
 <?php
 namespace App\Module\Cms\Controller;
 use Core\Controller;
-use Core\Session;
 use App\Module\Cms\Model\Comment as CommentModel;
 use App\Module\User\Model\Action as UserActionModel;
 /**
@@ -18,12 +17,11 @@ class Comment extends Controller
     public function __construct(
         array $routeParams,
         CommentModel $comment,
-        Session $session,
         UserActionModel $action
     ) {
         $this->commentModel = $comment;
         $this->userActionModel = $action;
-        $this->session = $session;
+        $this->session = $this->getSession();
         parent::__construct($routeParams);
     }
 

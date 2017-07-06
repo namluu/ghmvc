@@ -12,6 +12,9 @@ abstract class Controller
      * @var array
      */
     protected $routeParams = [];
+
+    protected $session;
+
     /**
      * Class constructor
      *
@@ -20,12 +23,8 @@ abstract class Controller
      */
     public function __construct($routeParams)
     {
-        if (isset($_GET['page'])) {
-            $routeParams['page'] = $_GET['page'];
-        } else {
-            $routeParams['page'] = 1;
-        }
-        $this->routeParams = $routeParams;
+        $this->initAuthentication($routeParams);
+        $this->initPagination($routeParams);
     }
     /**
      * Magic method called when a non-existent or inaccessible method is
@@ -85,5 +84,32 @@ abstract class Controller
     public function getPreviousUrl()
     {
         return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+    }
+
+    public function getSession()
+    {
+        if (!$this->session) {
+            $this->session = new Session();
+        }
+        return $this->session;
+    }
+
+    protected function initAuthentication($routeParams)
+    {
+        if (isset($routeParams['namespace']) && $routeParams['namespace'] == 'Admin') {
+            if (!$this->getSession()->get('admin_user') && $routeParams['action'] != 'login') {
+                $this->redirect(\App\Helper::getAdminUrl('dashboard/auth/login'));
+            }
+        }
+    }
+
+    protected function initPagination($routeParams)
+    {
+        if (isset($_GET['page'])) {
+            $routeParams['page'] = $_GET['page'];
+        } else {
+            $routeParams['page'] = 1;
+        }
+        $this->routeParams = $routeParams;
     }
 }

@@ -3,7 +3,6 @@ namespace App\Module\Dashboard\Controller\Admin;
 use App\Config;
 use Core\Controller;
 use Core\View;
-use Core\Session;
 use App\Module\Dashboard\Model\Configuration as ConfigurationModel;
 
 class Configuration extends Controller
@@ -15,20 +14,14 @@ class Configuration extends Controller
     public function __construct(
         array $routeParams,
         ConfigurationModel $configurationModel,
-        Session $session,
         Config $config
     ) {
         $this->config = $config;
         $this->configurationModel = $configurationModel;
-        $this->session = $session;
+        $this->session = $this->getSession();
         parent::__construct($routeParams);
     }
 
-    /**
-     * Show the login page
-     *
-     * @return void
-     */
     public function indexAction()
     {
         if (Config::$config) {
